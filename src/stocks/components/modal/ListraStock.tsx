@@ -37,8 +37,6 @@ export const ListraStock = ({ stock }: { stock: (stock: StockI) => void }) => {
     try {
       if (almacen) {
         const response = await listarStock(almacen,paginaSeleccioanda, cantidadItems);
-
-        
         setStock(response.data);
         setPaginas(response.paginas)
       }
@@ -60,8 +58,6 @@ export const ListraStock = ({ stock }: { stock: (stock: StockI) => void }) => {
   
 
   const cantidadPage = (pagina:string)=>{
-
-    
     setCantidadItems(Number(pagina))
   }
 
@@ -160,8 +156,8 @@ export const ListraStock = ({ stock }: { stock: (stock: StockI) => void }) => {
           </select>
         </div>
         
-        {/* Contenedor con scroll para la tabla */}
-        <div className="overflow-auto max-h-96"> {/* Scroll para la tabla */}
+  
+        <div className="overflow-auto max-h-96">
           {<Paginas page={cantidadPage} />}
           <table className="min-w-full table-auto border-collapse text-xs">
             <thead>

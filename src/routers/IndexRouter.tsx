@@ -13,6 +13,8 @@ import { marcasRouter } from "../marca/router/marcaRouter";
 import { subCategoriaRouter } from "../subCategorias/router/subCategoriasRouter";
 import { proveedorPersonaRouter } from "../proveedorPersona/router/proveedorPersonaRouter";
 import { proveedorEmpresaRouter } from "../proveedorEmpresa/router/proveedorEmpresaRouter";
+import { movimientoAreaRouter } from "../movimientoArea/router/movimientoAreaRouter";
+import { autenticacionRouter } from "../autenticacion/router/autenticacionRouter";
 
 export const IndexRouter = () => {
   return (
@@ -115,6 +117,22 @@ export const IndexRouter = () => {
               ))}
 
               {proveedorEmpresaRouter.map((route, index) => (
+                <Route
+                  key={index}
+                  path={route.path}
+                  element={<route.component />}
+                />
+              ))}
+
+              {movimientoAreaRouter.map((route, index) => (
+                <Route
+                  key={index}
+                  path={route.path}
+                  element={<route.component />}
+                />
+              ))}
+
+              {autenticacionRouter.map((route, index) => (
                 <Route
                   key={index}
                   path={route.path}

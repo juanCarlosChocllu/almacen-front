@@ -31,13 +31,16 @@ export const FormEmpresa = () => {
       const response = await crearEmpresa(data);
       if (response.status == HttpStatus.CREATED) {
         setMensaje(response.message);
+        setMensajePropiedades([])
+   
       }
     } catch (error) {
-      const e = httAxiosError(error);
+      const e = httAxiosError(error);      
       if (e.response.status == HttpStatus.CONFLICT) {
         setMensaje(e.response.data.message);
-      } else if (e.response.status == HttpStatus.BAD_REQUEST) {
-        setMensajePropiedades(errorClassValidator(e.response.data.message));
+      } else if (e.response.status == HttpStatus.BAD_REQUEST) {   
+        Array.isArray(e.response.data.errors) &&  setMensajePropiedades(errorClassValidator(e.response.data.errors))
+    
       }
     }
   };
@@ -73,7 +76,7 @@ export const FormEmpresa = () => {
               {mensajePropiedades.length > 0 &&
                 mensajePropiedades.map((item) => {
                   if (item.propiedad === "nombre") {
-                    return item.error.map((e) => (
+                    return item.errors.map((e) => (
                       <p key={item.propiedad}>{e}</p>
                     ));
                   } else {

@@ -1,4 +1,4 @@
 export interface errorPropiedadesI {
-    error:string[]
+    errors:string[]
     propiedad:string
 }

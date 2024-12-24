@@ -8,6 +8,7 @@ import { useForm } from 'react-hook-form';
 import { listarCategorias } from '../../../categorias/service/categoriasApi';
 import { categoriasI } from '../../../categorias/interfaces/categoriasInterface';
 import { crearSubCategoria } from '../../services/subCategoriasApi';
+import { errorClassValidator } from '../../../utils/error/errorClassValidator';
 
 export const FormSubCategorias = () => {
       const { register, handleSubmit } = useForm<formSubCategoriaI>();
@@ -42,17 +43,15 @@ export const FormSubCategorias = () => {
               const response = await crearSubCategoria(data);
               if (response.status == HttpStatus.CREATED) {
                 setMensaje(response.message);
+                setMensajePropiedades([])
               }
             } catch (error) {     
-        
-                
               const e = httAxiosError(error);
               if (e.response.status == HttpStatus.CONFLICT) {
                 setMensaje(e.response.data.message);
-              } else if (e.response.status == HttpStatus.BAD_REQUEST) {
-                //console.log(e.response.data.errors);
-                
-               // setMensajePropiedades(errorClassValidator(e.response.data.message));
+                setMensajePropiedades([])
+              } else if (e.response.status == HttpStatus.BAD_REQUEST) {                
+              Array.isArray(e.response.data.errors) && setMensajePropiedades(errorClassValidator(e.response.data.errors));
               }
             }
           };
@@ -88,7 +87,7 @@ export const FormSubCategorias = () => {
               {mensajePropiedades.length > 0 &&
                 mensajePropiedades.map((item) => {
                   if (item.propiedad === "nombre") {
-                    return item.error.map((e) => (
+                    return item.errors.map((e) => (
                       <p key={item.propiedad}>{e}</p>
                     ));
                   } else {
@@ -123,8 +122,8 @@ export const FormSubCategorias = () => {
 
                 {mensajePropiedades.length > 0 &&
                 mensajePropiedades.map((item) => {
-                  if (item.propiedad === "area") {
-                    return item.error.map((e) => (
+                  if (item.propiedad === "categoria") {
+                    return item.errors.map((e) => (
                       <p key={item.propiedad}>{e}</p>
                     ));
                   } else {

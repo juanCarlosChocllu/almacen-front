@@ -26,3 +26,19 @@ export interface gudarStockI{
     proveedorEmpresa?:string
 }
 
+
+
+export interface StockVerificarI {
+  _id: string;
+  codigo: string;
+  cantidad: number;
+  precio: number;
+  total: number;
+  factura: string;
+  tipo: tipoE;
+  fechaCompra: Date;
+  fechaVencimiento: Date;
+  almacenArea: string;
+  producto: string;
+
+}

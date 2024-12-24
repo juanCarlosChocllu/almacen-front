@@ -8,14 +8,15 @@ import { empresaI } from "../../../empresa/interfaces/empresaInterface";
 
 import { formAlmacenAreaI } from "../../interfaces/formAlmacenAreaInterface";
 import { listarAreas } from "../../../areas/service/areasApi";
-import { errorClassValidator } from "../../../utils/error/errorClassValidator";
+
 import { HttpStatus } from "../../../enums/httStatusEnum";
 import { httAxiosError } from "../../../utils/error/error.util";
 import { crearAlmacenArea } from "../../services/almacenAreaApi";
+import { errorClassValidator } from "../../../utils/error/errorClassValidator";
 
 
 export const FormAlmacenArea = () => {
-  const { register, handleSubmit , watch} = useForm<formAlmacenAreaI>();
+  const { register, handleSubmit} = useForm<formAlmacenAreaI>();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [mensaje, setMensaje] = useState<string>();
   const [mensajePropiedades, setMensajePropiedades] = useState<
@@ -51,6 +52,7 @@ export const FormAlmacenArea = () => {
       const response = await crearAlmacenArea(data);
       if (response.status == HttpStatus.CREATED) {
         setMensaje(response.message);
+        setMensajePropiedades([]);
       }
     } catch (error) {     
 
@@ -61,7 +63,7 @@ export const FormAlmacenArea = () => {
       } else if (e.response.status == HttpStatus.BAD_REQUEST) {
         //console.log(e.response.data.errors);
         
-       // setMensajePropiedades(errorClassValidator(e.response.data.message));
+       setMensajePropiedades(errorClassValidator(e.response.data.errors));
       }
     }
   };
@@ -97,7 +99,7 @@ export const FormAlmacenArea = () => {
               {mensajePropiedades.length > 0 &&
                 mensajePropiedades.map((item) => {
                   if (item.propiedad === "nombre") {
-                    return item.error.map((e) => (
+                    return item.errors.map((e) => (
                       <p key={item.propiedad}>{e}</p>
                     ));
                   } else {
@@ -133,7 +135,7 @@ export const FormAlmacenArea = () => {
                 {mensajePropiedades.length > 0 &&
                 mensajePropiedades.map((item) => {
                   if (item.propiedad === "area") {
-                    return item.error.map((e) => (
+                    return item.errors.map((e) => (
                       <p key={item.propiedad}>{e}</p>
                     ));
                   } else {

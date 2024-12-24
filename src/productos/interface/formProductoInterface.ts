@@ -8,8 +8,6 @@ export interface formProductoI{
     color?:string 
     subCategoria?:string 
     codigoBarra:string
-    cantidadInicialVenta:number
-    cantidadInicialRegalo:number
     imagen:File[]
     marca:string
 

@@ -3,12 +3,18 @@ import { useForm } from "react-hook-form";
 import { dataCategoria } from "../../interfaces/categoriasInterface";
 import { httpRespuetaI } from "../../../interfaces/httpRespuestaInterface";
 import { crearCategoria } from "../../service/categoriasApi";
-import { httpAxiosErrorI } from "../../../interfaces/httpErrorInterface";
+import { errorPropiedadesI } from "../../../interfaces/errorPropiedades";
+import { httAxiosError } from "../../../utils/error/error.util";
+import { HttpStatus } from "../../../enums/httStatusEnum";
+import { errorClassValidator } from "../../../utils/error/errorClassValidator";
 
 export const FormCategorias = () => {
   const{ register,handleSubmit}=useForm<dataCategoria>()
   const [modalClose, setModalClose] = useState<Boolean>(false)
-  const [mensajeError, setMensajeError] = useState<string | null>(null)
+  const [mensajeError, setMensajeError] = useState<string>()
+    const [mensajePropiedades, setMensajePropiedades] = useState<
+      errorPropiedadesI[]
+    >([]);
   const abrirModal=(cerrar:boolean)=>{
     setModalClose(cerrar)
   }
@@ -19,9 +25,14 @@ export const FormCategorias = () => {
         setMensajeError('Categoria registrada')
       }
     } catch (error) {
-      const err = error as httpAxiosErrorI
-      if(err.response.data.statusCode === 409){
+      
+      const err = httAxiosError(error)
+      console.log(err);
+      
+      if(err.response.data.statusCode === HttpStatus.CONFLICT){
         setMensajeError(err.response.data.message)
+      }else if(err.response.data.statusCode === HttpStatus.BAD_REQUEST){
+      Array.isArray(err.response.data.errors)&& setMensajePropiedades(errorClassValidator(err.response.data.errors))
       }
     }
   }
@@ -32,7 +43,7 @@ export const FormCategorias = () => {
   className="bg-blue-500 text-white px-4 py-2 rounded-sm shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 transition duration-300 ease-in-out transform hover:scale-105"
   onClick={() => abrirModal(true)}
 >
-  Abrir Formulario
+  Añadir Catrgoria
 </button>
 
 
@@ -46,9 +57,19 @@ export const FormCategorias = () => {
               type="text"
               id="nombre"
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              required
+              
               {...register('nombre')}
             />
+             {mensajePropiedades.length > 0 &&
+                mensajePropiedades.map((item) => {
+                  if (item.propiedad === "nombre") {
+                    return item.errors.map((e) => (
+                      <p key={item.propiedad}>{e}</p>
+                    ));
+                  } else {
+                    return null;
+                  }
+                })}
           </div>
           <span>{mensajeError ? mensajeError :''}</span>
           <div className="flex justify-end space-x-4">
@@ -63,7 +84,7 @@ export const FormCategorias = () => {
               type="submit" 
               className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
             >
-              Agregar Categoría
+              Guardar
             </button>
           </div>
         </form>

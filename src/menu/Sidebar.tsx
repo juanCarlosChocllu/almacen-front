@@ -23,6 +23,7 @@ export const Sidebar = ({ children }: { children: ReactNode }) => {
   const [isStockOpen, setIsStockOpen] = useState(false);
   const [isTraspasosOpen, setIsTraspasosOpen] = useState(false);
   const [isOpenProveedor, setIsOpenProveedor] = useState(false);
+  const [isOpenMovimientoArea, setIsOpenMovimientoArea] = useState(false);
 
   const toggleSidebar = () =>{
       if(isOpen){
@@ -30,6 +31,7 @@ export const Sidebar = ({ children }: { children: ReactNode }) => {
         setIsTraspasosOpen(false)
         setIsOpenProveedor(false)
         setIsClasificacionOpen(false)
+        setIsOpenMovimientoArea(false)
       }
     
     setIsOpen(!isOpen)
@@ -44,6 +46,8 @@ export const Sidebar = ({ children }: { children: ReactNode }) => {
   const toggleTraspasos = () => setIsTraspasosOpen(!isTraspasosOpen);
 
   const toggleProveedor = () => setIsOpenProveedor(!isOpenProveedor);
+  const toggleMovimientoArea= () => setIsOpenMovimientoArea(!isOpenMovimientoArea);
+
 
   return (
     <div className="flex">
@@ -211,7 +215,7 @@ export const Sidebar = ({ children }: { children: ReactNode }) => {
               className="cursor-pointer hover:bg-gray-700 p-3 rounded-lg flex items-center"
             >
               <FaExchangeAlt size={isOpen ? 20 : 16} className="mr-3" />
-              {isOpen && <span>Traspasos</span>}
+              {isOpen && <span>Transferencias</span>}
             </div>
             {isTraspasosOpen && (
               <div className="pl-6">
@@ -229,9 +233,34 @@ export const Sidebar = ({ children }: { children: ReactNode }) => {
                       to="/listar/transferencia"
                       className="w-full block text-gray-300 hover:text-white py-2 px-4 rounded-lg bg-gray-700 hover:bg-gray-600 transition duration-300"
                     >
-                      <FaList className="mr-2" /> Listar Traspasos
+                      <FaList className="mr-2" /> Listar Transferencias
                     </Link>
                   </li>
+                </ol>
+              </div>
+            )}
+          </div>
+
+          <div className="mb-4">
+            <div
+              onClick={toggleMovimientoArea}
+              className="cursor-pointer hover:bg-gray-700 p-3 rounded-lg flex items-center"
+            >
+              <FaExchangeAlt size={isOpen ? 20 : 16} className="mr-3" />
+              {isOpen && <span>Movimiento</span>}
+            </div>
+            {isOpenMovimientoArea && (
+              <div className="pl-6">
+                <ol>
+                  <li>
+                    <Link
+                      to="/movimiento/area/ingresos"
+                      className="w-full block text-gray-300 hover:text-white py-2 px-4 rounded-lg bg-gray-700 hover:bg-gray-600 transition duration-300"
+                    >
+                      <FaArrowRight className="mr-2" /> Ingresos Stock
+                    </Link>
+                  </li>
+                 
                 </ol>
               </div>
             )}

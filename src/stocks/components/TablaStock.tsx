@@ -10,9 +10,9 @@ export const TablaStock = () => {
   const [stocks, setStock] = useState<StockI[]>([])
   const [almacen, setAlmacen] = useState<almacenAreaI[]>([])
   const [paginaSelecionada, setPaginaSeleccionada] = useState<number>(1)
-  const [paginas, setPaginas] = useState<number>(1)
+  const [paginas, setPaginas] = useState<number>()
   const [itemPage, setItemPage] = useState<number>(10)
-
+  
   const [almacenSeleccionado,  setAlamcenSeleccionado]= useState<string>()
   useEffect(() => {
 
@@ -29,12 +29,15 @@ export const TablaStock = () => {
         const response= await listarStock(almacenSeleccionado,paginaSelecionada,itemPage)
         setStock(response.data)
         setPaginas(response.paginas)
+      
        }
      } catch (error) {
        console.log(error);
        
      }
   }
+
+  
   const listarAlamcen = async () => {
     try {
       const response = await listarAlmacenPorArea()
@@ -92,12 +95,12 @@ export const TablaStock = () => {
             <th className="px-2 py-1 text-left">Nombre</th>
             <th className="px-2 py-1 text-left">Marca</th>
             <th className="px-2 py-1 text-left">Cantidad</th>
-            <th className="px-2 py-1 text-left">Precio</th>
-            <th className="px-2 py-1 text-left">Total</th>
+                {/*  <th className="px-2 py-1 text-left">Precio</th>
+            <th className="px-2 py-1 text-left">Total</th>*/}
             <th className="px-2 py-1 text-left">Color</th>
             <th className="px-2 py-1 text-left">Tipo</th>
-            <th className="px-2 py-1 text-left">Fecha de Compra</th>
-            <th className="px-2 py-1 text-left">Fecha de Vencimiento</th>
+            {/* <th className="px-2 py-1 text-left">Fecha de Compra</th>
+            <th className="px-2 py-1 text-left">Fecha de Vencimiento</th>*/}
           </tr>
         </thead>
         <tbody>
@@ -108,12 +111,8 @@ export const TablaStock = () => {
               <td className="px-2 py-1">{item.nombre}</td>
               <td className="px-2 py-1">{item.marca}</td>
               <td className="px-2 py-1">{item.cantidad || 0}</td>
-              <td className="px-2 py-1">{item.precio || 0}</td>
-              <td className="px-2 py-1">{item.total || 0}</td>
               <td className="px-2 py-1">{item.color}</td>
               <td className="px-2 py-1">{item.tipo}</td>
-              <td className="px-2 py-1">{item.fechaCompra || 'sin fecha'}</td>
-              <td className="px-2 py-1">{item.fechaVencimiento || 'sin fecha'}</td>
             </tr>
           ))}
         </tbody>

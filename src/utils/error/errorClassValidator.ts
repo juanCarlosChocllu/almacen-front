@@ -6,7 +6,7 @@ export const errorClassValidator=(error:string):errorPropiedadesI[]=>{
             for (const err  of error) {
                 const e=  err as errorPropiedadesI
                 let error:errorPropiedadesI ={
-                    error:e.error,
+                    errors:e.errors,
                     propiedad:e.propiedad
                 }
                 data.push(error)

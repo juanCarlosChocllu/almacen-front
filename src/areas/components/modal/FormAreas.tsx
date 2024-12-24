@@ -1,4 +1,3 @@
-import React from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { formAreasI } from '../../interfaces/formInterface'
@@ -42,13 +41,14 @@ export const FormAreas = () => {
         
          if (response.status == HttpStatus.CREATED) {
            setMensaje(response.message);
+           setMensajePropiedades([]);
          }
        } catch (error) {
          const e = httAxiosError(error);
          if (e.response.status == HttpStatus.CONFLICT) {
            setMensaje(e.response.data.message);
          } else if (e.response.status == HttpStatus.BAD_REQUEST) {
-           setMensajePropiedades(errorClassValidator(e.response.data.message));
+           setMensajePropiedades(errorClassValidator(e.response.data.errors));
          }
        }
      };     
@@ -83,7 +83,7 @@ export const FormAreas = () => {
                             {mensajePropiedades.length > 0 &&
                                 mensajePropiedades.map((item) => {
                                     if (item.propiedad === "nombre") {
-                                        return item.error.map((e) => (
+                                        return item.errors.map((e) => (
                                             <p key={item.propiedad}>{e}</p>
                                         ));
                                     } else {

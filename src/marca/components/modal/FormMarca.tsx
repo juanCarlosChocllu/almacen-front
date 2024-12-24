@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 
-
-import { ModalPropsI } from "../../../interfaces/modalProps.Interface";
-import { marcaI } from "../../interfaces/marcaInterface";
-import { crearMarca, listarMarcas } from "../../service/marcaApi";
+import { crearMarca } from "../../service/marcaApi";
 import { errorPropiedadesI } from "../../../interfaces/errorPropiedades";
 import { formMarcaI } from "../../interfaces/formMarcaInterface";
 import { useForm } from "react-hook-form";
-import { crearArea } from "../../../areas/service/areasApi";
+
 import { HttpStatus } from "../../../enums/httStatusEnum";
+
+import { httAxiosError } from "../../../utils/error/error.util";
+import { errorClassValidator } from "../../../utils/error/errorClassValidator";
 
 
 export const FormMarca = () => {
@@ -26,20 +26,23 @@ export const FormMarca = () => {
     setIsOpen(true)
   }
 
-  const onSudmit = async(data:formMarcaI)=>{
-        console.log(data);
-        
+  const onSudmit = async(data:formMarcaI)=>{     
         try {
             const response = await crearMarca(data)
-            console.log(response);
+       
             
             if(response.status === HttpStatus.CREATED){
                 setMensaje(response.message)
-            }
-     
-            
+                setMensajePropiedades([])
+            }       
         } catch (error) {
-            console.log(error);
+            const e =  httAxiosError(error)
+            if(e.response.status == HttpStatus.CONFLICT){
+                setMensaje(e.response.data.message)
+            }else if (e.response.status == HttpStatus.BAD_REQUEST){
+                setMensajePropiedades(errorClassValidator(e.response.data.errors))
+            }
+
             
         }
   }
@@ -74,7 +77,7 @@ export const FormMarca = () => {
                     {mensajePropiedades.length > 0 &&
                         mensajePropiedades.map((item) => {
                             if (item.propiedad === "nombre") {
-                                return item.error.map((e) => (
+                                return item.errors.map((e) => (
                                     <p key={item.propiedad}>{e}</p>
                                 ));
                             } else {

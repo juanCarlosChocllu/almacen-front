@@ -62,6 +62,7 @@ export const FormAlmacenSucursal = () => {
         data.empresa ? delete data.empresa :delete data.empresa
       const response = await crearAlmacenSucursal(data);
       if (response.status == HttpStatus.CREATED) {
+        setMensajePropiedades([]);
         setMensaje(response.message);
       }
     } catch (error) {     
@@ -69,7 +70,7 @@ export const FormAlmacenSucursal = () => {
       if (e.response.status == HttpStatus.CONFLICT) {
         setMensaje(e.response.data.message);
       } else if (e.response.status == HttpStatus.BAD_REQUEST) {
-        setMensajePropiedades(errorClassValidator(e.response.data.message));
+        setMensajePropiedades(errorClassValidator(e.response.data.errors));
       }
     }
   };
@@ -105,7 +106,7 @@ export const FormAlmacenSucursal = () => {
               {mensajePropiedades.length > 0 &&
                 mensajePropiedades.map((item) => {
                   if (item.propiedad === "nombre") {
-                    return item.error.map((e) => (
+                    return item.errors.map((e) => (
                       <p key={item.propiedad}>{e}</p>
                     ));
                   } else {
@@ -159,7 +160,7 @@ export const FormAlmacenSucursal = () => {
                 {mensajePropiedades.length > 0 &&
                 mensajePropiedades.map((item) => {
                   if (item.propiedad === "sucursal") {
-                    return item.error.map((e) => (
+                    return item.errors.map((e) => (
                       <p key={item.propiedad}>{e}</p>
                     ));
                   } else {

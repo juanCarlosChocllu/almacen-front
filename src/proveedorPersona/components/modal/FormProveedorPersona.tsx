@@ -3,11 +3,19 @@ import { useForm } from 'react-hook-form';
 import { formProveedorPersonaI } from '../../interfaces/formProveedorPersonaInterface';
 import { crearProveedorPersonas } from '../../services/proveedorPersonaApi';
 import { HttpStatus } from '../../../enums/httStatusEnum';
+import { httAxiosError } from '../../../utils/error/error.util';
+import { errorPropiedadesI } from '../../../interfaces/errorPropiedades';
+import { errorClassValidator } from '../../../utils/error/errorClassValidator';
 
 export const FormProveedorPersona = () => {
     const { register, handleSubmit}= useForm<formProveedorPersonaI>()
   const [isOpen, setIsOpen] = useState(false);
   const [mensaje, setMensaje] = useState<string>('');
+  const [conflictCi, setConflictCi] = useState<string>('');
+    const [mensajePropiedades, setMensajePropiedades] = useState<
+      errorPropiedadesI[]
+    >([]);
+  
   const openModal = () => setIsOpen(true);
 
   const closeModal = () => setIsOpen(false);
@@ -17,9 +25,16 @@ export const FormProveedorPersona = () => {
         const response = await crearProveedorPersonas(data)
         if(response.status == HttpStatus.CREATED){
             setMensaje(response.message)
+            setMensajePropiedades([])
         }
-    } catch (error) {
-        console.log(error);
+    } catch (error) {      
+      const e=httAxiosError(error)
+        if(e.response.status == HttpStatus.BAD_REQUEST){
+          setMensajePropiedades(errorClassValidator(e.response.data.errors))
+        }else if(e.response.status == HttpStatus.CONFLICT){          
+          setConflictCi(e.response.data.message)
+          setMensajePropiedades([])
+        }
         
     }
 
@@ -53,10 +68,21 @@ export const FormProveedorPersona = () => {
                   type="text"
                   id="ci"
                   {...register('ci')}
-                  required
+                  
                   placeholder="Ingresa tu CI"
                   className="mt-1 p-2 w-full border border-gray-300 rounded-lg"
                 />
+                 {mensajePropiedades.length > 0 &&
+                mensajePropiedades.map((item) => {
+                  if (item.propiedad === "ci") {
+                    return item.errors.map((e) => (
+                      <p key={item.propiedad}>{e}</p>
+                    ));
+                  } else {
+                    return null;
+                  }
+                })}
+                {conflictCi && <span>{conflictCi}</span>}
               </div>
               <div className="mb-4">
                 <label htmlFor="nit" className="block text-sm font-medium text-gray-700">NIT:</label>
@@ -64,10 +90,20 @@ export const FormProveedorPersona = () => {
                   type="text"
                   id="nit"
                   {...register('nit')}
-                  required
+                  
                   placeholder="Ingresa el NIT"
                   className="mt-1 p-2 w-full border border-gray-300 rounded-lg"
                 />
+                 {mensajePropiedades.length > 0 &&
+                mensajePropiedades.map((item) => {
+                  if (item.propiedad === "nit") {
+                    return item.errors.map((e) => (
+                      <p key={item.propiedad}>{e}</p>
+                    ));
+                  } else {
+                    return null;
+                  }
+                })}
               </div>
               
               <div className="mb-4">
@@ -76,10 +112,20 @@ export const FormProveedorPersona = () => {
                   type="text"
                   id="nombres"
                   {...register('nombres')}
-                  required
+                  
                   placeholder="Ingresa tus nombres"
                   className="mt-1 p-2 w-full border border-gray-300 rounded-lg"
                 />
+                 {mensajePropiedades.length > 0 &&
+                mensajePropiedades.map((item) => {
+                  if (item.propiedad === "nombres") {
+                    return item.errors.map((e) => (
+                      <p key={item.propiedad}>{e}</p>
+                    ));
+                  } else {
+                    return null;
+                  }
+                })}
               </div>
               
               <div className="mb-4">
@@ -88,10 +134,20 @@ export const FormProveedorPersona = () => {
                   type="text"
                   id="apellidos"
                   {...register('apellidos')}
-                  required
+                  
                   placeholder="Ingresa tus apellidos"
                   className="mt-1 p-2 w-full border border-gray-300 rounded-lg"
                 />
+                 {mensajePropiedades.length > 0 &&
+                mensajePropiedades.map((item) => {
+                  if (item.propiedad === "apellidos") {
+                    return item.errors.map((e) => (
+                      <p key={item.propiedad}>{e}</p>
+                    ));
+                  } else {
+                    return null;
+                  }
+                })}
               </div>
               
              
@@ -102,10 +158,20 @@ export const FormProveedorPersona = () => {
                   type="email"
                   id="correo"
                   {...register('correo')}
-                  required
+                  
                   placeholder="Ingresa tu correo electrónico"
                   className="mt-1 p-2 w-full border border-gray-300 rounded-lg"
                 />
+                   {mensajePropiedades.length > 0 &&
+                mensajePropiedades.map((item) => {
+                  if (item.propiedad === "correo") {
+                    return item.errors.map((e) => (
+                      <p key={item.propiedad}>{e}</p>
+                    ));
+                  } else {
+                    return null;
+                  }
+                })}
               </div>
 
             
@@ -116,10 +182,20 @@ export const FormProveedorPersona = () => {
                   type="text"
                   id="ciudad"
                   {...register('ciudad')}
-                  required
+                  
                   placeholder="Ingresa tu ciudad"
                   className="mt-1 p-2 w-full border border-gray-300 rounded-lg"
                 />
+                      {mensajePropiedades.length > 0 &&
+                mensajePropiedades.map((item) => {
+                  if (item.propiedad === "ciudad") {
+                    return item.errors.map((e) => (
+                      <p key={item.propiedad}>{e}</p>
+                    ));
+                  } else {
+                    return null;
+                  }
+                })}
               </div>
 
               <div className="mb-4">
@@ -128,10 +204,20 @@ export const FormProveedorPersona = () => {
                   type="text"
                   id="direccion"
                   {...register('direccion')}
-                  required
+                  
                   placeholder="Ingresa tu dirección"
                   className="mt-1 p-2 w-full border border-gray-300 rounded-lg"
                 />
+                       {mensajePropiedades.length > 0 &&
+                mensajePropiedades.map((item) => {
+                  if (item.propiedad === "direccion") {
+                    return item.errors.map((e) => (
+                      <p key={item.propiedad}>{e}</p>
+                    ));
+                  } else {
+                    return null;
+                  }
+                })}
               </div>
 
               <div className="mb-4">
@@ -140,10 +226,20 @@ export const FormProveedorPersona = () => {
                   type="text"
                   id="celular"
                   {...register('celular')}
-                  required
+                  
                   placeholder="Ingresa tu número de celular"
                   className="mt-1 p-2 w-full border border-gray-300 rounded-lg"
                 />
+                     {mensajePropiedades.length > 0 &&
+                mensajePropiedades.map((item) => {
+                  if (item.propiedad === "celular") {
+                    return item.errors.map((e) => (
+                      <p key={item.propiedad}>{e}</p>
+                    ));
+                  } else {
+                    return null;
+                  }
+                })}
               </div>
                 {mensaje && <span>{mensaje}</span>}
               <div className='flex justify-center col-span-2 mt-4'>

@@ -7,8 +7,8 @@ import { Paginador } from "../../utils/components/Paginador";
 
 export const TablaTransferencias = () => {
     const [transferencias, setTransferencias] = useState<transferenciasI[]>([])
-    const [paginas, setpaginas] = useState<number>(1)
-    const [limite, setcanitdaditem] = useState<string>('10')
+    const [paginas, setpaginas] = useState<number>(0)
+    const [limite, setcanitdaditem] = useState<number>(10)
     const [selectPagina, setSelectPagina] = useState<number>(1)
     
     useEffect(()=>{
@@ -18,16 +18,18 @@ export const TablaTransferencias = () => {
 
     const transferenciasList=async()=>{
         try {
-            const response = await listarTransferencias(String(selectPagina), limite)            
+            const response = await listarTransferencias(selectPagina, limite)            
            setTransferencias(response.data)
            setpaginas(response.paginas)
+           console.log(response.paginas);
+           
         } catch (error) {
    
             
         }
     }
-  const cantidadItem=(cantida:string)=>{
-    setcanitdaditem(cantida)
+  const cantidadItem=(cantidad:string)=>{
+    setcanitdaditem(Number(cantidad))
   }
   const paginaSeleccionada=(pagina:number)=>{
     setSelectPagina(pagina)

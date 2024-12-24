@@ -5,7 +5,7 @@ import { SubCategoriaPage } from "../page/SubCategoriaPage";
 
 export const subCategoriaRouter:routerI[]=[
     {
-        path: '/sudCategorias',
+        path: '/subCategorias',
         component:SubCategoriaPage , 
     },
 ]

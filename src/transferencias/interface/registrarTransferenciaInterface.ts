@@ -14,5 +14,5 @@ export interface registrarTranferenciaI{
     //nombreArea:string| undefined
     idStock:string | undefined
 
-    almacenArea:string
+    almacenArea:string | undefined
 }

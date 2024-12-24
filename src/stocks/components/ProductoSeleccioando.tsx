@@ -17,10 +17,11 @@ export const ProductoSeleccioando = ({ data, nuevaData = () => {} }: productoSel
               <th className="px-4 py-2">Producto</th>
               <th className="px-4 py-2">Cantidad</th>
               <th className="px-4 py-2">Precio</th>
-              <th className="px-4 py-2">Fecha de compra</th>
-              <th className="px-4 py-2">Fecha de vencimiento</th>
+          
               <th className="px-4 py-2">Total</th>
               <th className="px-4 py-2">Tipo</th>
+              <th className="px-4 py-2">Fecha de compra</th>
+              <th className="px-4 py-2">Fecha de vencimiento</th>
               <th className="px-4 py-2">Acción</th>
             </tr>
           </thead>
@@ -32,10 +33,11 @@ export const ProductoSeleccioando = ({ data, nuevaData = () => {} }: productoSel
                 <td className="px-4 py-2">{producto.nombre}</td>
                 <td className="px-4 py-2">{producto.cantidad}</td>
                 <td className="px-4 py-2">{producto.precio}</td>
-                <td className="px-4 py-2">{producto.fechaCompra}</td>
-                <td className="px-4 py-2">{producto.fechaVencimiento}</td>
+       
                 <td className="px-4 py-2">{producto.total}</td>
                 <td className="px-4 py-2">{producto.tipo}</td>
+                <td className="px-4 py-2">{producto.fechaCompra}</td>
+                <td className="px-4 py-2">{producto.fechaVencimiento}</td>
                 <td className="px-4 py-2">
                   <button
                     onClick={() => {

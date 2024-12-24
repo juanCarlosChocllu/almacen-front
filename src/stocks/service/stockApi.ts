@@ -1,7 +1,7 @@
 
 import { instance } from "../../config/instanceConfig";
 import { httpResponsePagiandor, httpRespuetaI } from "../../interfaces/httpRespuestaInterface";
-import { gudarStockI, StockI } from "../interfaces/stockInterface";
+import { gudarStockI, StockI, StockVerificarI } from "../interfaces/stockInterface";
 
 
 export const guardarStock= async(data:gudarStockI):Promise<httpRespuetaI>=>{
@@ -29,3 +29,14 @@ export const listarStock = async (almacen: string, pagina: number, limite: numbe
     }
   };
   
+
+
+export   const vericarStockProducto =async(producto:string):Promise<StockVerificarI>=>{
+    try {
+      const response = await instance.get(`stocks/verificar/stock/${producto}`);
+      return response.data
+    } catch (error) {
+      throw error;
+    }
+
+  }

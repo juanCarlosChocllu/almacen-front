@@ -15,8 +15,9 @@ export const  realizarTransferencias =async(data:dataTransferenciaI):Promise<htt
 }
 
  
-export const  listarTransferencias =async(pagina:string, limite:string):Promise<httpResponsePagiandor<transferenciasI>>=>{
+export const  listarTransferencias =async(pagina:number, limite:number):Promise<httpResponsePagiandor<transferenciasI>>=>{
     try {
+        
         const response= await instance.get(`transferencias?pagina=${pagina}&limite=${limite}`)
         return response.data
     } catch (error) {

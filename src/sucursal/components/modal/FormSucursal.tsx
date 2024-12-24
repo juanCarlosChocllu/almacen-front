@@ -42,6 +42,7 @@ export const FormScursal = () => {
      try {
       const response = await crearSucursal(data);
       if (response.status == HttpStatus.CREATED) {
+        setMensajePropiedades([]);
         setMensaje(response.message);
       }
     } catch (error) {
@@ -49,7 +50,7 @@ export const FormScursal = () => {
       if (e.response.status == HttpStatus.CONFLICT) {
         setMensaje(e.response.data.message);
       } else if (e.response.status == HttpStatus.BAD_REQUEST) {
-        setMensajePropiedades(errorClassValidator(e.response.data.message));
+        setMensajePropiedades(errorClassValidator(e.response.data.errors));
       }
     }
   };
@@ -85,7 +86,7 @@ export const FormScursal = () => {
               {mensajePropiedades.length > 0 &&
                 mensajePropiedades.map((item) => {
                   if (item.propiedad === "nombre") {
-                    return item.error.map((e) => (
+                    return item.errors.map((e) => (
                       <p key={item.propiedad}>{e}</p>
                     ));
                   } else {
@@ -114,7 +115,7 @@ export const FormScursal = () => {
                 {mensajePropiedades.length > 0 &&
                 mensajePropiedades.map((item) => {
                   if (item.propiedad === "empresa") {
-                    return item.error.map((e) => (
+                    return item.errors.map((e) => (
                       <p key={item.propiedad}>{e}</p>
                     ));
                   } else {
