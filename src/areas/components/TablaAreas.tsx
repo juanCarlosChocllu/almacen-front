@@ -1,19 +1,23 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { areasI } from "../interfaces/areasInterface";
 import { listarAreas } from "../service/areasApi";
+import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
 
 export const TablaAreas = () => {
+  const {token}= useContext(AutenticacionContext)
   const [areas, setAreas] = useState<areasI[]>([]);
   useEffect(() => {
     listraAreas();
   }, []);
   const listraAreas = async () => {
     try {
-      const response = await listarAreas();
+      if(token){
+        const response = await listarAreas(token);
 
-      setAreas(response);
+        setAreas(response);
+      }
     } catch (error) {
       console.log(error);
     }

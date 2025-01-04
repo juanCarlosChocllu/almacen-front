@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ProductosModal } from "../../productos/components/modal/ProductosModal";
 import { productoI } from "../../productos/interface/productoInterface";
 import { useForm } from "react-hook-form";
@@ -23,15 +23,17 @@ import { httAxiosError } from "../../utils/error/error.util";
 import { errorPropiedadesI } from "../../interfaces/errorPropiedades";
 import { errorPersonalizadoI } from "../../interfaces/errorPersonalizado";
 import { errorClassValidator } from "../../utils/error/errorClassValidator";
+import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
 
 export const FormStock = () => {
+  const {token}= useContext(AutenticacionContext)
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm<formStockI>();
-  const [isOpenProductos, setIsOpenProductos] = useState<boolean>(false);
+
   const [isOpenProveedores, setIsOpenProveedores] = useState<boolean>(false);
   const [dataSeleccionada, setDataSeleccionada] = useState<dataProductoI[]>([]);
   const [almacenArea, setAlmacenArea] = useState<almacenAreaI[]>([]);
@@ -50,8 +52,7 @@ export const FormStock = () => {
   const [proveedorEmpresaSeleccionado, setProveedorEmpresaSeleccionado] =
     useState<proveedorEmpresaI | null>();
 
-  const openModalProductos = () => setIsOpenProductos(true);
-  const closeModalProductos = () => setIsOpenProductos(false);
+
 
   const openModalProveedores = () => setIsOpenProveedores(true);
   const closeModalProveedores = () => setIsOpenProveedores(false);
@@ -62,8 +63,10 @@ export const FormStock = () => {
   useEffect(() => {
     const listarAlmacenAreas = async () => {
       try {
-        const response = await listarAlmacenPorArea();
+       if(token){
+        const response = await listarAlmacenPorArea(token);
         setAlmacenArea(response);
+       }
       } catch (error) {}
     };
     listarAlmacenAreas();
@@ -179,6 +182,7 @@ export const FormStock = () => {
       );
     }
   };
+  
 
   return (
     <div className="p-6">
@@ -214,13 +218,9 @@ export const FormStock = () => {
     })}
 
 
-  {isOpenProductos && (
-    <ProductosModal
-      productoSeleccionado={productoSeleccionados}
-      isOpen={isOpenProductos}
-      closeModal={closeModalProductos}
-    />
-  )}
+  
+    <ProductosModal  productoSeleccionado={productoSeleccionados}/>
+ 
 
 
   {proveedorPersonaSeleccionado && (
@@ -238,14 +238,6 @@ export const FormStock = () => {
   )}
 
 
-  <div className="flex justify-center">
-    <button
-      onClick={openModalProductos}
-      className="bg-green-600 text-white py-2 px-6 rounded-md text-sm shadow-lg hover:bg-green-700 transition duration-300 ease-in-out"
-    >
-      Productos
-    </button>
-  </div>
 
   {productosSeleccioando && (
     <SelectProducto
@@ -295,6 +287,7 @@ export const FormStock = () => {
             </label>
             <select
               id="almacenArea"
+              
               className="h-10 border sm:w-3/4 p-2 border-gray-300 text-gray-600 text-base rounded-lg block w-full py-2 px-3 focus:outline-none"
               {...register("almacenArea", {
                 required: { value: true, message: "Seleccione un Alamacen" },
@@ -303,16 +296,7 @@ export const FormStock = () => {
            
               <option value="">Seleccione el almacen</option>
               {almacenArea.map((item) => {
-                  /*if(almacenAreaStock){
-                    console.log(almacenAreaStock === item._id);
-                    
-                    if(almacenAreaStock === item._id){
-                      return  <option key={item._id} value={item._id}>
-                      {item.nombre}
-                    </option>
-
-                    }
-                  }*/
+                 
                    return  <option key={item._id} value={item._id}>
                     {item.nombre}
                   </option>

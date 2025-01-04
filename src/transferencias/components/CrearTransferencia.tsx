@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ListraStock } from "../../stocks/components/modal/ListraStock";
 import { listarEmpresa } from "../../empresa/services/empresaApi";
 import { empresaI } from "../../empresa/interfaces/empresaInterface";
@@ -20,13 +20,15 @@ import { realizarTransferencias } from "../services/transferenciaApi";
 import { StockSeleccionado } from "./StockSeleccionado";
 import { HttpStatus } from "../../enums/httStatusEnum";
 import { httAxiosError } from "../../utils/error/error.util";
-import { verificarCantidadStockTransferencia } from "../../stockTransferencia/services/stockTransferenciaApi";
-import { StockTransferenciaVInterfaceI } from "../../stockTransferencia/interfaces/stockTransferenciaInterface";
+import { verificarCantidadStockSucursal } from "../../stockSucursal/services/stockSucursalApi";
+import { StockSucursalVerificarI } from "../../stockSucursal/interfaces/stockSucursalInterface";
 
 import { errorPersonalizadoI } from "../../interfaces/errorPersonalizado";
 import { Loader } from "../../utils/components/Loader";
+import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
 
 export const CrearTransferencia = () => {
+  const {token}= useContext(AutenticacionContext)
   const [empresas, setEmpresas] = useState<empresaI[]>([]);
   const [sucursales, setSucursales] = useState<sucursalI[]>([]);
   const [almacenSucursal, setAlmacenSucursal] = useState<almacenSucursalI[]>(
@@ -43,11 +45,11 @@ export const CrearTransferencia = () => {
     registrarTranferenciaI[]
   >([]);
   const [cantidadStockTransferencia, setCantidadStockTransferencia] =
-    useState<StockTransferenciaVInterfaceI>();
+    useState<StockSucursalVerificarI>();
   const [cantidad, setCantidad] = useState<number>(0);
   const [mensajeError, setMensajeError] = useState<errorPersonalizadoI[]>([]);
   const [mensaje, setMensaje] = useState<string>();
-  const [loading , setLoading]= useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false);
   const empresa = watch("empresa");
   const sucursal = watch("sucursal");
   const almacenSucursalSeleccionado = watch("almacenSucursal");
@@ -64,8 +66,10 @@ export const CrearTransferencia = () => {
 
   const listarEmpresas = async () => {
     try {
-      const response = await listarEmpresa();
-      setEmpresas(response);
+   if(token){
+    const response = await listarEmpresa(token);
+    setEmpresas(response);
+   }
     } catch (error) {
       console.log(error);
     }
@@ -78,8 +82,10 @@ export const CrearTransferencia = () => {
 
   const listarSucursales = async () => {
     try {
-      const response = await listarSucursalEmpresa(empresa);
-      setSucursales(response);
+      if(token){
+        const response = await listarSucursalEmpresa(empresa,token);
+        setSucursales(response);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -87,8 +93,10 @@ export const CrearTransferencia = () => {
 
   const listarSucursaAlmacen = async () => {
     try {
-      const response = await listraAlmacenPorSucursal(sucursal);
-      setAlmacenSucursal(response);
+      if(token){
+        const response = await listraAlmacenPorSucursal(sucursal, token);
+        setAlmacenSucursal(response);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -101,26 +109,26 @@ export const CrearTransferencia = () => {
       (item) => item._id === data.almacenSucursal
     )[0];
     if (stockSeleccionado) {
-    const registrarData: registrarTranferenciaI = {
-      uuid: uuidv4(),
-      almacen: data.almacenSucursal,
-      cantidad: Number(data.cantidad),
-      codigo: stockSeleccionado?.codigo,
-      empresa: data.empresa,
-      nombreAlmacen: almacen.nombre,
-      nombreEmpresa: empresa.nombre,
-      nombreSucursal: sucursal.nombre,
-      producto: stockSeleccionado?.nombre,
-      sucursal: data.sucursal,
-      tipo: stockSeleccionado?.tipo,
-      idStock: stockSeleccionado?.idStock,
-      nombreAlmacenArea: stockSeleccionado?.almacen,
-      almacenArea: stockSeleccionado?.almacenArea,
-    };
+      const registrarData: registrarTranferenciaI = {
+        uuid: uuidv4(),
+        almacen: data.almacenSucursal,
+        cantidad: Number(data.cantidad),
+        codigo: stockSeleccionado?.codigo,
+        empresa: data.empresa,
+        nombreAlmacen: almacen.nombre,
+        nombreEmpresa: empresa.nombre,
+        nombreSucursal: sucursal.nombre,
+        producto: stockSeleccionado?.nombre,
+        sucursal: data.sucursal,
+        tipo: stockSeleccionado?.tipo,
+        idStock: stockSeleccionado?.idStock,
+        nombreAlmacenArea: stockSeleccionado?.almacen,
+        almacenArea: stockSeleccionado?.almacenArea,
+      };
 
-    setDataRegistrada([...dataRegistrada, registrarData]);
+      setDataRegistrada([...dataRegistrada, registrarData]);
     } else {
-     setMensaje("Debe Seleccionar un producto");
+      setMensaje("Debe Seleccionar un producto");
     }
   };
 
@@ -143,15 +151,15 @@ export const CrearTransferencia = () => {
         data: data,
       };
 
-      const response = await realizarTransferencias(newDta);
+       if(token){
+        const response = await realizarTransferencias(newDta, token);
       if (response.status == HttpStatus.OK) {
         setMensaje(response.message);
-    
-        setDataRegistrada([])
 
+        setDataRegistrada([]);
       }
+       }
     } catch (error) {
-
       const err = httAxiosError(error);
       if (err.response.data.statusCode === HttpStatus.BAD_REQUEST) {
         console.log(err.response.data.errors);
@@ -172,19 +180,22 @@ export const CrearTransferencia = () => {
       if (
         stockSeleccionado?.idStock &&
         almacenSucursalSeleccionado &&
-        stockSeleccionado.tipo
+        stockSeleccionado.tipo && token
       ) {
-        setLoading(true)
-        const response = await verificarCantidadStockTransferencia(
+        setLoading(true);
+        const response = await verificarCantidadStockSucursal(
           stockSeleccionado.idStock,
           almacenSucursalSeleccionado,
-          stockSeleccionado.tipo
+          stockSeleccionado.tipo,
+          token
         );
+        console.log(response);
+        
         setCantidadStockTransferencia(response);
-        setLoading(false)
+        setLoading(false);
       }
     } catch (error) {
-      setLoading(false)
+      setLoading(false);
     }
   };
 
@@ -303,20 +314,25 @@ export const CrearTransferencia = () => {
               <div className="p-4 bg-gray-100">
                 {cantidad != 0 && (
                   <span className="text-gray-800 text-xs font-semibold mr-4">
-                    Cant. Stock.: <span className="text-blue-500">{cantidad}</span>
+                    Cant. Stock.:{" "}
+                    <span className="text-blue-500">{cantidad}</span>
                   </span>
                 )}
-                {loading ? <Loader/>:  cantidadStockTransferencia && (
-                  <span className="text-gray-800 text-xs">
-                    Cant. Stock Destino:
-                    <span className="text-green-500">
-                      {cantidadStockTransferencia.cantidad}
+                {loading ? (
+                  <Loader />
+                ) : (
+                  cantidadStockTransferencia && (
+                    <span className="text-gray-800 text-xs">
+                      Cant. Stock Destino:
+                      <span className="text-green-500">
+                        {cantidadStockTransferencia.cantidad}
+                      </span>
+                      - Tipo:
+                      <span className="text-teal-500">
+                        {cantidadStockTransferencia.tipo}
+                      </span>
                     </span>
-                    - Tipo:
-                    <span className="text-teal-500">
-                      {cantidadStockTransferencia.tipo}
-                    </span>
-                  </span>
+                  )
                 )}
               </div>
 
@@ -344,22 +360,25 @@ export const CrearTransferencia = () => {
               {mensajeError.length > 0
                 ? mensajeError.map((item) => {
                     if (item.propiedad === "cantidad") {
-                      return <span key={item.propiedad}>{item.message} <br/> </span>;
+                      return (
+                        <span key={item.propiedad}>
+                          {item.message} <br />
+                        </span>
+                      );
                     }
                     return null;
                   })
                 : null}
             </div>
             {mensajeError.length > 0
-        ? mensajeError.map((item) => {
-            if (item.propiedad === "transferencias") {
-              return <span key={item.propiedad}> {item.message}</span>;
-            }
-            return null;
-          })
-        : null}
+              ? mensajeError.map((item) => {
+                  if (item.propiedad === "transferencias") {
+                    return <span key={item.propiedad}> {item.message}</span>;
+                  }
+                  return null;
+                })
+              : null}
           </div>
-
 
           <button
             type="submit"
@@ -381,7 +400,7 @@ export const CrearTransferencia = () => {
         {mensaje && <span>{mensaje}</span>}
       </div>
 
-      {dataRegistrada && (
+      {dataRegistrada.length > 0 && (
         <TranferenciaRegistrada
           data={dataRegistrada}
           eliminarData={dataEliminada}

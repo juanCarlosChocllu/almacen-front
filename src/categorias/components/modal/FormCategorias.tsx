@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { dataCategoria } from "../../interfaces/categoriasInterface";
 import { httpRespuetaI } from "../../../interfaces/httpRespuestaInterface";
@@ -7,8 +7,10 @@ import { errorPropiedadesI } from "../../../interfaces/errorPropiedades";
 import { httAxiosError } from "../../../utils/error/error.util";
 import { HttpStatus } from "../../../enums/httStatusEnum";
 import { errorClassValidator } from "../../../utils/error/errorClassValidator";
+import { AutenticacionContext } from "../../../autenticacion/context/crear.autenticacion.context";
 
 export const FormCategorias = () => {
+    const {token}=useContext(AutenticacionContext)
   const{ register,handleSubmit}=useForm<dataCategoria>()
   const [modalClose, setModalClose] = useState<Boolean>(false)
   const [mensajeError, setMensajeError] = useState<string>()
@@ -20,9 +22,11 @@ export const FormCategorias = () => {
   }
   const  onSubmit = async(data:dataCategoria)=>{
     try {
-      const response:httpRespuetaI = await crearCategoria(data)
-      if(response.status === 201){
-        setMensajeError('Categoria registrada')
+      if(token){
+        const response:httpRespuetaI = await crearCategoria(data, token)
+        if(response.status === 201){
+          setMensajeError('Categoria registrada')
+        }
       }
     } catch (error) {
       

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { HttpStatus } from "../../../enums/httStatusEnum";
 import { httAxiosError } from "../../../utils/error/error.util";
@@ -8,8 +8,10 @@ import { formSucursalI } from "../../interface/formScursalIterface";
 import { listarEmpresa } from "../../../empresa/services/empresaApi";
 import { empresaI } from "../../../empresa/interfaces/empresaInterface";
 import { crearSucursal } from "../../services/sucursalApi";
+import { AutenticacionContext } from "../../../autenticacion/context/crear.autenticacion.context";
 
 export const FormScursal = () => {
+  const {token}= useContext(AutenticacionContext)
   const { register, handleSubmit } = useForm<formSucursalI>();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [mensaje, setMensaje] = useState<string>();
@@ -20,8 +22,10 @@ export const FormScursal = () => {
 
   const openModal = async() => {
      try {
-        const response = await listarEmpresa()
-        setEmpresas(response)
+        if(token){
+          const response = await listarEmpresa(token)
+          setEmpresas(response)
+        }
         setIsOpen(true);
      } catch (error) {
         console.log(error);
@@ -40,10 +44,12 @@ export const FormScursal = () => {
 
     
      try {
-      const response = await crearSucursal(data);
+      if(token){
+        const response = await crearSucursal(data,token);
       if (response.status == HttpStatus.CREATED) {
         setMensajePropiedades([]);
         setMensaje(response.message);
+      }
       }
     } catch (error) {
       const e = httAxiosError(error);

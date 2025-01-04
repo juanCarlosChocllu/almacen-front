@@ -1,7 +1,7 @@
-import { InisioSession } from "../components/InisioSession"
+import { Login } from "../components/Login"
 
 export const AuntenticacionPage = () => {
   return (
-    <div>{<InisioSession/>}</div>
+    <div>{<Login/>}</div>
   )
 }

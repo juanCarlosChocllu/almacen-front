@@ -1,19 +1,21 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { almacenSucursalI } from "../interfaces/almacenSucursalInterface";
 import { listarAlmacenSucursal } from "../services/almacenSucursalApi";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
 
 export const TablaAlmacenSucursal = () => {
   const [almacenes, setAlmacenes] = useState<almacenSucursalI[]>([]);
+  const {token}=useContext(AutenticacionContext)
   useEffect(() => {
     listraAlmacen();
   }, []);
   const listraAlmacen = async () => {
     try {
-      const response = await listarAlmacenSucursal();
-      console.log(response);
-
+      if(token){
+        const response = await listarAlmacenSucursal(token);  
       setAlmacenes(response);
+      }
     } catch (error) {
       console.log(error);
     }

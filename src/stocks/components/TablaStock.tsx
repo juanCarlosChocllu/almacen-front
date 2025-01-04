@@ -1,36 +1,45 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { StockI } from "../interfaces/stockInterface";
-import { almacenAreaI } from "../../almacenArea/interfaces/almacenAreaInterface";
-import { listarAlmacenPorArea } from "../../almacenArea/services/almacenAreaApi";
 import { Paginas } from "../../utils/components/Paginas";
 import { Paginador } from "../../utils/components/Paginador";
 import { listarStock } from "../service/stockApi";
+import { BuscadorStock } from "./BuscadorStock";
+import { BuscadorStockI } from "../interfaces/buscadorStock";
+import { GenerarExcel } from "../../utils/components/GenerarExcel";
+import { MostarImagenes } from "../../utils/components/modal/MostarImagenes";
+import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
 
 export const TablaStock = () => {
+  const {token} =useContext(AutenticacionContext)
   const [stocks, setStock] = useState<StockI[]>([])
-  const [almacen, setAlmacen] = useState<almacenAreaI[]>([])
   const [paginaSelecionada, setPaginaSeleccionada] = useState<number>(1)
-  const [paginas, setPaginas] = useState<number>()
+  const [paginas, setPaginas] = useState<number>(1)
   const [itemPage, setItemPage] = useState<number>(10)
+  const [buscadorStock , setBuscadorStock]= useState<BuscadorStockI>({
+    almacen:null,
+    codigo:null,
+    marca:null,
+    tipo:null
+  })
   
-  const [almacenSeleccionado,  setAlamcenSeleccionado]= useState<string>()
-  useEffect(() => {
-
-    listarAlamcen()
-    if(almacenSeleccionado){
+  useEffect(() => {    
       listarStocks()
-    }
-  }, [almacenSeleccionado,paginaSelecionada,itemPage])
+  }, [paginaSelecionada,itemPage,buscadorStock])
 
-
+  const onSubmit =(data:BuscadorStockI)=>{
+    setBuscadorStock(data)
+        
+  }
   const listarStocks = async () => {
      try {
-      if(almacenSeleccionado){
-        const response= await listarStock(almacenSeleccionado,paginaSelecionada,itemPage)
+        setStock([])
+      if(token){
+        const response= await listarStock(paginaSelecionada,itemPage, buscadorStock,token)
+
+        
         setStock(response.data)
-        setPaginas(response.paginas)
-      
-       }
+        setPaginas(response.paginas) 
+      }
      } catch (error) {
        console.log(error);
        
@@ -38,15 +47,7 @@ export const TablaStock = () => {
   }
 
   
-  const listarAlamcen = async () => {
-    try {
-      const response = await listarAlmacenPorArea()
-      setAlmacen(response)
 
-    } catch (error) {
-
-    }
-  }
 
   const cantidadItems=(cantidad:string)=>{
     setItemPage(Number(cantidad))
@@ -60,32 +61,14 @@ export const TablaStock = () => {
        setStock([])
     }
   }
-  const seleccionarAlamacen= (almacen:string)=>{
-   setAlamcenSeleccionado(almacen)
-  }
+
+
   return (
     <div>
-      <div>
-        <label htmlFor="almacen" className="block text-sm font-medium text-gray-700">
-          Seleccione el Almacén
-        </label>
-        <select
-          id="almacen"
-          name="almacen"
-          onChange={(e)=>{
-            const target = e.target as HTMLSelectElement
-            seleccionarAlamacen(target.value)
-          }}
-          className="mt-1 p-2 border border-gray-300 rounded-md"
-        >
-          <option value="">Seleccione el Almacén</option>
-          {almacen.map((item) => (
-            <option key={item._id} value={item._id}>
-              {item.nombre}
-            </option>
-          ))}
-        </select>
-      </div>
+    
+
+          <BuscadorStock onSubmit={onSubmit}/>
+          <GenerarExcel<StockI> data={stocks} nombre={'Stock'}/>
           {<Paginas  page={cantidadItems}/>}
       <table className="min-w-full table-auto text-sm">
         <thead>
@@ -95,12 +78,11 @@ export const TablaStock = () => {
             <th className="px-2 py-1 text-left">Nombre</th>
             <th className="px-2 py-1 text-left">Marca</th>
             <th className="px-2 py-1 text-left">Cantidad</th>
-                {/*  <th className="px-2 py-1 text-left">Precio</th>
-            <th className="px-2 py-1 text-left">Total</th>*/}
+            
             <th className="px-2 py-1 text-left">Color</th>
             <th className="px-2 py-1 text-left">Tipo</th>
-            {/* <th className="px-2 py-1 text-left">Fecha de Compra</th>
-            <th className="px-2 py-1 text-left">Fecha de Vencimiento</th>*/}
+            <th className="px-2 py-1 text-left">Imagen</th>
+       
           </tr>
         </thead>
         <tbody>
@@ -113,6 +95,8 @@ export const TablaStock = () => {
               <td className="px-2 py-1">{item.cantidad || 0}</td>
               <td className="px-2 py-1">{item.color}</td>
               <td className="px-2 py-1">{item.tipo}</td>
+
+              <td className="px-2 py-1"><MostarImagenes  key={item.idProducto} url={item.imagen}/></td>
             </tr>
           ))}
         </tbody>

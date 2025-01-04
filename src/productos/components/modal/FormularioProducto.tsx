@@ -23,7 +23,7 @@ export const FormularioProducto = () => {
   const [subcategorias, setSubCategorias] = useState<subCategoriaI[]>([]);
   const [marcas, setMarcas] = useState<marcaI[]>([]);
   const [mensaje, setMensaje] = useState<string>("");
-  const { register, handleSubmit, watch } = useForm<formProductoI>();
+  const { register, handleSubmit, watch , formState:{errors}} = useForm<formProductoI>();
   const [mensajeError, setMensajeError] = useState<errorPropiedadesI[]>([]);
   const [mensajeErrorImagen, setMensajeErrorImagen] = useState<errorImagenI>();
   const [mensajeErrorConflito, setMensajeErrorConflicto] =
@@ -123,7 +123,13 @@ export const FormularioProducto = () => {
               <select
                 id="categoria"
                 className="h-10 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-2 px-3 focus:outline-none focus:ring-indigo-500"
-                {...register("categoria")}
+                {...register("categoria", {validate:(value)=>{
+                  if(!value) {
+                    return 'Seleccione un categoria'
+                  } 
+                  return true
+
+                  }})}
                 onClick={() => {
                   if (categoriaSeleccionada) {
                     subCategorias(categoriaSeleccionada);
@@ -147,6 +153,7 @@ export const FormularioProducto = () => {
                     return null;
                   }
                 })}
+                {errors.categoria && <p>{errors.categoria.message}</p>}
             </div>
   
 
@@ -181,7 +188,12 @@ export const FormularioProducto = () => {
               <select
                 id="marca"
                 className="h-10 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-2 px-3 focus:outline-none focus:ring-indigo-500"
-                {...register("marca")}
+                {...register("marca", {validate:(value)=>{
+                  if(!value){
+                    return 'Seleccione una marca'
+                  }
+                  return true
+                }})}
               >
                 <option value="">Seleccione la marca</option>
                 {marcas.map((item) => (
@@ -200,6 +212,7 @@ export const FormularioProducto = () => {
                     return null;
                   }
                 })}
+                        {errors.marca && <p>{errors.marca.message}</p>}
             </div>
   
 
@@ -213,7 +226,12 @@ export const FormularioProducto = () => {
               <input
                 type="text"
                 id="nombre"
-                {...register("nombre")}
+                {...register("nombre", {validate:(value)=>{
+                  if(!value){
+                    return 'Ingrese un nombre'
+                  }
+                  return true
+                }})}
                 className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
               />
               {mensajeError.length > 0 &&
@@ -226,6 +244,7 @@ export const FormularioProducto = () => {
                     return null;
                   }
                 })}
+                {errors.nombre && <p>{errors.nombre.message}</p>}
             </div>
   
         
@@ -239,7 +258,12 @@ export const FormularioProducto = () => {
               <input
                 type="text"
                 id="codigo"
-                {...register("codigoBarra")}
+                {...register("codigoBarra", {validate:(value)=>{
+                  if(!value){
+                    return 'Ingrese un codigo'
+                  }
+                  return true
+                }})}
                 className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
               />
               {mensajeError.length > 0 &&
@@ -255,6 +279,7 @@ export const FormularioProducto = () => {
               {mensajeErrorConflito && (
                 <span className="text-red-500">{mensajeErrorConflito.message}</span>
               )}
+                  {errors.codigoBarra && <p>{errors.codigoBarra.message}</p>}
             </div>
   
 

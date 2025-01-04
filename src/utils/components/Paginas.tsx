@@ -1,5 +1,6 @@
 export const Paginas = ({ page }: { page: (page: string) => void }) => {
     const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+      
       page(event.target.value);
     };
   
@@ -26,6 +27,8 @@ export const Paginas = ({ page }: { page: (page: string) => void }) => {
           <option value="100">100</option>
           <option value="150">150</option>
           <option value="200">200</option>
+          <option value="400">400</option>
+          <option value="600">600</option>
         </select>
       </div>
     );

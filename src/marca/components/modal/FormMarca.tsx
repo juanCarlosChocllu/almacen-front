@@ -1,4 +1,4 @@
-import {  useState } from "react";
+import {  useContext, useState } from "react";
 
 import { crearMarca } from "../../service/marcaApi";
 import { errorPropiedadesI } from "../../../interfaces/errorPropiedades";
@@ -9,9 +9,11 @@ import { HttpStatus } from "../../../enums/httStatusEnum";
 
 import { httAxiosError } from "../../../utils/error/error.util";
 import { errorClassValidator } from "../../../utils/error/errorClassValidator";
+import { AutenticacionContext } from "../../../autenticacion/context/crear.autenticacion.context";
 
 
 export const FormMarca = () => {
+const {token}=useContext(AutenticacionContext)
   const { register, handleSubmit } = useForm<formMarcaI>();
   const  [isOpen , setIsOpen]= useState<boolean>(false)  
   const [mensaje, setMensaje] = useState<string>();
@@ -28,13 +30,13 @@ export const FormMarca = () => {
 
   const onSudmit = async(data:formMarcaI)=>{     
         try {
-            const response = await crearMarca(data)
-       
-            
+            if(token){
+                const response = await crearMarca(data, token)        
             if(response.status === HttpStatus.CREATED){
                 setMensaje(response.message)
                 setMensajePropiedades([])
-            }       
+            }   
+            }    
         } catch (error) {
             const e =  httAxiosError(error)
             if(e.response.status == HttpStatus.CONFLICT){

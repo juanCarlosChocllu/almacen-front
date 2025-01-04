@@ -1,6 +1,6 @@
 import { tipoE } from "../../stocks/enums/tipos.enum";
 
-export interface StockTransferenciaVInterfaceI {
+export interface StockSucursalVerificarI {
     id: string;
     cantidad:number,
     tipo:tipoE

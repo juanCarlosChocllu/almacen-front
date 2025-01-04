@@ -17,9 +17,13 @@ export const listarSubCategorias= async(categoria:string):Promise<subCategoriaI[
 }
 
 
-export const listarSubCategoria= async():Promise<subCategoriaI[]>=>{
+export const listarSubCategoria= async(token:string):Promise<subCategoriaI[]>=>{
     try {
-        const response = await instance.get(`sub/categoria`)
+        const response = await instance.get(`sub/categoria`,{
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        })
          return response.data
     } catch (error) {
         throw  error
@@ -31,9 +35,13 @@ export const listarSubCategoria= async():Promise<subCategoriaI[]>=>{
 
 
 
-export const crearSubCategoria= async(data:formSubCategoriaI):Promise<httpRespuetaI>=>{
+export const crearSubCategoria= async(data:formSubCategoriaI, token:string):Promise<httpRespuetaI>=>{
     try {
-        const response = await instance.post(`sub/categoria`,data)
+        const response = await instance.post(`sub/categoria`,data,{
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        })
          return response.data
     } catch (error) {
         throw  error

@@ -1,21 +1,23 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { almacenAreaI } from "../interfaces/almacenAreaInterface"
 import { listarAlmacenArea } from "../services/almacenAreaApi"
 import { FaEdit, FaTrash } from "react-icons/fa"
+import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context"
 
 export const TablaAlmacenArea = () => {
+  const {token}=useContext(AutenticacionContext)
     const [almacenArea, setAlmacenArea] = useState<almacenAreaI[]>([])
 
     useEffect(()=>{
         listaDeAlmacenArea()
-    },[])
+    },[token])
 
     const listaDeAlmacenArea=async()=>{
         try {
-            const response = await listarAlmacenArea()
-            console.log(response[0].nombreArea);
-            
+           if(token){
+            const response = await listarAlmacenArea(token)
             setAlmacenArea(response)
+           }
         } catch (error) {
             
         }

@@ -1,10 +1,10 @@
 export interface MovimientoAreaI {
     _id: string;
+    codigo:string
     almacenArea: string;
     producto: string;
     usuario: string;
     stock: string;
-    tipoDeRegistro: string;
     cantidad: number;
     precio: number;
     total: number;

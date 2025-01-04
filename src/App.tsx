@@ -1,11 +1,16 @@
+import { AutenticacionProvider } from "./autenticacion/context/AutenticacionProvider"
+import { PermisosProvider } from "./autenticacion/context/PermisosProvider"
 import { IndexRouter } from "./routers/IndexRouter"
 
 function App() {
 
   return (
 
-     <IndexRouter/>
-
+          <AutenticacionProvider>
+          <PermisosProvider>
+          <IndexRouter/>
+          </PermisosProvider>
+           </AutenticacionProvider>
   )
 }
 

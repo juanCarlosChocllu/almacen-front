@@ -1,17 +1,21 @@
 import { FaTrash, FaEdit } from "react-icons/fa";
 import { sucursalI } from "../interface/sucursalInterface";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { listarSucursal } from "../services/sucursalApi";
+import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
 export const TablaSucursal = () => {
   const [sucursales, setSucursales] = useState<sucursalI[]>([]);
+  const { token } = useContext(AutenticacionContext);
   useEffect(() => {
     listarScursales();
   }, []);
 
   const listarScursales = async () => {
     try {
-      const response = await listarSucursal();
-      setSucursales(response);
+      if (token) {
+        const response = await listarSucursal(token);
+        setSucursales(response);
+      }
     } catch (error) {
       console.log(error);
     }

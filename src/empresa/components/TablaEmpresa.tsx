@@ -1,15 +1,19 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { FaTrash, FaEdit } from 'react-icons/fa'; 
 import { listarEmpresa } from '../services/empresaApi';
 import { empresaI } from '../interfaces/empresaInterface';
+import { AutenticacionContext } from '../../autenticacion/context/crear.autenticacion.context';
 
 export const TablaEmpresa = () => {
+  const { token}= useContext(AutenticacionContext)
 const [empresas, setEmpresas] = useState<empresaI[]>([])
     useEffect(()=>{
         const empresas =async()=>{
             try {
-                const response= await listarEmpresa()
-                 setEmpresas(response)
+                if(token){
+                  const response= await listarEmpresa(token)
+                  setEmpresas(response)
+                }
             } catch (error) {
                 console.log(error);
                 

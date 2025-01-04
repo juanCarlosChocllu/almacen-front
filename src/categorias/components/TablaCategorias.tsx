@@ -1,16 +1,20 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { categoriasI } from "../interfaces/categoriasInterface";
 import { listarCategorias } from "../service/categoriasApi";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
 
 export const TablaCategorias = () => {
+  const {token}=useContext(AutenticacionContext)
   const [categorias, setCategorias] = useState<categoriasI[]>([]);
 
   useEffect(() => {
     const obtenerCategorias = async () => {
       try {
-        const response: categoriasI[] = await listarCategorias();
-        setCategorias(response);
+        if(token){
+          const response: categoriasI[] = await listarCategorias(token);
+          setCategorias(response);
+        }
       } catch (error) {
         console.log(error);
       }

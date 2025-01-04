@@ -1,12 +1,18 @@
-import { data } from "react-router-dom"
+
 import { instance } from "../../config/instanceConfig"
 import { httpRespuetaI } from "../../interfaces/httpRespuestaInterface"
 import { areasI } from "../interfaces/areasInterface"
 import { formAreasI } from "../interfaces/formInterface"
 
-export const listarAreas =async():Promise<areasI[]>=>{
+export const listarAreas =async(token:string):Promise<areasI[]>=>{
+    console.log(token);
+    
     try {
-        const response =await instance.get('areas')
+        const response =await instance.get('areas',{
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        })
         return response.data
     } catch (error) {
         throw error
@@ -15,9 +21,13 @@ export const listarAreas =async():Promise<areasI[]>=>{
 }
 
 
-export const crearArea =async(data:formAreasI):Promise<httpRespuetaI>=>{
+export const crearArea =async(data:formAreasI, token:string):Promise<httpRespuetaI>=>{
     try {
-        const response =await instance.post('areas',data)
+        const response =await instance.post('areas',data,{
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        })
         return response.data
     } catch (error) {
         throw error

@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
 import { productosRouter } from "../productos/router/productosRouter";
 import { stockRouter } from "../stocks/router/stockRouter";
 import { Sidebar } from "../menu/Sidebar";
@@ -14,12 +19,32 @@ import { subCategoriaRouter } from "../subCategorias/router/subCategoriasRouter"
 import { proveedorPersonaRouter } from "../proveedorPersona/router/proveedorPersonaRouter";
 import { proveedorEmpresaRouter } from "../proveedorEmpresa/router/proveedorEmpresaRouter";
 import { movimientoAreaRouter } from "../movimientoArea/router/movimientoAreaRouter";
-import { autenticacionRouter } from "../autenticacion/router/autenticacionRouter";
+import {
+  autenticacionRouter,
+  logoutRouter,
+} from "../autenticacion/router/autenticacionRouter";
+import { rolRouter } from "../rol/router/rolRouter";
+import { usuariosRouter } from "../usuarios/router/usuariosRouter";
+import { useContext } from "react";
+import { AutenticacionContext } from "../autenticacion/context/crear.autenticacion.context";
+import { homeRouter } from "../home/router/homeRouter";
+import { stockSucursalRouter } from "../stockSucursal/router/sotckSucursalRouter";
 
 export const IndexRouter = () => {
+  const { isAutenticacion } = useContext(AutenticacionContext);
+
   return (
     <>
       <Router>
+        <Routes>
+          {autenticacionRouter.map((route, index) => (
+            <Route
+              key={index}
+              path={route.path}
+              element={!isAutenticacion &&<route.component />}
+            />
+          ))}
+        </Routes>
         <Sidebar>
           {
             <Routes>
@@ -27,7 +52,13 @@ export const IndexRouter = () => {
                 <Route
                   key={index}
                   path={route.path}
-                  element={<route.component />}
+                  element={
+                    isAutenticacion ? (
+                      <route.component />
+                    ) : (
+                      <Navigate to="/" replace />
+                    )
+                  }
                 />
               ))}
 
@@ -35,28 +66,52 @@ export const IndexRouter = () => {
                 <Route
                   key={index}
                   path={route.path}
-                  element={<route.component />}
+                  element={
+                    isAutenticacion ? (
+                      <route.component />
+                    ) : (
+                      <Navigate to="/" replace />
+                    )
+                  }
                 />
               ))}
               {stockRouter.map((route, index) => (
                 <Route
                   key={index}
                   path={route.path}
-                  element={<route.component />}
+                  element={
+                    isAutenticacion ? (
+                      <route.component />
+                    ) : (
+                      <Navigate to="/" replace />
+                    )
+                  }
                 />
               ))}
               {empresaRouter.map((route, index) => (
                 <Route
                   key={index}
                   path={route.path}
-                  element={<route.component />}
+                  element={
+                    isAutenticacion ? (
+                      <route.component />
+                    ) : (
+                      <Navigate to="/" replace />
+                    )
+                  }
                 />
               ))}
               {sucursalRouter.map((route, index) => (
                 <Route
                   key={index}
                   path={route.path}
-                  element={<route.component />}
+                  element={
+                    isAutenticacion ? (
+                      <route.component />
+                    ) : (
+                      <Navigate to="/" replace />
+                    )
+                  }
                 />
               ))}
 
@@ -64,15 +119,26 @@ export const IndexRouter = () => {
                 <Route
                   key={index}
                   path={route.path}
-                  element={<route.component />}
+                  element={
+                    isAutenticacion ? (
+                      <route.component />
+                    ) : (
+                      <Navigate to="/" replace />
+                    )
+                  }
                 />
               ))}
-
               {transferenciaRouter.map((route, index) => (
                 <Route
                   key={index}
                   path={route.path}
-                  element={<route.component />}
+                  element={
+                    isAutenticacion ? (
+                      <route.component />
+                    ) : (
+                      <Navigate to="/" replace />
+                    )
+                  }
                 />
               ))}
 
@@ -80,7 +146,13 @@ export const IndexRouter = () => {
                 <Route
                   key={index}
                   path={route.path}
-                  element={<route.component />}
+                  element={
+                    isAutenticacion ? (
+                      <route.component />
+                    ) : (
+                      <Navigate to="/" replace />
+                    )
+                  }
                 />
               ))}
 
@@ -88,7 +160,13 @@ export const IndexRouter = () => {
                 <Route
                   key={index}
                   path={route.path}
-                  element={<route.component />}
+                  element={
+                    isAutenticacion ? (
+                      <route.component />
+                    ) : (
+                      <Navigate to="/" replace />
+                    )
+                  }
                 />
               ))}
 
@@ -96,7 +174,13 @@ export const IndexRouter = () => {
                 <Route
                   key={index}
                   path={route.path}
-                  element={<route.component />}
+                  element={
+                    isAutenticacion ? (
+                      <route.component />
+                    ) : (
+                      <Navigate to="/" replace />
+                    )
+                  }
                 />
               ))}
 
@@ -104,7 +188,13 @@ export const IndexRouter = () => {
                 <Route
                   key={index}
                   path={route.path}
-                  element={<route.component />}
+                  element={
+                    isAutenticacion ? (
+                      <route.component />
+                    ) : (
+                      <Navigate to="/" replace />
+                    )
+                  }
                 />
               ))}
 
@@ -112,7 +202,13 @@ export const IndexRouter = () => {
                 <Route
                   key={index}
                   path={route.path}
-                  element={<route.component />}
+                  element={
+                    isAutenticacion ? (
+                      <route.component />
+                    ) : (
+                      <Navigate to="/" replace />
+                    )
+                  }
                 />
               ))}
 
@@ -120,7 +216,13 @@ export const IndexRouter = () => {
                 <Route
                   key={index}
                   path={route.path}
-                  element={<route.component />}
+                  element={
+                    isAutenticacion ? (
+                      <route.component />
+                    ) : (
+                      <Navigate to="/" replace />
+                    )
+                  }
                 />
               ))}
 
@@ -128,15 +230,84 @@ export const IndexRouter = () => {
                 <Route
                   key={index}
                   path={route.path}
-                  element={<route.component />}
+                  element={
+                    isAutenticacion ? (
+                      <route.component />
+                    ) : (
+                      <Navigate to="/" replace />
+                    )
+                  }
                 />
               ))}
 
-              {autenticacionRouter.map((route, index) => (
+              {rolRouter.map((route, index) => (
                 <Route
                   key={index}
                   path={route.path}
-                  element={<route.component />}
+                  element={
+                    isAutenticacion ? (
+                      <route.component />
+                    ) : (
+                      <Navigate to="/" replace />
+                    )
+                  }
+                />
+              ))}
+
+              {usuariosRouter.map((route, index) => (
+                <Route
+                  key={index}
+                  path={route.path}
+                  element={
+                    isAutenticacion ? (
+                      <route.component />
+                    ) : (
+                      <Navigate to="/" replace />
+                    )
+                  }
+                />
+              ))}
+
+              {homeRouter.map((route, index) => (
+                <Route
+                  key={index}
+                  path={route.path}
+                  element={
+                    isAutenticacion ? (
+                      <route.component />
+                    ) : (
+                      <Navigate to="/" replace />
+                    )
+                  }
+                />
+              ))}
+
+              
+{stockSucursalRouter.map((route, index) => (
+                <Route
+                  key={index}
+                  path={route.path}
+                  element={
+                    isAutenticacion ? (
+                      <route.component />
+                    ) : (
+                      <Navigate to="/" replace />
+                    )
+                  }
+                />
+              ))}
+
+              {logoutRouter.map((route, index) => (
+                <Route
+                  key={index}
+                  path={route.path}
+                  element={
+                    isAutenticacion ? (
+                      <route.component />
+                    ) : (
+                      <Navigate to="/" replace />
+                    )
+                  }
                 />
               ))}
             </Routes>

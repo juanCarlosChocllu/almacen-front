@@ -1,9 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { proveedorEmpresaI } from '../interface/proveedorEmpresaInterface';
 import { proveedorEmpresas } from '../services/proveedorEmpresaApi';
+import { AutenticacionContext } from '../../autenticacion/context/crear.autenticacion.context';
 
 
 export const TablaProveedorEmpresa = () => {
+  const {token}=useContext(AutenticacionContext)
   const [proveedores, setProveedores] = useState<proveedorEmpresaI[]>([]);
 
   const listarProveedoresEmpresa = async () => {

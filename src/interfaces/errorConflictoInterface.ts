@@ -3,6 +3,8 @@ export interface errorConflictoI{
 
 message:string 
 
+propiedad?:string
+
 statusCode:number
 
 }

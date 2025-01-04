@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { HttpStatus } from "../../../enums/httStatusEnum";
@@ -11,8 +11,11 @@ import { listarEmpresa } from "../../../empresa/services/empresaApi";
 import { sucursalI } from "../../../sucursal/interface/sucursalInterface";
 import { listarSucursalEmpresa } from "../../../sucursal/services/sucursalApi";
 import { crearAlmacenSucursal } from "../../services/almacenSucursalApi";
+import { AutenticacionContext } from "../../../autenticacion/context/crear.autenticacion.context";
 
 export const FormAlmacenSucursal = () => {
+  
+    const {token}=useContext(AutenticacionContext)
   const { register, handleSubmit , watch} = useForm<formAlmacenSucursalI>();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [mensaje, setMensaje] = useState<string>();
@@ -30,8 +33,10 @@ export const FormAlmacenSucursal = () => {
    const listarSucursal=async()=>{
      try {
         if(empresa){
-        const response = await listarSucursalEmpresa(empresa)  
-        setSucursales(response)
+         if(token){
+          const response = await listarSucursalEmpresa(empresa, token)  
+          setSucursales(response)
+         }
         }
      } catch (error) {
         console.log(error);
@@ -41,8 +46,10 @@ export const FormAlmacenSucursal = () => {
 
   const openModal = async () => {
     try {
-      const response = await listarEmpresa();
+     if(token){
+      const response = await listarEmpresa(token);
       setEmpresas(response);
+     }
       setMensaje("");
       setMensajePropiedades([]);
       setIsOpen(true);
@@ -59,12 +66,14 @@ export const FormAlmacenSucursal = () => {
 
   const onSudmit = async (data: formAlmacenSucursalI) => {
      try {
+       if(token){
         data.empresa ? delete data.empresa :delete data.empresa
-      const response = await crearAlmacenSucursal(data);
-      if (response.status == HttpStatus.CREATED) {
-        setMensajePropiedades([]);
-        setMensaje(response.message);
-      }
+        const response = await crearAlmacenSucursal(data, token);
+        if (response.status == HttpStatus.CREATED) {
+          setMensajePropiedades([]);
+          setMensaje(response.message);
+        }
+       }
     } catch (error) {     
       const e = httAxiosError(error);
       if (e.response.status == HttpStatus.CONFLICT) {

@@ -17,6 +17,7 @@ export interface StockI {
     tipo:tipoE
     almacen:string
     almacenArea:string
+    imagen:string
     
   }
 

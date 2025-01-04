@@ -1,6 +1,8 @@
 
 import { instance } from "../../config/instanceConfig";
 import { httpResponsePagiandor, httpRespuetaI } from "../../interfaces/httpRespuestaInterface";
+import { BuscadorStockI } from "../interfaces/buscadorStock";
+import { ParametrosStockI } from "../interfaces/parametrosStock";
 import { gudarStockI, StockI, StockVerificarI } from "../interfaces/stockInterface";
 
 
@@ -16,13 +18,22 @@ export const guardarStock= async(data:gudarStockI):Promise<httpRespuetaI>=>{
 }
 
 
-export const listarStock = async (almacen: string, pagina: number, limite: number): Promise<httpResponsePagiandor<StockI>> => {
+export const listarStock = async (pagina: number, limite: number, buscadorStockI:BuscadorStockI, token:string): Promise<httpResponsePagiandor<StockI>> => {
     try {       
-        
-
-
-        
-      const response = await instance.get(`stocks/${almacen}?pagina=${String(pagina)}&limite=${String(limite)}`);
+      const params:ParametrosStockI ={
+        pagina:pagina,
+        limite:limite
+      }  
+      buscadorStockI.almacen ? params.almacenArea = buscadorStockI.almacen : params
+      buscadorStockI.codigo ? params.codigo = buscadorStockI.codigo : params
+      buscadorStockI.marca ? params.marca = buscadorStockI.marca : params
+      buscadorStockI.tipo ? params.tipo = buscadorStockI.tipo : params
+      const response = await instance.get(`stocks`,{
+        params,
+        headers:{
+          Authorization:`Bearer ${token}`
+        }
+      });
       return response.data;
     } catch (error) {
       throw error;

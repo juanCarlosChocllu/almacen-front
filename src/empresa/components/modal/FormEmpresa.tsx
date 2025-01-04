@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { formEmpresaI } from "../../interfaces/formEmpresaInterface";
 import { crearEmpresa } from "../../services/empresaApi";
@@ -6,8 +6,10 @@ import { HttpStatus } from "../../../enums/httStatusEnum";
 import { httAxiosError } from "../../../utils/error/error.util";
 import { errorPropiedadesI } from "../../../interfaces/errorPropiedades";
 import { errorClassValidator } from "../../../utils/error/errorClassValidator";
+import { AutenticacionContext } from "../../../autenticacion/context/crear.autenticacion.context";
 
 export const FormEmpresa = () => {
+  const {token}=useContext(AutenticacionContext)
   const { register, handleSubmit } = useForm<formEmpresaI>();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [mensaje, setMensaje] = useState<string>();
@@ -28,12 +30,14 @@ export const FormEmpresa = () => {
 
   const onSudmit = async (data: formEmpresaI) => {
     try {
-      const response = await crearEmpresa(data);
+     if(token){
+      const response = await crearEmpresa(data,token);
       if (response.status == HttpStatus.CREATED) {
         setMensaje(response.message);
         setMensajePropiedades([])
    
       }
+     }
     } catch (error) {
       const e = httAxiosError(error);      
       if (e.response.status == HttpStatus.CONFLICT) {

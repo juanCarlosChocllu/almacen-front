@@ -1,4 +1,4 @@
-import {  useState } from "react";
+import {  useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { errorPropiedadesI } from "../../../interfaces/errorPropiedades";
@@ -13,9 +13,11 @@ import { HttpStatus } from "../../../enums/httStatusEnum";
 import { httAxiosError } from "../../../utils/error/error.util";
 import { crearAlmacenArea } from "../../services/almacenAreaApi";
 import { errorClassValidator } from "../../../utils/error/errorClassValidator";
+import { AutenticacionContext } from "../../../autenticacion/context/crear.autenticacion.context";
 
 
 export const FormAlmacenArea = () => {
+  const {token}= useContext(AutenticacionContext)
   const { register, handleSubmit} = useForm<formAlmacenAreaI>();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [mensaje, setMensaje] = useState<string>();
@@ -30,8 +32,10 @@ export const FormAlmacenArea = () => {
 
   const openModal = async () => {
     try {
-      const response = await listarAreas();
-      setAreas(response);
+      if(token){
+        const response = await listarAreas(token);
+        setAreas(response);
+      }
       setMensaje("");
       setMensajePropiedades([]);
       setIsOpen(true);
@@ -49,11 +53,13 @@ export const FormAlmacenArea = () => {
   const onSudmit = async (data: formAlmacenAreaI) => {
      try {
  
-      const response = await crearAlmacenArea(data);
+    if(token){
+      const response = await crearAlmacenArea(data,token);
       if (response.status == HttpStatus.CREATED) {
         setMensaje(response.message);
         setMensajePropiedades([]);
       }
+    }
     } catch (error) {     
 
         
@@ -61,8 +67,7 @@ export const FormAlmacenArea = () => {
       if (e.response.status == HttpStatus.CONFLICT) {
         setMensaje(e.response.data.message);
       } else if (e.response.status == HttpStatus.BAD_REQUEST) {
-        //console.log(e.response.data.errors);
-        
+     
        setMensajePropiedades(errorClassValidator(e.response.data.errors));
       }
     }

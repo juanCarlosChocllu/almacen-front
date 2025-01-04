@@ -1,4 +1,4 @@
-import  { useState } from 'react'
+import  { useContext, useState } from 'react'
 import { errorPropiedadesI } from '../../../interfaces/errorPropiedades';
 import { httAxiosError } from '../../../utils/error/error.util';
 import { HttpStatus } from '../../../enums/httStatusEnum';
@@ -9,8 +9,10 @@ import { listarCategorias } from '../../../categorias/service/categoriasApi';
 import { categoriasI } from '../../../categorias/interfaces/categoriasInterface';
 import { crearSubCategoria } from '../../services/subCategoriasApi';
 import { errorClassValidator } from '../../../utils/error/errorClassValidator';
+import { AutenticacionContext } from '../../../autenticacion/context/crear.autenticacion.context';
 
 export const FormSubCategorias = () => {
+      const {token}=useContext(AutenticacionContext)
       const { register, handleSubmit } = useForm<formSubCategoriaI>();
       const [isOpen, setIsOpen] = useState<boolean>(false);
       const [mensaje, setMensaje] = useState<string>();
@@ -20,8 +22,10 @@ export const FormSubCategorias = () => {
       >([]);
         const openModal = async () => {
           try {
-            const response = await listarCategorias();
+          if(token){
+            const response = await listarCategorias(token);
             setCategorias(response);
+          }
             setMensaje("");
             setMensajePropiedades([]);
             setIsOpen(true);
@@ -40,10 +44,12 @@ export const FormSubCategorias = () => {
           const onSudmit = async (data: formSubCategoriaI) => {
             try {
          
-              const response = await crearSubCategoria(data);
+              if(token){
+                const response = await crearSubCategoria(data, token);
               if (response.status == HttpStatus.CREATED) {
                 setMensaje(response.message);
                 setMensajePropiedades([])
+              }
               }
             } catch (error) {     
               const e = httAxiosError(error);

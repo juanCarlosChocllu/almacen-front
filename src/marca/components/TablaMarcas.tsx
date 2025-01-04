@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { marcaI } from '../interfaces/marcaInterface';
 import { listarMarcas } from '../service/marcaApi';
 import { FaEdit, FaTrash } from 'react-icons/fa';
+import { AutenticacionContext } from '../../autenticacion/context/crear.autenticacion.context';
 
 export const TablaMarcas = () => {
-
+      const {token}=useContext(AutenticacionContext)
       const [marcas, setMarca] = useState<marcaI[]>([]);   
       useEffect(() => {
         listarM();
@@ -13,9 +14,10 @@ export const TablaMarcas = () => {
 
       const listarM = async () => {
         try {
-          const response = await listarMarcas();
-          console.log(response);
-          setMarca(response);
+          if(token){
+            const response = await listarMarcas(token);
+            setMarca(response);
+          }
         } catch (error) {
           console.log(error);
         }

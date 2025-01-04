@@ -1,17 +1,19 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { FaEdit, FaTrash } from "react-icons/fa"
 import { subCategoriaI } from "../interfaces/subCategoriaInterface"
 import { listarSubCategoria } from "../services/subCategoriasApi"
+import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context"
 
 
 export const TablaSubCategorias = () => {
+    const {token}=useContext(AutenticacionContext)
     const [subCategorias , setSubCategorias] =useState<subCategoriaI[]>([])
     const sudCategorias=async()=>{
         try {
-            const response = await listarSubCategoria()
-            console.log(response);
-            
+           if(token){
+            const response = await listarSubCategoria(token)            
             setSubCategorias(response)
+           }
         } catch (error) {
             console.log(error);
             

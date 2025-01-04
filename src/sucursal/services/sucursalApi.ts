@@ -1,12 +1,19 @@
+
 import { instance } from "../../config/instanceConfig";
 import { httpRespuetaI } from "../../interfaces/httpRespuestaInterface";
 import { formSucursalI } from "../interface/formScursalIterface";
 import { sucursalI } from "../interface/sucursalInterface";
 
 
-export const listarSucursal= async():Promise<sucursalI[]>=>{
+export const listarSucursal= async(token:string):Promise<sucursalI[]>=>{
+
+   
     try {
-        const response = await instance.get('sucursal')
+        const response = await instance.get('sucursal',{
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        })
         return response.data
     } catch (error) {
         throw error
@@ -14,9 +21,13 @@ export const listarSucursal= async():Promise<sucursalI[]>=>{
 
 }
 
-export const crearSucursal= async(data:formSucursalI):Promise<httpRespuetaI>=>{
+export const crearSucursal= async(data:formSucursalI, token:string):Promise<httpRespuetaI>=>{
     try {
-        const response = await instance.post('sucursal',data)
+        const response = await instance.post('sucursal',data,{
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        })
         return response.data
     } catch (error) {
         throw error
@@ -26,9 +37,13 @@ export const crearSucursal= async(data:formSucursalI):Promise<httpRespuetaI>=>{
 
 
 
-export const listarSucursalEmpresa= async(empresa:string | undefined):Promise<sucursalI[]>=>{    
+export const listarSucursalEmpresa= async(empresa:string | undefined, token:string):Promise<sucursalI[]>=>{    
     try {
-        const response = await instance.get(`sucursal/empresa/${empresa}`)
+        const response = await instance.get(`sucursal/empresa/${empresa}`,{
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        })
         return response.data
     } catch (error) {
         throw error
