@@ -18,10 +18,10 @@ export interface StockI {
     almacen:string
     almacenArea:string
     imagen:string
-    
+    codigoProducto:string
   }
 
-export interface gudarStockI{
+export interface guardarStockI{
     data:dataProductoStock[]
     proveedorPersona?:string
     proveedorEmpresa?:string

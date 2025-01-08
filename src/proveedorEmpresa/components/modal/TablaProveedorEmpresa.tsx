@@ -1,14 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { proveedorEmpresas } from '../../services/proveedorEmpresaApi';
 import { proveedorEmpresaI } from '../../interface/proveedorEmpresaInterface';
+import { AutenticacionContext } from '../../../autenticacion/context/crear.autenticacion.context';
 
 export const ListarProveedorEmpresa = ({ proveedorEmpresa }: { proveedorEmpresa: (proveedor: proveedorEmpresaI) => void }) => {
   const [proveedores, setProveedores] = useState<proveedorEmpresaI[]>([]);
-
+ const {token}=useContext(AutenticacionContext)
   const listarProveedoresEmpresa = async () => {
     try {
-      const response = await proveedorEmpresas();
-      setProveedores(response);
+      if(token){
+        const response = await proveedorEmpresas(token);
+        setProveedores(response);
+      }
     } catch (error) {
       console.error("Error fetching proveedores:", error);
     }

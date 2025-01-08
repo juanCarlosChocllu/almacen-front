@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { formProveedorEmpresaI } from "../../interface/formEmpresaInterface";
 import { crearProveedorEmpresas } from "../../services/proveedorEmpresaApi";
@@ -6,11 +6,13 @@ import { HttpStatus } from "../../../enums/httStatusEnum";
 import { httAxiosError } from "../../../utils/error/error.util";
 import { errorPropiedadesI } from "../../../interfaces/errorPropiedades";
 import { errorClassValidator } from "../../../utils/error/errorClassValidator";
+import { AutenticacionContext } from "../../../autenticacion/context/crear.autenticacion.context";
 
 export const FormProveedorEmpresa = () => {
   const { register, handleSubmit } = useForm<formProveedorEmpresaI>();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [mensaje, setMensaje] = useState<string>("");
+   const {token}=useContext(AutenticacionContext)
 
   const [mensajePropiedades, setMensajePropiedades] = useState<
     errorPropiedadesI[]
@@ -21,10 +23,12 @@ export const FormProveedorEmpresa = () => {
 
   const onSubmit = async (data: formProveedorEmpresaI) => {
     try {
-      const response = await crearProveedorEmpresas(data);
-      if (response.status == HttpStatus.CREATED) {
-        setMensaje(response.message);
-        setMensajePropiedades([]);
+      if(token){
+        const response = await crearProveedorEmpresas(data, token);
+        if (response.status == HttpStatus.CREATED) {
+          setMensaje(response.message);
+          setMensajePropiedades([]);
+        }
       }
     } catch (error) {
       const e = httAxiosError(error);

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { categoriasI } from "../../categorias/interfaces/categoriasInterface";
 import { listarCategorias } from "../../categorias/service/categoriasApi";
 import { listarSubCategorias } from "../../subCategorias/services/subCategoriasApi";
@@ -7,8 +7,10 @@ import { BuscadorI } from "../interface/buscardorInterface";
 import { useForm } from "react-hook-form";
 import { marcaI } from "../../marca/interfaces/marcaInterface";
 import { listarMarcas } from "../../marca/service/marcaApi";
+import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
 
 export const Buscador = ({onsudmit}:{onsudmit(data:BuscadorI):void}) => {
+  const {token}=useContext(AutenticacionContext)
   const [categoriaSeleccionado, setCategoriaSeleccionado] = useState<string>();
   const [categorias, setCategoria] = useState<categoriasI[]>([]);
   const [sudCategorias, setsubCategorias] = useState<subCategoriaI[]>([]);
@@ -26,8 +28,10 @@ export const Buscador = ({onsudmit}:{onsudmit(data:BuscadorI):void}) => {
 
   const listarCategoria = async () => {
     try {
-      const response = await listarCategorias();
+     if(token){
+      const response = await listarCategorias(token);
       setCategoria(response);
+     }
     } catch (error) {
       console.log(error);
     }
@@ -36,18 +40,22 @@ export const Buscador = ({onsudmit}:{onsudmit(data:BuscadorI):void}) => {
   const listarSubCat = async () => {
     try {
       if (categoriaSeleccionado) {
-        const response = await listarSubCategorias(categoriaSeleccionado);
+      if(token){
+        const response = await listarSubCategorias(categoriaSeleccionado, token);
         setsubCategorias(response);
+      }
       }
     } catch (error) {}
   };
   const listarM = async () => {
     try {
    
-        const response = await listarMarcas()
+       if(token){
+        const response = await listarMarcas(token)
     
         
         setMarcas(response);
+       }
       
     } catch (error) {
         console.log(error);

@@ -73,7 +73,8 @@ export const TablaStock = () => {
       <table className="min-w-full table-auto text-sm">
         <thead>
           <tr className="bg-gray-800 text-white">
-            <th className="px-2 py-1 text-left">Codigo</th>
+          
+            <th className="px-2 py-1 text-left">Codigo Producto</th>
             <th className="px-2 py-1 text-left">Cod. barra</th>
             <th className="px-2 py-1 text-left">Nombre</th>
             <th className="px-2 py-1 text-left">Marca</th>
@@ -88,7 +89,7 @@ export const TablaStock = () => {
         <tbody>
           {stocks.map((item) => (
             <tr key={item.idProducto}>
-              <td className="px-2 py-1">{item.codigo}</td>
+              <td className="px-2 py-1">{item.codigoProducto}</td>
               <td className="px-2 py-1">{item.codigoBarra}</td>
               <td className="px-2 py-1">{item.nombre}</td>
               <td className="px-2 py-1">{item.marca}</td>

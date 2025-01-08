@@ -67,55 +67,55 @@ export const TablaProductos = () => {
       <table className="min-w-full table-auto border-collapse">
         <thead>
           <tr className="bg-gray-200 text-left">
-            <th className="px-4 py-2 border border-gray-300 text-sm">Codigo</th>
-            <th className="px-4 py-2 border border-gray-300 text-sm">
+            <th className="px-4 py-2  text-sm">Codigo</th>
+            <th className="px-4 py-2   text-sm">
               Cod. barra
             </th>
-            <th className="px-4 py-2 border border-gray-300 text-sm">
+            <th className="px-4 py-2  text-sm">
               Producto
             </th>
-            <th className="px-4 py-2 border border-gray-300 text-sm">Color</th>
-            <th className="px-4 py-2 border border-gray-300 text-sm">Marca</th>
-            <th className="px-4 py-2 border border-gray-300 text-sm">
+            <th className="px-4 py-2   text-sm">Color</th>
+            <th className="px-4 py-2   text-sm">Marca</th>
+            <th className="px-4 py-2  text-sm">
               Categoria
             </th>
-            <th className="px-4 py-2 border border-gray-300 text-sm">
+            <th className="px-4 py-2  text-sm">
               Descripción
             </th>
-            <th className="px-4 py-2 border border-gray-300 text-sm">
+            <th className="px-4 py-2  text-sm">
               imagen
             </th>
-            <th className="px-4 py-2 border border-gray-300 text-sm">Acción</th>
+            <th className="px-4 py-2  text-sm">Acción</th>
           </tr>
         </thead>
         <tbody>
           {productos.map((item) => (
             <tr className="hover:bg-gray-100" key={item._id}>
-              <td className="px-4 py-2 border border-gray-300 text-sm">
+              <td className="px-4 py-2   text-sm">
                 {item.codigo}
               </td>
-              <td className="px-4 py-2 border border-gray-300 text-sm">
+              <td className="px-4 py-2  text-sm">
                 {item.codigoBarra}
               </td>
-              <td className="px-4 py-2 border border-gray-300 text-sm">
+              <td className="px-4 py-2   text-sm">
                 {item.nombre}
               </td>
-              <td className="px-4 py-2 border border-gray-300 text-sm">
+              <td className="px-4 py-2   text-sm">
                 {item.color}
               </td>
-              <td className="px-4 py-2 border border-gray-300 text-sm">
+              <td className="px-4 py-2   text-sm">
                 {item.marca}
               </td>
-              <td className="px-4 py-2 border border-gray-300 text-sm">
+              <td className="px-4 py-2   text-sm">
                 {item.categoria}
               </td>
-              <td className="px-4 py-2 border border-gray-300 text-sm">
+              <td className="px-4 py-2   text-sm">
                 {item.descripcion}
               </td>
-              <td className="px-4 py-2 border border-gray-300 text-sm">
+              <td className="px-4 py-2   text-sm">
             <MostarImagenes url={item.imagen}/>
               </td>
-              <td className="px-4 py-2 border border-gray-300 text-sm">
+              <td className="px-4 py-2   text-sm">
                 <button><MdDelete /></button>
                 <button><FaEdit /></button>
               </td>

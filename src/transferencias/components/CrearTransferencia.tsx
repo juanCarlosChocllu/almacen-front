@@ -124,6 +124,7 @@ export const CrearTransferencia = () => {
         idStock: stockSeleccionado?.idStock,
         nombreAlmacenArea: stockSeleccionado?.almacen,
         almacenArea: stockSeleccionado?.almacenArea,
+        codigoProducto:stockSeleccionado?.codigoProducto
       };
 
       setDataRegistrada([...dataRegistrada, registrarData]);
@@ -161,6 +162,8 @@ export const CrearTransferencia = () => {
        }
     } catch (error) {
       const err = httAxiosError(error);
+      console.log(err);
+      
       if (err.response.data.statusCode === HttpStatus.BAD_REQUEST) {
         console.log(err.response.data.errors);
         Array.isArray(err.response.data.errors) &&
@@ -189,7 +192,6 @@ export const CrearTransferencia = () => {
           stockSeleccionado.tipo,
           token
         );
-        console.log(response);
         
         setCantidadStockTransferencia(response);
         setLoading(false);
@@ -361,9 +363,9 @@ export const CrearTransferencia = () => {
                 ? mensajeError.map((item) => {
                     if (item.propiedad === "cantidad") {
                       return (
-                        <span key={item.propiedad}>
-                          {item.message} <br />
-                        </span>
+                        <span key={item.propiedad} className="text-red-500 text-xs">
+                        Mensaje: {item.message} Código Producto: {item.codigoProducto} <br />
+                      </span>
                       );
                     }
                     return null;

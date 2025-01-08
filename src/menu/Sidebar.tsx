@@ -260,7 +260,7 @@ export const Sidebar = ({ children }: { children: ReactNode }) => {
                     </div>
                   )
                 }
-                if (item.modulo === ModulosE.PROVEEDOR_EMPRESA || item.modulo === ModulosE.PROVEEDOR_PERSONA) {
+                if (item.modulo === ModulosE.PROVEEDOR_EMPRESA /*|| item.modulo === ModulosE.PROVEEDOR_PERSONA*/) {
                   return (
                     <div className="mb-4">
                       <div

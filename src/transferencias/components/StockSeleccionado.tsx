@@ -25,7 +25,7 @@ export const StockSeleccionado = ({ item , eliminar}: { item: StockI | undefined
         </thead>
         <tbody>
           <tr key={item?.idStock} className="border-b hover:bg-gray-50">
-            <td className="px-2 py-1">{item?.codigo}</td>
+            <td className="px-2 py-1">{item?.codigoProducto}</td>
             <td className="px-2 py-1">{item?.codigoBarra}</td>
             <td className="px-2 py-1">{item?.nombre}</td>
             <td className="px-2 py-1">{item?.cantidad}</td>

@@ -7,6 +7,7 @@ import { Paginas } from "../../../utils/components/Paginas";
 import { Paginador } from "../../../utils/components/Paginador";
 import { MostarImagenes } from "../../../utils/components/modal/MostarImagenes";
 import { AutenticacionContext } from "../../../autenticacion/context/crear.autenticacion.context";
+import { BiAddToQueue } from "react-icons/bi";
 
 export const ProductosModal = ({ productoSeleccionado }: {productoSeleccionado(data:productoI):void}) => {
  const {token}= useContext(AutenticacionContext)
@@ -96,25 +97,7 @@ export const ProductosModal = ({ productoSeleccionado }: {productoSeleccionado(d
                     <tr
                       key={item._id}
                       className="hover:bg-gray-100"
-                      onClick={() => {
-                        const producto = {
-                          _id: item._id,
-                          nombre: item.nombre,
-                          categoria: item.categoria,
-                          codigoBarra: item.codigoBarra,
-                          descripcion: item.descripcion,
-                          codigo: item.codigo,
-                          genero: item.genero,
-                          imagen: item.imagen,
-                          marca: item.marca,
-                          subCategoria: item.subCategoria,
-                          talla: item.talla,
-                          color: item.color,
-                        };
-                        console.log(producto);
-                        productoSeleccionado(producto);
-                        closeModalProductos();
-                      }}
+                    
                     >
                       <td className="px-4 py-2 border border-gray-300 text-sm">{item.codigo}</td>
                       <td className="px-4 py-2 border border-gray-300 text-sm">{item.codigoBarra}</td>
@@ -124,7 +107,35 @@ export const ProductosModal = ({ productoSeleccionado }: {productoSeleccionado(d
                       <td className="px-4 py-2 border border-gray-300 text-sm">{item.descripcion}</td>
                       <td className="px-4 py-2 border border-gray-300 text-sm"><button type="button">
                         <MostarImagenes url={item.imagen}/>
-                        </button></td>
+
+                      
+                        </button>
+                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+                            onClick={() => {
+                              const producto = {
+                                _id: item._id,
+                                nombre: item.nombre,
+                                categoria: item.categoria,
+                                codigoBarra: item.codigoBarra,
+                                descripcion: item.descripcion,
+                                codigo: item.codigo,
+                                genero: item.genero,
+                                imagen: item.imagen,
+                                marca: item.marca,
+                                subCategoria: item.subCategoria,
+                                talla: item.talla,
+                                color: item.color,
+                              };
+                             
+                              productoSeleccionado(producto);
+                              closeModalProductos();
+                            }}
+                        
+                        
+                        >
+                        <BiAddToQueue />
+                      </button>
+                        </td>
                     </tr>
                   ))}
                 </tbody>

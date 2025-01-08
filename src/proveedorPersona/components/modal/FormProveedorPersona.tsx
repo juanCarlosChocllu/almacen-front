@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { formProveedorPersonaI } from '../../interfaces/formProveedorPersonaInterface';
 import { crearProveedorPersonas } from '../../services/proveedorPersonaApi';
@@ -6,6 +6,7 @@ import { HttpStatus } from '../../../enums/httStatusEnum';
 import { httAxiosError } from '../../../utils/error/error.util';
 import { errorPropiedadesI } from '../../../interfaces/errorPropiedades';
 import { errorClassValidator } from '../../../utils/error/errorClassValidator';
+import { AutenticacionContext } from '../../../autenticacion/context/crear.autenticacion.context';
 
 export const FormProveedorPersona = () => {
     const { register, handleSubmit}= useForm<formProveedorPersonaI>()
@@ -15,17 +16,19 @@ export const FormProveedorPersona = () => {
     const [mensajePropiedades, setMensajePropiedades] = useState<
       errorPropiedadesI[]
     >([]);
-  
+        const {token} =useContext(AutenticacionContext)
   const openModal = () => setIsOpen(true);
 
   const closeModal = () => setIsOpen(false);
 
   const onSubmit = async(data:formProveedorPersonaI)=>{
     try {
-        const response = await crearProveedorPersonas(data)
+        if(token){
+          const response = await crearProveedorPersonas(data, token)
         if(response.status == HttpStatus.CREATED){
             setMensaje(response.message)
             setMensajePropiedades([])
+        }
         }
     } catch (error) {      
       const e=httAxiosError(error)

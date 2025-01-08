@@ -3,9 +3,13 @@ import {httpRespuetaI } from "../../interfaces/httpRespuestaInterface"
 import { formProveedorEmpresaI } from "../interface/formEmpresaInterface"
 import { proveedorEmpresaI } from "../interface/proveedorEmpresaInterface"
 
-export const proveedorEmpresas= async():Promise<proveedorEmpresaI[]>=>{
+export const proveedorEmpresas= async(token:string):Promise<proveedorEmpresaI[]>=>{
     try {
-        const response = await instance.get(`proveedor/empresa`)
+        const response = await instance.get(`proveedor/empresa`,{
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        })
          return response.data
     } catch (error) {
         throw  error
@@ -13,9 +17,13 @@ export const proveedorEmpresas= async():Promise<proveedorEmpresaI[]>=>{
 
 }
 
-export const crearProveedorEmpresas= async(data:formProveedorEmpresaI):Promise<httpRespuetaI>=>{
+export const crearProveedorEmpresas= async(data:formProveedorEmpresaI, token:string):Promise<httpRespuetaI>=>{
     try {
-        const response = await instance.post(`proveedor/empresa`,data)
+        const response = await instance.post(`proveedor/empresa`,data,{
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        })
          return response.data
     } catch (error) {
         throw  error

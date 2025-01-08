@@ -9,5 +9,6 @@ export interface transferenciasI{
     tipo:string,
     sucursal:string
     fecha:string
+    codigoProducto:string
 
 }

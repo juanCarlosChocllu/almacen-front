@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { formStockI } from "../interfaces/formStockInterface";
 import { dataProductoI, dataProductoStock } from "../interfaces/dataProducto";
 import { ProductoSeleccioando } from "./ProductoSeleccioando";
-import { gudarStockI } from "../interfaces/stockInterface";
+import { guardarStockI } from "../interfaces/stockInterface";
 import { guardarStock, vericarStockProducto } from "../service/stockApi";
 import { almacenAreaI } from "../../almacenArea/interfaces/almacenAreaInterface";
 import { listarAlmacenPorArea } from "../../almacenArea/services/almacenAreaApi";
@@ -161,18 +161,20 @@ export const FormStock = () => {
         };
       }
     );
-    const data: gudarStockI = {
+    const data: guardarStockI = {
       data: dataStock,
       proveedorEmpresa: proveedorEmpresaSeleccionado?._id,
       proveedorPersona: proveedorPersonaSeleccionado?._id,
     };
 
     try {
-      const response = await guardarStock(data);
+     if(token){
+      const response = await guardarStock(data, token);
       if (response.status === 201) {
         setMensaje("Stocks registrados");
         setDataSeleccionada([]);
       }
+     }
     } catch (error) {
       const e = httAxiosError(error);
       Array.isArray(e.response.data.errors) &&

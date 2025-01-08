@@ -8,12 +8,14 @@ import { ParamsAxiosI } from "../interface/paramsAxiosInterface";
 
 import { productoI } from "../interface/productoInterface";
 
-export const crearProducto = async (data: FormData): Promise<httpRespuetaI> => {
+export const crearProducto = async (data: FormData, token:string): Promise<httpRespuetaI> => {
   try {
     const response: httpRespuetaI = await instance.post("productos", data, {
       headers: {
         "Content-Type": "multipart/form-data",
+        Authorization:`Bearer ${token}`
       },
+    
     });
     return response;
   } catch (error) {

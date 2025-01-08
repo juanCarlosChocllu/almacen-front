@@ -5,9 +5,13 @@ import { formSubCategoriaI } from "../interfaces/formSubCategoriaInterface"
 import { subCategoriaI } from "../interfaces/subCategoriaInterface"
 
 
-export const listarSubCategorias= async(categoria:string):Promise<subCategoriaI[]>=>{
+export const listarSubCategorias= async(categoria:string, token:string):Promise<subCategoriaI[]>=>{
     try {
-        const response = await instance.get(`sub/categoria/${categoria}`)
+        const response = await instance.get(`sub/categoria/${categoria}`,{
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        })
          return response.data
     } catch (error) {
         throw  error

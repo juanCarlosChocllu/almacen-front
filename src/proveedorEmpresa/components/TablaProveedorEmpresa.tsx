@@ -10,8 +10,10 @@ export const TablaProveedorEmpresa = () => {
 
   const listarProveedoresEmpresa = async () => {
     try {
-      const response = await proveedorEmpresas();
-      setProveedores(response);
+      if(token){
+        const response = await proveedorEmpresas(token);
+        setProveedores(response);
+      }
     } catch (error) {
       console.error("Error fetching proveedores:", error);
     }

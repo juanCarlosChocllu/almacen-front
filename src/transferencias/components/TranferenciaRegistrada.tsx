@@ -7,7 +7,7 @@ export const TranferenciaRegistrada = ({
 }: {
   data: registrarTranferenciaI[];
   eliminarData: (data: registrarTranferenciaI[]) => void;
-}) => {
+}) => {  
   return (
     <div>
       <h2 className="text-2xl font-semibold text-center mb-4">
@@ -31,7 +31,7 @@ export const TranferenciaRegistrada = ({
         <tbody>
           {data.map((item, index) => (
             <tr key={index}>
-              <td className="px-4 py-2 border-b text-sm">{item.codigo}</td>
+              <td className="px-4 py-2 border-b text-sm">{item.codigoProducto}</td>
               <td className="px-4 py-2 border-b text-sm">{item.nombreEmpresa}</td>
               <td className="px-4 py-2 border-b text-sm">{item.nombreSucursal}</td>
               <td className="px-4 py-2 border-b text-sm">{item.nombreAlmacenArea}</td>

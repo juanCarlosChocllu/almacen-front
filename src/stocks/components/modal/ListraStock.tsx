@@ -8,6 +8,8 @@ import { Paginas } from "../../../utils/components/Paginas";
 import { BuscadorStock } from "../BuscadorStock";
 import { BuscadorStockI } from "../../interfaces/buscadorStock";
 import { AutenticacionContext } from "../../../autenticacion/context/crear.autenticacion.context";
+import { BiAddToQueue } from "react-icons/bi";
+import { MostarImagenes } from "../../../utils/components/modal/MostarImagenes";
 
 export const ListraStock = ({ stock }: { stock: (stock: StockI) => void }) => {
   const {token}= useContext(AutenticacionContext)
@@ -115,43 +117,59 @@ export const ListraStock = ({ stock }: { stock: (stock: StockI) => void }) => {
                 <th className="px-2 py-1 text-left text-xs font-medium">
                   Tipo
                 </th>
+                <th className="px-2 py-1 text-left text-xs font-medium">
+                  Imagen
+                </th>
+                <th className="px-2 py-1 text-left text-xs font-medium">
+                  accion
+                </th>
               </tr>
             </thead>
             <tbody>
               {stocks.map((item) => (
                 <tr
-                  key={item.idStock}
-                  className="border-b hover:bg-gray-50"
-                  onClick={() => {
-                    const stockSeleccioando = {
-                      almacen: item.almacen,
-                      idStock: item.idStock,
-                      cantidad: item.cantidad,
-                      codigo: item.codigo,
-                      codigoBarra: item.codigoBarra,
-                      color: item.color,
-                      fechaCompra: item.fechaCompra,
-                      fechaVencimiento: item.fechaVencimiento,
-                      idProducto: item.idProducto,
-                      marca: item.marca,
-                      nombre: item.nombre,
-                      precio: item.precio,
-                      tipo: item.tipo,
-                      total: item.total,
-                      almacenArea: item.almacenArea,
-                      imagen:item.imagen
-                    };
-                    stock(stockSeleccioando);
-                    setIsOpenModal(false);
-                  }}
+               
                 >
-                  <td className="px-2 py-1">{item.codigo}</td>
+                  <td className="px-2 py-1">{item.codigoProducto}</td>
                   <td className="px-2 py-1">{item.codigoBarra}</td>
                   <td className="px-2 py-1">{item.nombre}</td>
                   <td className="px-2 py-1">{item.cantidad}</td>
                   <td className="px-2 py-1">{item.almacen}</td>
                   <td className="px-2 py-1">{item.marca}</td>
                   <td className="px-2 py-1">{item.tipo}</td>
+                  <td className="px-2 py-1"><MostarImagenes  key={item.idStock} url={item.imagen}/></td>
+                  <td className="px-2 py-1"><button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" 
+                     key={item.idStock}
+                     onClick={() => {
+                       const stockSeleccioando:StockI = {
+                         almacen: item.almacen,
+                         idStock: item.idStock,
+                         cantidad: item.cantidad,
+                         codigo: item.codigo,
+                         codigoBarra: item.codigoBarra,
+                         color: item.color,
+                         fechaCompra: item.fechaCompra,
+                         fechaVencimiento: item.fechaVencimiento,
+                         idProducto: item.idProducto,
+                         marca: item.marca,
+                         nombre: item.nombre,
+                         precio: item.precio,
+                         tipo: item.tipo,
+                         total: item.total,
+                         almacenArea: item.almacenArea,
+                         imagen:item.imagen,
+                        codigoProducto:item.codigoProducto
+                      
+                       };
+                       stock(stockSeleccioando);
+                       setIsOpenModal(false);
+                     }}
+                  ><BiAddToQueue />
+      </button>
+      
+                     
+      </td>
+        
                 </tr>
               ))}
             </tbody>

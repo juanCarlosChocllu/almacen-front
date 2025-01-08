@@ -8,4 +8,7 @@ export interface StockSucursalI{
     color:string
     imagen:string
     codigo:string
+    almacen:string
+
+    codigoProducto:string
 }
