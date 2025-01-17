@@ -46,9 +46,13 @@ export const listarStock = async (pagina: number, limite: number, buscadorStockI
   
 
 
-export   const vericarStockProducto =async(producto:string):Promise<StockVerificarI>=>{
+export   const vericarStockProducto =async(producto:string, token:string):Promise<StockVerificarI[]>=>{
     try {
-      const response = await instance.get(`stocks/verificar/stock/${producto}`);
+      const response = await instance.get(`stocks/verificar/stock/${producto}`,{
+        headers:{
+            Authorization:`Bearer ${token}`
+        }
+      });
       return response.data
     } catch (error) {
       throw error;

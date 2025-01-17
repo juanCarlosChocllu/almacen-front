@@ -14,10 +14,13 @@ import { httAxiosError } from "../../../utils/error/error.util";
 import { crearAlmacenArea } from "../../services/almacenAreaApi";
 import { errorClassValidator } from "../../../utils/error/errorClassValidator";
 import { AutenticacionContext } from "../../../autenticacion/context/crear.autenticacion.context";
+import { PermisosContext } from "../../../autenticacion/context/permisos.context";
+import { TipoE } from "../../../usuarios/enums/tipo.enum";
 
 
 export const FormAlmacenArea = () => {
   const {token}= useContext(AutenticacionContext)
+  const {tipo}= useContext(PermisosContext)
   const { register, handleSubmit} = useForm<formAlmacenAreaI>();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [mensaje, setMensaje] = useState<string>();
@@ -51,8 +54,10 @@ export const FormAlmacenArea = () => {
   };
 
   const onSudmit = async (data: formAlmacenAreaI) => {
+    if(tipo == TipoE.AREA ){
+      delete data.area
+    }
      try {
- 
     if(token){
       const response = await crearAlmacenArea(data,token);
       if (response.status == HttpStatus.CREATED) {
@@ -62,6 +67,7 @@ export const FormAlmacenArea = () => {
     }
     } catch (error) {     
 
+        console.log(error);
         
       const e = httAxiosError(error);
       if (e.response.status == HttpStatus.CONFLICT) {
@@ -112,7 +118,8 @@ export const FormAlmacenArea = () => {
                   }
                 })}
 
-              <div className="mb-4">
+            { tipo === TipoE.NINGUNO &&     
+             <div className="mb-4">
                 <label
                   htmlFor="nombre"
                   className="block text-sm font-medium text-gray-700"
@@ -132,7 +139,7 @@ export const FormAlmacenArea = () => {
                   ))}
                 </select>
               </div>
-
+              }
 
               
             <div>

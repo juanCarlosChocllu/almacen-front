@@ -1,13 +1,14 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { crearRol } from "../../services/rolApi";
 import {modulosConAcciones} from '../../utils/modulos.utils'
+import { AutenticacionContext } from "../../../autenticacion/context/crear.autenticacion.context";
 
 
 export const FormRoles = () => {
   const { register, handleSubmit, } = useForm<any>();
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const {token}= useContext(AutenticacionContext)
   const onSubmit = async (data: any) => {
     let dataR:  any = {
       nombre: data.rol,
@@ -29,9 +30,12 @@ export const FormRoles = () => {
     }
 
     try {
-        const response = await crearRol(dataR)
+        if(token){
+          const response = await crearRol(dataR, token)
         
-        
+          console.log(response);
+          
+        }
     } catch (error) {
         console.log(error);
         

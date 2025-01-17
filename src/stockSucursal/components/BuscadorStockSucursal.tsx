@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { almacenSucursalI } from "../../almacenSucursal/interfaces/almacenSucursalInterface";
 import { marcaI } from "../../marca/interfaces/marcaInterface";
-import { listarMarcas } from "../../marca/service/marcaApi";
+import { listarMarcas, marcasBuscador } from "../../marca/service/marcaApi";
 import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
 import { listarAlmacenSucursal } from "../../almacenSucursal/services/almacenSucursalApi";
 import { useForm } from "react-hook-form";
@@ -16,7 +16,7 @@ export const BuscadorStockSucursal = ({onSubmit}:{onSubmit (data:BuscadorStockSu
     if(token){
       (async()=>{
         try {
-            const response = await listarMarcas(token)
+            const response = await marcasBuscador(token)
             setMarcas(response)
         } catch (error) {
           

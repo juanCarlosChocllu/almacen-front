@@ -6,4 +6,5 @@ export interface TokenI {
   id: string;
   permiso: PermisosContextI[];
   rol: string;
+  tipo:string
 }

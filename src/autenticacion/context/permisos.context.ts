@@ -1,6 +1,5 @@
 import { createContext } from "react";
 
-import {PermisosContextI } from "../interface/permisosInterface";
+import {PermisosContextI, PermisosContextTipoI} from "../interface/permisosInterface";
 
-
-export const PermisosContext = createContext<PermisosContextI[]>([])
+export const PermisosContext = createContext<PermisosContextTipoI>({permisos:[],tipo:null})

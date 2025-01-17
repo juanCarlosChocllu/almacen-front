@@ -9,16 +9,20 @@ import { verificarPermisosPorRol } from "../../permisos/services/permisosApi"
 
 export const PermisosProvider = ({children}:{children:ReactNode}) => {
     const [permisos, setPermisos] = useState<PermisosContextI[]>([])
-    
+    const [tipo, setTipo]=useState<string> ('')
+
     const {token}= useContext(AutenticacionContext)
   if(token){
-    var { decodedToken, isExpired }  = useJwt<TokenI>(token);
+    var { decodedToken }  = useJwt<TokenI>(token);
     useEffect(()=>{
      if(decodedToken){
+      setTipo(decodedToken.tipo)
         obtenerPermisos(decodedToken.rol, token)
      }
     },[token,decodedToken])   
   }
+
+
 
   const obtenerPermisos= async(rol:string, token:string)=>{
     try {
@@ -38,6 +42,6 @@ export const PermisosProvider = ({children}:{children:ReactNode}) => {
     }
   }
   return (
-   <PermisosContext.Provider value={permisos}>{children}</PermisosContext.Provider>
+   <PermisosContext.Provider value={{permisos:permisos, tipo:tipo}}>{children}</PermisosContext.Provider>
   )
 }

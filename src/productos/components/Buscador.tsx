@@ -6,7 +6,7 @@ import { subCategoriaI } from "../../subCategorias/interfaces/subCategoriaInterf
 import { BuscadorI } from "../interface/buscardorInterface";
 import { useForm } from "react-hook-form";
 import { marcaI } from "../../marca/interfaces/marcaInterface";
-import { listarMarcas } from "../../marca/service/marcaApi";
+import { listarMarcas, marcasBuscador } from "../../marca/service/marcaApi";
 import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
 
 export const Buscador = ({onsudmit}:{onsudmit(data:BuscadorI):void}) => {
@@ -51,7 +51,7 @@ export const Buscador = ({onsudmit}:{onsudmit(data:BuscadorI):void}) => {
     try {
    
        if(token){
-        const response = await listarMarcas(token)
+        const response = await marcasBuscador(token)
     
         
         setMarcas(response);
@@ -65,20 +65,25 @@ export const Buscador = ({onsudmit}:{onsudmit(data:BuscadorI):void}) => {
 
   return (
     <div className="mt-3">
-     <form onSubmit={handleSubmit(onsudmit)}>
-     <div className="flex space-x-4">
+    <form onSubmit={handleSubmit(onsudmit)}>
+      <div className="flex space-x-4">
+        
         <div className="flex-1">
+          <label htmlFor="codigo" className="block text-sm font-medium text-gray-700">Código de producto</label>
           <input
             {...register('codigo')}
+            id="codigo"
             type="text"
             className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
             placeholder="Ingrese el código de producto"
           />
         </div>
-
+  
         <div className="flex-1">
+          <label htmlFor="categoria" className="block text-sm font-medium text-gray-700">Categoría</label>
           <select
-           {...register('categoria')}
+            {...register('categoria')}
+            id="categoria"
             onChange={(e) => {
               const target = e.target as HTMLSelectElement;
               setCategoriaSeleccionado(target.value);
@@ -93,9 +98,14 @@ export const Buscador = ({onsudmit}:{onsudmit(data:BuscadorI):void}) => {
             ))}
           </select>
         </div>
-
+  
         <div className="flex-1">
-          <select     {...register('subCategoria')} className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500">
+          <label htmlFor="subCategoria" className="block text-sm font-medium text-gray-700">Subcategoría</label>
+          <select
+            {...register('subCategoria')}
+            id="subCategoria"
+            className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+          >
             <option value="">Selecciona una subcategoría</option>
             {sudCategorias.map((categoria, index) => (
               <option key={index} value={categoria._id}>
@@ -104,8 +114,14 @@ export const Buscador = ({onsudmit}:{onsudmit(data:BuscadorI):void}) => {
             ))}
           </select>
         </div>
+  
         <div className="flex-1">
-          <select     {...register('marca')} className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500">
+          <label htmlFor="marca" className="block text-sm font-medium text-gray-700">Marca</label>
+          <select
+            {...register('marca')}
+            id="marca"
+            className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+          >
             <option value="">Selecciona una marca</option>
             {marcas.map((categoria, index) => (
               <option key={index} value={categoria._id}>
@@ -114,15 +130,20 @@ export const Buscador = ({onsudmit}:{onsudmit(data:BuscadorI):void}) => {
             ))}
           </select>
         </div>
+  
       </div>
-
+  
       <div className="mt-2 flex justify-center">
-        <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+        <button
+          type="submit"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+        >
           BUSCAR
         </button>
       </div>
-
-     </form>
-    </div>
+  
+    </form>
+  </div>
+  
   );
 };

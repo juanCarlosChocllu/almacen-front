@@ -14,7 +14,7 @@ import { AutenticacionContext } from "../../autenticacion/context/crear.autentic
 export const TablaProductos = () => {
   const [productos, setProductos] = useState<productoI[]>([]);
   const [paginas, setPaginas] = useState<number>(0);
-  const [limite, setLimite] = useState<number>(10);
+  const [limite, setLimite] = useState<number>(20);
   const [paginaSeleccionada, setPaginaSeleccioanda] = useState<number>(1);
   const [codigo, setCodigo] = useState<string | null>(null);
   const [categoria, setCategoria] = useState<string | null>(null);

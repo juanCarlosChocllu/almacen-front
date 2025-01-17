@@ -17,7 +17,22 @@ export const listarMarcas =async (token:string):Promise<marcaI[]>=>{
         
     }
 
+}
 
+
+export const marcasBuscador =async (token:string):Promise<marcaI[]>=>{
+    try {
+        const response= await instance.get('marca/buscador',{
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        })
+        return response.data
+        
+    } catch (error) {
+        throw error
+        
+    }
 
 }
 

@@ -16,7 +16,7 @@ export const ListraStock = ({ stock }: { stock: (stock: StockI) => void }) => {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const [stocks, setStock] = useState<StockI[]>([]);
 
-  const [paginas, setPaginas] = useState<number>(0);
+  const [paginas, setPaginas] = useState<number>(1);
   const [pagina, setPagina] = useState<number>(1);
   const [limite, setLimite] = useState<number>(10);
   const [buscadorStock, setBuscadorStock]= useState<BuscadorStockI>({

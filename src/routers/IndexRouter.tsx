@@ -29,9 +29,32 @@ import { useContext } from "react";
 import { AutenticacionContext } from "../autenticacion/context/crear.autenticacion.context";
 import { homeRouter } from "../home/router/homeRouter";
 import { stockSucursalRouter } from "../stockSucursal/router/sotckSucursalRouter";
+import { PermisosContext } from "../autenticacion/context/permisos.context";
+import { ModulosE } from "../enums/modulos.enum";
+import { NotFound } from "../notFound/NotFound";
+
+
+
+const rutas = (routes: any[], isAutenticacion: boolean) => {
+  return routes.map((route, index) => (
+    <Route
+      key={index}
+      path={route.path}
+      element={
+        isAutenticacion ? (
+          <route.component />
+        ) : (
+          <Navigate to="/" replace />
+        )
+      }
+    />
+  ));
+};
+
 
 export const IndexRouter = () => {
   const { isAutenticacion } = useContext(AutenticacionContext);
+  const { permisos } = useContext(PermisosContext);
 
   return (
     <>
@@ -41,277 +64,55 @@ export const IndexRouter = () => {
             <Route
               key={index}
               path={route.path}
-              element={!isAutenticacion &&<route.component />}
+              element={!isAutenticacion ? <route.component /> : <Navigate to="/" />}
             />
           ))}
         </Routes>
         <Sidebar>
-          {
-            <Routes>
-              {productosRouter.map((route, index) => (
-                <Route
-                  key={index}
-                  path={route.path}
-                  element={
-                    isAutenticacion ? (
-                      <route.component />
-                    ) : (
-                      <Navigate to="/" replace />
-                    )
-                  }
-                />
-              ))}
-
-              {categoriasRouter.map((route, index) => (
-                <Route
-                  key={index}
-                  path={route.path}
-                  element={
-                    isAutenticacion ? (
-                      <route.component />
-                    ) : (
-                      <Navigate to="/" replace />
-                    )
-                  }
-                />
-              ))}
-              {stockRouter.map((route, index) => (
-                <Route
-                  key={index}
-                  path={route.path}
-                  element={
-                    isAutenticacion ? (
-                      <route.component />
-                    ) : (
-                      <Navigate to="/" replace />
-                    )
-                  }
-                />
-              ))}
-              {empresaRouter.map((route, index) => (
-                <Route
-                  key={index}
-                  path={route.path}
-                  element={
-                    isAutenticacion ? (
-                      <route.component />
-                    ) : (
-                      <Navigate to="/" replace />
-                    )
-                  }
-                />
-              ))}
-              {sucursalRouter.map((route, index) => (
-                <Route
-                  key={index}
-                  path={route.path}
-                  element={
-                    isAutenticacion ? (
-                      <route.component />
-                    ) : (
-                      <Navigate to="/" replace />
-                    )
-                  }
-                />
-              ))}
-
-              {almacenSucursalRouter.map((route, index) => (
-                <Route
-                  key={index}
-                  path={route.path}
-                  element={
-                    isAutenticacion ? (
-                      <route.component />
-                    ) : (
-                      <Navigate to="/" replace />
-                    )
-                  }
-                />
-              ))}
-              {transferenciaRouter.map((route, index) => (
-                <Route
-                  key={index}
-                  path={route.path}
-                  element={
-                    isAutenticacion ? (
-                      <route.component />
-                    ) : (
-                      <Navigate to="/" replace />
-                    )
-                  }
-                />
-              ))}
-
-              {areasRouter.map((route, index) => (
-                <Route
-                  key={index}
-                  path={route.path}
-                  element={
-                    isAutenticacion ? (
-                      <route.component />
-                    ) : (
-                      <Navigate to="/" replace />
-                    )
-                  }
-                />
-              ))}
-
-              {almacenAreaRouter.map((route, index) => (
-                <Route
-                  key={index}
-                  path={route.path}
-                  element={
-                    isAutenticacion ? (
-                      <route.component />
-                    ) : (
-                      <Navigate to="/" replace />
-                    )
-                  }
-                />
-              ))}
-
-              {marcasRouter.map((route, index) => (
-                <Route
-                  key={index}
-                  path={route.path}
-                  element={
-                    isAutenticacion ? (
-                      <route.component />
-                    ) : (
-                      <Navigate to="/" replace />
-                    )
-                  }
-                />
-              ))}
-
-              {subCategoriaRouter.map((route, index) => (
-                <Route
-                  key={index}
-                  path={route.path}
-                  element={
-                    isAutenticacion ? (
-                      <route.component />
-                    ) : (
-                      <Navigate to="/" replace />
-                    )
-                  }
-                />
-              ))}
-
-              {proveedorPersonaRouter.map((route, index) => (
-                <Route
-                  key={index}
-                  path={route.path}
-                  element={
-                    isAutenticacion ? (
-                      <route.component />
-                    ) : (
-                      <Navigate to="/" replace />
-                    )
-                  }
-                />
-              ))}
-
-              {proveedorEmpresaRouter.map((route, index) => (
-                <Route
-                  key={index}
-                  path={route.path}
-                  element={
-                    isAutenticacion ? (
-                      <route.component />
-                    ) : (
-                      <Navigate to="/" replace />
-                    )
-                  }
-                />
-              ))}
-
-              {movimientoAreaRouter.map((route, index) => (
-                <Route
-                  key={index}
-                  path={route.path}
-                  element={
-                    isAutenticacion ? (
-                      <route.component />
-                    ) : (
-                      <Navigate to="/" replace />
-                    )
-                  }
-                />
-              ))}
-
-              {rolRouter.map((route, index) => (
-                <Route
-                  key={index}
-                  path={route.path}
-                  element={
-                    isAutenticacion ? (
-                      <route.component />
-                    ) : (
-                      <Navigate to="/" replace />
-                    )
-                  }
-                />
-              ))}
-
-              {usuariosRouter.map((route, index) => (
-                <Route
-                  key={index}
-                  path={route.path}
-                  element={
-                    isAutenticacion ? (
-                      <route.component />
-                    ) : (
-                      <Navigate to="/" replace />
-                    )
-                  }
-                />
-              ))}
-
-              {homeRouter.map((route, index) => (
-                <Route
-                  key={index}
-                  path={route.path}
-                  element={
-                    isAutenticacion ? (
-                      <route.component />
-                    ) : (
-                      <Navigate to="/" replace />
-                    )
-                  }
-                />
-              ))}
-
-              
-{stockSucursalRouter.map((route, index) => (
-                <Route
-                  key={index}
-                  path={route.path}
-                  element={
-                    isAutenticacion ? (
-                      <route.component />
-                    ) : (
-                      <Navigate to="/" replace />
-                    )
-                  }
-                />
-              ))}
-
-              {logoutRouter.map((route, index) => (
-                <Route
-                  key={index}
-                  path={route.path}
-                  element={
-                    isAutenticacion ? (
-                      <route.component />
-                    ) : (
-                      <Navigate to="/" replace />
-                    )
-                  }
-                />
-              ))}
-            </Routes>
-          }
+          <Routes>
+            {permisos.map((item) => {
+              switch (item.modulo) {
+                case ModulosE.PRODUCTOS:
+                  return rutas(productosRouter, isAutenticacion);
+                case ModulosE.CATEGORIAS:
+                  return rutas(categoriasRouter, isAutenticacion);
+                case ModulosE.STOCK:
+                  return rutas(stockRouter, isAutenticacion);
+                case ModulosE.EMPRESAS:
+                  return rutas(empresaRouter, isAutenticacion);
+                case ModulosE.SUCURSALES:
+                  return rutas(sucursalRouter, isAutenticacion);
+                case ModulosE.ALMACEN_SUCURSAL:
+                  return rutas(almacenSucursalRouter, isAutenticacion);
+                case ModulosE.TRANSFERENCIAS:
+                  return rutas(transferenciaRouter, isAutenticacion);
+                case ModulosE.AREAS:
+                  return rutas(areasRouter, isAutenticacion);
+                case ModulosE.ALMACEN_AREA:
+                  return rutas(almacenAreaRouter, isAutenticacion);
+                case ModulosE.MARCAS:
+                  return rutas(marcasRouter, isAutenticacion);
+                case ModulosE.SUB_CATEGORIAS:
+                  return rutas(subCategoriaRouter, isAutenticacion);
+                case ModulosE.PROVEEDOR_PERSONA:
+                  return rutas(proveedorPersonaRouter, isAutenticacion);
+                case ModulosE.PROVEEDOR_EMPRESA:
+                  return rutas(proveedorEmpresaRouter, isAutenticacion);
+                case ModulosE.MOVIMIENTO_AREA:
+                  return rutas(movimientoAreaRouter, isAutenticacion);
+                case ModulosE.ROL:
+                  return rutas(rolRouter, isAutenticacion);
+                case ModulosE.USUARIOS:
+                  return rutas(usuariosRouter, isAutenticacion);
+                case ModulosE.STOCK_SUCURSAL:
+                  return rutas(stockSucursalRouter, isAutenticacion);
+                default:
+                  return <Route path="*" element={<NotFound />} />;
+              }
+            })}
+            {rutas(logoutRouter, isAutenticacion)}
+            {rutas(homeRouter, isAutenticacion)}
+          </Routes>
         </Sidebar>
       </Router>
     </>

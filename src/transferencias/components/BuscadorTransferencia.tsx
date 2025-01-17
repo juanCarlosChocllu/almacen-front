@@ -1,8 +1,7 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import {useContext, useEffect, useState } from "react";
 import { listarMarcas } from "../../marca/service/marcaApi";
 import { marcaI } from "../../marca/interfaces/marcaInterface";
 import { empresaI } from "../../empresa/interfaces/empresaInterface";
-import { listarEmpresa } from "../../empresa/services/empresaApi";
 import { listarSucursalEmpresa } from "../../sucursal/services/sucursalApi";
 import { sucursalI } from "../../sucursal/interface/sucursalInterface";
 import { almacenSucursalI } from "../../almacenSucursal/interfaces/almacenSucursalInterface";
@@ -10,6 +9,7 @@ import { listraAlmacenPorSucursal } from "../../almacenSucursal/services/almacen
 import { useForm } from "react-hook-form";
 import { BuscadorTransFerenciaI } from "../interface/buscadorTransferencia";
 import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
+import { listarEmpresaBuscador } from "../../empresa/services/empresaApi";
 
 
 export const BuscadorTransferencia = ({onsudmit}:{onsudmit(data:BuscadorTransFerenciaI):  void }) => {
@@ -51,7 +51,7 @@ export const BuscadorTransferencia = ({onsudmit}:{onsudmit(data:BuscadorTransFer
   const empresa = async () => {
     try {
       if(token){
-        const response = await listarEmpresa(token);
+        const response = await listarEmpresaBuscador(token);
         setEmpresas(response);
       }
     } catch (error) {
@@ -222,3 +222,5 @@ export const BuscadorTransferencia = ({onsudmit}:{onsudmit(data:BuscadorTransFer
 
   );
 };
+
+

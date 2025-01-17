@@ -15,7 +15,7 @@ export const TablaIngresos: React.FC = () => {
     const [ingresosDta, setIngresos]= useState<MovimientoAreaI[]>([])
     const [paginas ,setpaginas]=useState<number>(1)
     const [pagina ,setpagina]=useState<number>(1)
-    const [limite ,setLimite]=useState<number>(10)
+    const [limite ,setLimite]=useState<number>(20)
     const [buscadadorMarea, setBuscadorMarea]=useState<BuscadorMAreaI>({
       almacenArea:null,
       codigo:null,

@@ -23,13 +23,11 @@ import { AutenticacionContext } from "../autenticacion/context/crear.autenticaci
 import { PermisosContext } from "../autenticacion/context/permisos.context";
 import { ModulosE } from "../enums/modulos.enum";
 
-
-
 export const Sidebar = ({ children }: { children: ReactNode }) => {
   const { isAutenticacion, token } = useContext(AutenticacionContext);
-  const permisos = useContext(PermisosContext);
-
-
+  const { permisos } = useContext(PermisosContext);
+  console.log(permisos);
+  
   const [isOpen, setIsOpen] = useState(false);
   const [isClasificacionOpen, setIsClasificacionOpen] = useState(false);
   const [isStockOpen, setIsStockOpen] = useState(false);
@@ -47,7 +45,7 @@ export const Sidebar = ({ children }: { children: ReactNode }) => {
       setIsClasificacionOpen(false);
       setIsOpenMovimientoArea(false);
       setIsOpenUsuario(false);
-      setIsStockSucursalOpen(false)
+      setIsStockSucursalOpen(false);
     }
 
     setIsOpen(!isOpen);
@@ -57,7 +55,8 @@ export const Sidebar = ({ children }: { children: ReactNode }) => {
     setIsClasificacionOpen(!isClasificacionOpen);
 
   const toggleStock = () => setIsStockOpen(!isStockOpen);
-  const toggleStockSucursal = () => setIsStockSucursalOpen(!isStockSucursalOpen);
+  const toggleStockSucursal = () =>
+    setIsStockSucursalOpen(!isStockSucursalOpen);
 
   const toggleTraspasos = () => setIsTraspasosOpen(!isTraspasosOpen);
 
@@ -71,14 +70,39 @@ export const Sidebar = ({ children }: { children: ReactNode }) => {
       <div className="  bg-gray-800 text-white ">
         {token && isAutenticacion && (
           <div
-            className={`${isOpen ? "w-64" : "w-16"
-              } min-h-screen bg-gray-800 text-white p-6 flex flex-col justify-between transition-all duration-300 ease-in-out`}
+            className={`${
+              isOpen ? "w-64" : "w-16"
+            } min-h-screen bg-gray-800 text-white p-6 flex flex-col justify-between transition-all duration-300 ease-in-out`}
           >
             <div className="flex justify-between items-center mb-4">
               <button onClick={toggleSidebar} className="text-white">
                 {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
               </button>
             </div>
+
+
+
+            <div className="flex items-center mb-6 p-4 border-b border-gray-600">
+              <img
+                src="ruta-a-imagen.jpg" 
+                alt="Imagen de perfil"
+                className="w-12 h-12 rounded-full border-2 border-gray-300 mr-4"
+              />
+
+              {isOpen && (
+                <div>
+                  <h2 className="text-xl font-semibold">Nombre Completo</h2>
+                  <p className="text-sm text-gray-500">
+                    Rol: <span className="font-medium">Desarrollador Web</span>
+                  </p>
+                  <p className="text-sm text-gray-500">
+                    Área: <span className="font-medium">Tecnología</span>
+                  </p>
+                </div>
+              )}
+            </div>
+
+
 
             <div>
               {permisos.map((item) => {
@@ -97,10 +121,14 @@ export const Sidebar = ({ children }: { children: ReactNode }) => {
                   return (
                     <Link to={"/sucursal"}>
                       <div className="mb-4 cursor-pointer hover:bg-gray-700 p-3 rounded-lg flex items-center">
-                        <FaMapMarkerAlt size={isOpen ? 20 : 16} className="mr-3" />
+                        <FaMapMarkerAlt
+                          size={isOpen ? 20 : 16}
+                          className="mr-3"
+                        />
                         {isOpen && <span>Sucursales</span>}
                       </div>
-                    </Link>)
+                    </Link>
+                  );
                 }
 
                 if (item.modulo === ModulosE.ALMACEN_SUCURSAL) {
@@ -111,7 +139,7 @@ export const Sidebar = ({ children }: { children: ReactNode }) => {
                         {isOpen && <span>Almacen sucursal</span>}
                       </div>
                     </Link>
-                  )
+                  );
                 }
 
                 if (item.modulo === ModulosE.AREAS) {
@@ -122,7 +150,7 @@ export const Sidebar = ({ children }: { children: ReactNode }) => {
                         {isOpen && <span>Áreas</span>}
                       </div>
                     </Link>
-                  )
+                  );
                 }
 
                 if (item.modulo === ModulosE.ALMACEN_AREA) {
@@ -133,7 +161,7 @@ export const Sidebar = ({ children }: { children: ReactNode }) => {
                         {isOpen && <span>Almacen área</span>}
                       </div>
                     </Link>
-                  )
+                  );
                 }
 
                 if (item.modulo === ModulosE.MARCAS) {
@@ -144,9 +172,8 @@ export const Sidebar = ({ children }: { children: ReactNode }) => {
                         {isOpen && <span>Marcas</span>}
                       </div>
                     </Link>
-                  )
+                  );
                 }
-
 
                 if (item.modulo === ModulosE.CATEGORIAS) {
                   return (
@@ -181,9 +208,8 @@ export const Sidebar = ({ children }: { children: ReactNode }) => {
                         </div>
                       )}
                     </div>
-                  )
+                  );
                 }
-
 
                 if (item.modulo === ModulosE.PRODUCTOS) {
                   return (
@@ -193,9 +219,9 @@ export const Sidebar = ({ children }: { children: ReactNode }) => {
                         {isOpen && <span>Productos</span>}
                       </div>
                     </Link>
-                  )
+                  );
                 }
-                  
+
                 if (item.modulo === ModulosE.STOCK) {
                   return (
                     <div className="mb-4">
@@ -229,7 +255,7 @@ export const Sidebar = ({ children }: { children: ReactNode }) => {
                         </div>
                       )}
                     </div>
-                  )
+                  );
                 }
 
                 if (item.modulo === ModulosE.STOCK_SUCURSAL) {
@@ -245,7 +271,6 @@ export const Sidebar = ({ children }: { children: ReactNode }) => {
                       {isStockSucursalOpen && (
                         <div className="pl-6">
                           <ol>
-                            
                             <li className="mt-2">
                               <Link
                                 to="/stock/sucursal"
@@ -258,9 +283,12 @@ export const Sidebar = ({ children }: { children: ReactNode }) => {
                         </div>
                       )}
                     </div>
-                  )
+                  );
                 }
-                if (item.modulo === ModulosE.PROVEEDOR_EMPRESA /*|| item.modulo === ModulosE.PROVEEDOR_PERSONA*/) {
+                if (
+                  item.modulo ===
+                  ModulosE.PROVEEDOR_EMPRESA /*|| item.modulo === ModulosE.PROVEEDOR_PERSONA*/
+                ) {
                   return (
                     <div className="mb-4">
                       <div
@@ -274,15 +302,13 @@ export const Sidebar = ({ children }: { children: ReactNode }) => {
                         <div className="pl-6">
                           <ol>
                             <li>
-    
                               <Link
                                 to="/proveedor/persona"
                                 className="w-full block text-gray-300 hover:text-white py-2 px-4 rounded-lg bg-gray-700 hover:bg-gray-600 transition duration-300"
                               >
-                                <FaArrowRight className="mr-2" /> Proveedor Persona
+                                <FaArrowRight className="mr-2" /> Proveedor
+                                Persona
                               </Link>
-                            
-
                             </li>
                             <li className="mt-2">
                               <Link
@@ -296,7 +322,7 @@ export const Sidebar = ({ children }: { children: ReactNode }) => {
                         </div>
                       )}
                     </div>
-                  )
+                  );
                 }
 
                 if (item.modulo === ModulosE.TRANSFERENCIAS) {
@@ -306,7 +332,10 @@ export const Sidebar = ({ children }: { children: ReactNode }) => {
                         onClick={toggleTraspasos}
                         className="cursor-pointer hover:bg-gray-700 p-3 rounded-lg flex items-center"
                       >
-                        <FaExchangeAlt size={isOpen ? 20 : 16} className="mr-3" />
+                        <FaExchangeAlt
+                          size={isOpen ? 20 : 16}
+                          className="mr-3"
+                        />
                         {isOpen && <span>Transferencias</span>}
                       </div>
                       {isTraspasosOpen && (
@@ -326,16 +355,16 @@ export const Sidebar = ({ children }: { children: ReactNode }) => {
                                 to="/listar/transferencia"
                                 className="w-full block text-gray-300 hover:text-white py-2 px-4 rounded-lg bg-gray-700 hover:bg-gray-600 transition duration-300"
                               >
-                                <FaList className="mr-2" /> Listar Transferencias
+                                <FaList className="mr-2" /> Listar
+                                Transferencias
                               </Link>
                             </li>
                           </ol>
                         </div>
                       )}
                     </div>
-                  )
+                  );
                 }
-                
 
                 if (item.modulo === ModulosE.MOVIMIENTO_AREA) {
                   return (
@@ -344,7 +373,10 @@ export const Sidebar = ({ children }: { children: ReactNode }) => {
                         onClick={toggleMovimientoArea}
                         className="cursor-pointer hover:bg-gray-700 p-3 rounded-lg flex items-center"
                       >
-                        <FaExchangeAlt size={isOpen ? 20 : 16} className="mr-3" />
+                        <FaExchangeAlt
+                          size={isOpen ? 20 : 16}
+                          className="mr-3"
+                        />
                         {isOpen && <span>Movimiento</span>}
                       </div>
                       {isOpenMovimientoArea && (
@@ -362,7 +394,7 @@ export const Sidebar = ({ children }: { children: ReactNode }) => {
                         </div>
                       )}
                     </div>
-                  )
+                  );
                 }
 
                 if (item.modulo === ModulosE.USUARIOS) {
@@ -400,9 +432,7 @@ export const Sidebar = ({ children }: { children: ReactNode }) => {
                         </div>
                       )}
                     </div>
-
-
-                  )
+                  );
                 }
               })}
 
@@ -418,8 +448,9 @@ export const Sidebar = ({ children }: { children: ReactNode }) => {
       </div>
 
       <div
-        className={`ml-${isOpen ? "8" : "8"
-          } p-6 w-full transition-all duration-300 ease-in-out`}
+        className={`ml-${
+          isOpen ? "8" : "8"
+        } p-6 w-full transition-all duration-300 ease-in-out`}
       >
         {children}
       </div>

@@ -26,9 +26,13 @@ export const Permisos= async():Promise<any>=>{
 
 }
 
-export const crearRol=  async(data:FormData)=>{
+export const crearRol=  async(data:FormData, token:string )=>{
     try {
-        const response = await instance.post('rol', data)
+        const response = await instance.post('rol', data,{
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        })
         return response.data
     } catch (error) {
         throw error

@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { BuscadorMAreaI } from "../interface/buscadorMAreaInterface";
 import { listarAlmacenArea } from "../../almacenArea/services/almacenAreaApi";
 import { almacenAreaI } from "../../almacenArea/interfaces/almacenAreaInterface";
 import { useForm } from "react-hook-form";
+import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
 
 export const BuscadorMovimientoArea = ({
   onSubmit,
@@ -18,6 +19,7 @@ export const BuscadorMovimientoArea = ({
   const [almacenes, setAlmacenes] = useState<almacenAreaI[]>([]);
   const fechaInicio = watch("fechaInicio");
   const fechaFin = watch("fechaFin");
+  const {token} =useContext(AutenticacionContext)
 
   useEffect(() => {
     almacen();
@@ -25,8 +27,10 @@ export const BuscadorMovimientoArea = ({
 
   const almacen = async () => {
     try {
-      const response = await listarAlmacenArea();
-      setAlmacenes(response);
+   if(token){
+    const response = await listarAlmacenArea(token);
+    setAlmacenes(response);
+   }
     } catch (error) {}
   };
   return (

@@ -11,8 +11,8 @@ import { AutenticacionContext } from "../../autenticacion/context/crear.autentic
 export const TablaTransferencias = () => {
    const {token}=useContext(AutenticacionContext)
     const [transferencias, setTransferencias] = useState<transferenciasI[]>([])
-    const [paginas, setpaginas] = useState<number>(0)
-    const [limite, setcanitdaditem] = useState<number>(10)
+    const [paginas, setpaginas] = useState<number>(1)
+    const [limite, setcanitdaditem] = useState<number>(20)
     const [selectPagina, setSelectPagina] = useState<number>(1)
     const [buscadorTransferencia, setBuscadorTransferencia] =useState<BuscadorTransFerenciaI>({
       almacenSucursal:null,
@@ -26,7 +26,7 @@ export const TablaTransferencias = () => {
     
     useEffect(()=>{
         transferenciasList()
-    },[paginas, limite, selectPagina, buscadorTransferencia])
+    },[paginas, limite, selectPagina, buscadorTransferencia, token])
 
 
     const transferenciasList=async()=>{
@@ -39,7 +39,8 @@ export const TablaTransferencias = () => {
 
            
         } catch (error) {
-   
+            console.log(error);
+            
             
         }
     }

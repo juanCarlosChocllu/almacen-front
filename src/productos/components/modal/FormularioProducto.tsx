@@ -39,6 +39,8 @@ export const FormularioProducto = () => {
   const [mensajeErrorConflito, setMensajeErrorConflicto] =
     useState<errorConflictoI | null>();
   const categoriaSeleccionada = watch("categoria");
+
+  
   const onSubmit = async (data: formProductoI) => {
     try {
       const formDta: FormData = new FormData();

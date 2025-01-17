@@ -8,7 +8,10 @@ export interface FormUsuariosI{
     rol:string
     password:string
     sucursal?:string | null
-    area?:string | null
+    area?:string[] | null
     sinRelacion?:boolean | null
+    tipo:string
+
+    
 
     }

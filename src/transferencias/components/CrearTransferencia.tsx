@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { ListraStock } from "../../stocks/components/modal/ListraStock";
-import { listarEmpresa } from "../../empresa/services/empresaApi";
+import { listarEmpresa, listarEmpresaBuscador } from "../../empresa/services/empresaApi";
 import { empresaI } from "../../empresa/interfaces/empresaInterface";
 import { useForm } from "react-hook-form";
 import { formTransferenciaI } from "../interface/formTranferenciaInterface";
@@ -67,7 +67,7 @@ export const CrearTransferencia = () => {
   const listarEmpresas = async () => {
     try {
    if(token){
-    const response = await listarEmpresa(token);
+    const response = await listarEmpresaBuscador(token);
     setEmpresas(response);
    }
     } catch (error) {

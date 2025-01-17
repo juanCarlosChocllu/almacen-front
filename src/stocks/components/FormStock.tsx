@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { formStockI } from "../interfaces/formStockInterface";
 import { dataProductoI, dataProductoStock } from "../interfaces/dataProducto";
 import { ProductoSeleccioando } from "./ProductoSeleccioando";
-import { guardarStockI } from "../interfaces/stockInterface";
+import { guardarStockI, StockVerificarI } from "../interfaces/stockInterface";
 import { guardarStock, vericarStockProducto } from "../service/stockApi";
 import { almacenAreaI } from "../../almacenArea/interfaces/almacenAreaInterface";
 import { listarAlmacenPorArea } from "../../almacenArea/services/almacenAreaApi";
@@ -24,9 +24,11 @@ import { errorPropiedadesI } from "../../interfaces/errorPropiedades";
 import { errorPersonalizadoI } from "../../interfaces/errorPersonalizado";
 import { errorClassValidator } from "../../utils/error/errorClassValidator";
 import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
+import { InformacionAlmacen } from "./InformacionAlmacen";
 
 export const FormStock = () => {
-  const {token}= useContext(AutenticacionContext)
+  const { token } = useContext(AutenticacionContext);
+
   const {
     register,
     handleSubmit,
@@ -38,8 +40,11 @@ export const FormStock = () => {
   const [dataSeleccionada, setDataSeleccionada] = useState<dataProductoI[]>([]);
   const [almacenArea, setAlmacenArea] = useState<almacenAreaI[]>([]);
   const [mensaje, setMensaje] = useState<string | null>(null);
-  const [almacenAreaStock,setAlmacenAreaStock]= useState<string>()
+  const [stockExisteProducto, setStockExisteProducto] = useState<
+    StockVerificarI[]
+  >([]);
   const [mensajeError, setMensajeError] = useState<errorPersonalizadoI[]>([]);
+
   const [mensajeErrorClassValidator, setMensajeErrorClassValidator] = useState<
     errorPropiedadesI[]
   >([]);
@@ -52,47 +57,48 @@ export const FormStock = () => {
   const [proveedorEmpresaSeleccionado, setProveedorEmpresaSeleccionado] =
     useState<proveedorEmpresaI | null>();
 
-
-
   const openModalProveedores = () => setIsOpenProveedores(true);
   const closeModalProveedores = () => setIsOpenProveedores(false);
 
+
+  const almacenAreaSeleccionado = watch("almacenArea");
+  console.log(almacenAreaSeleccionado);
+  
   const cantidawatch = watch("cantidad");
   const precioWatch = watch("precio");
 
   useEffect(() => {
     const listarAlmacenAreas = async () => {
       try {
-       if(token){
-        const response = await listarAlmacenPorArea(token);
-        setAlmacenArea(response);
-       }
+        if (token) {
+          const response = await listarAlmacenPorArea(token);
+          setAlmacenArea(response);
+        }
       } catch (error) {}
     };
     listarAlmacenAreas();
   }, []);
 
-  const productoSeleccionados = async(producto: productoI) => {
+  const productoSeleccionados = async (producto: productoI) => {
     try {
-     if(producto){
-      setProductoSeleccionado(producto);
-      const stock=  await  vericarStockProducto(producto._id)
-      setAlmacenAreaStock(stock.almacenArea)
-   
-     }
+      if (producto && token) {
+        setProductoSeleccionado(producto);
+        const stock = await vericarStockProducto(producto._id, token);
+        if (stock.length > 0) {
+          setStockExisteProducto(stock);
+        }
+      }
     } catch (error) {
       console.log(error);
-      
     }
-
   };
   const onSubmit = (data: formStockI) => {
-    if(!proveedorPersonaSeleccionado && !proveedorEmpresaSeleccionado){
-      return setMensaje('Seleccione un proveedor')
+    if (!proveedorPersonaSeleccionado && !proveedorEmpresaSeleccionado) {
+      return setMensaje("Seleccione un proveedor");
     }
-    
-    if(!productosSeleccioando){
-      return setMensaje('Seleccione un producto')
+
+    if (!productosSeleccioando) {
+      return setMensaje("Seleccione un producto");
     }
     const dataRegistrada: dataProductoI = {
       uuid: uuidv4(),
@@ -117,8 +123,6 @@ export const FormStock = () => {
     if (!registrados) {
       setDataSeleccionada([...dataSeleccionada, dataRegistrada]);
     }
-
-    
   };
   const nuevosdatos = (data: dataProductoI[]) => {
     setDataSeleccionada(data);
@@ -141,11 +145,10 @@ export const FormStock = () => {
   };
   const eliminarProductoSeleccionado = () => {
     setProductoSeleccionado(null);
+    setStockExisteProducto([])
   };
 
-  const guradaStock = async () => {
-
-    
+  const guardarStocks = async () => {
     const dataStock: dataProductoStock[] = dataSeleccionada.map(
       (item): dataProductoStock => {
         return {
@@ -161,6 +164,8 @@ export const FormStock = () => {
         };
       }
     );
+
+
     const data: guardarStockI = {
       data: dataStock,
       proveedorEmpresa: proveedorEmpresaSeleccionado?._id,
@@ -168,13 +173,13 @@ export const FormStock = () => {
     };
 
     try {
-     if(token){
-      const response = await guardarStock(data, token);
-      if (response.status === 201) {
-        setMensaje("Stocks registrados");
-        setDataSeleccionada([]);
+      if (token) {
+        const response = await guardarStock(data, token);
+        if (response.status === 201) {
+          setMensaje("Stocks registrados");
+          setDataSeleccionada([]);
+        }
       }
-     }
     } catch (error) {
       const e = httAxiosError(error);
       Array.isArray(e.response.data.errors) &&
@@ -184,102 +189,106 @@ export const FormStock = () => {
       );
     }
   };
-  
+
+
+
+
 
   return (
     <div className="p-6">
-       <div className="text-center">   <h2 className="text-2xl font-semibold text-gray-800">ASIGNAR STOCK A LOS PRODUCTOS</h2>
-       </div>
-<div className="p-4 space-y-6">
-    	
-  <div className="flex justify-center">
-    
-    <button
-      onClick={openModalProveedores}
-      className="bg-blue-600 text-white py-2 px-6 rounded-md text-sm shadow-lg hover:bg-blue-700 transition duration-300 ease-in-out"
-    >
-      Proveedores
-    </button>
-  </div>
+      <div className="text-center">
+        <h2 className="text-2xl font-semibold text-gray-800">
+          ASIGNAR STOCK A LOS PRODUCTOS
+        </h2>
+      </div>
+      <div className="p-4 space-y-6">
+        <div className="flex justify-center">
+          <button
+            onClick={openModalProveedores}
+            className="bg-blue-600 text-white py-2 px-6 rounded-md text-sm shadow-lg hover:bg-blue-700 transition duration-300 ease-in-out"
+          >
+            Proveedores
+          </button>
+        </div>
+
+        {mensajeErrorClassValidator.length > 0 &&
+          mensajeErrorClassValidator.map((item) => {
+            if (
+              item.propiedad === "proveedorPersona" ||
+              item.propiedad === "proveedorEmpresa"
+            ) {
+              return item.errors.map((e, index) => (
+                <p key={index} className="text-red-500 text-sm">
+                  {e}
+                </p>
+              ));
+            } else {
+              return null;
+            }
+          })}
+
+        <ProductosModal productoSeleccionado={productoSeleccionados} />
+
+        {proveedorPersonaSeleccionado && (
+          <SelectProveedorPersona
+            eliminarProveedor={eliminarProveedorPersona}
+            proveedor={proveedorPersonaSeleccionado}
+          />
+        )}
+
+        {proveedorEmpresaSeleccionado && (
+          <SelectProveedorEmpresa
+            eliminarProveedor={eliminarProveedorEmpresa}
+            proveedor={proveedorEmpresaSeleccionado}
+          />
+        )}
+
+        {productosSeleccioando && (
+          <SelectProducto
+            producto={productosSeleccioando}
+            eliminar={eliminarProductoSeleccionado}
+          />
+        )}
+   
+  {stockExisteProducto.length > 0 && <InformacionAlmacen stock={stockExisteProducto} />}
+
+        {mensajeError.length > 0 &&
+          mensajeError.map((item, index) => {
+            if (item.propiedad === "producto") {
+              return (
+                <p key={index} className="text-red-500 text-sm">
+                  {item.message}
+                </p>
+              );
+            } else {
+              return null;
+            }
+          })}
+
+        {isOpenProveedores && (
+          <MostrarProveedores
+            proveedorEmpresaSeleccionado={proveedoresEmpresa}
+            proveedorPersonaSeleccionado={proveedoresPersona}
+            isOpen={isOpenProveedores}
+            closeModal={closeModalProveedores}
+          />
+        )}
+      </div>
 
 
-  {mensajeErrorClassValidator.length > 0 &&
-    mensajeErrorClassValidator.map((item) => {
-      if (
-        item.propiedad === "proveedorPersona" ||
-        item.propiedad === "proveedorEmpresa"
-      ) {
-        return item.errors.map((e, index) => (
-          <p key={index} className="text-red-500 text-sm">
-            {e}
-          </p>
-        ));
-      } else {
-        return null;
-      }
-    })}
-
-
-  
-    <ProductosModal  productoSeleccionado={productoSeleccionados}/>
- 
-
-
-  {proveedorPersonaSeleccionado && (
-    <SelectProveedorPersona
-      eliminarProveedor={eliminarProveedorPersona}
-      proveedor={proveedorPersonaSeleccionado}
-    />
-  )}
-
-  {proveedorEmpresaSeleccionado && (
-    <SelectProveedorEmpresa
-      eliminarProveedor={eliminarProveedorEmpresa}
-      proveedor={proveedorEmpresaSeleccionado}
-    />
-  )}
 
 
 
-  {productosSeleccioando && (
-    <SelectProducto
-      producto={productosSeleccioando}
-      eliminar={eliminarProductoSeleccionado}
-    />
-  )}
 
+     
 
-  {mensajeError.length > 0 &&
-    mensajeError.map((item, index) => {
-      if (item.propiedad === "producto") {
-        return (
-          <p key={index} className="text-red-500 text-sm">
-            {item.message}
-          </p>
-        );
-      } else {
-        return null;
-      }
-    })}
-
-
-  {isOpenProveedores && (
-    <MostrarProveedores
-      proveedorEmpresaSeleccionado={proveedoresEmpresa}
-      proveedorPersonaSeleccionado={proveedoresPersona}
-      isOpen={isOpenProveedores}
-      closeModal={closeModalProveedores}
-    />
-  )}
-</div>
-
+        
       <div className="mt-6">
         <h2 className="text-xl font-semibold mb-4">Detalles del Producto</h2>
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="grid grid-cols-1 sm:grid-cols-2 gap-6"
         >
-                  
           <div>
             <label
               htmlFor="almacenArea"
@@ -289,20 +298,19 @@ export const FormStock = () => {
             </label>
             <select
               id="almacenArea"
-              
               className="h-10 border sm:w-3/4 p-2 border-gray-300 text-gray-600 text-base rounded-lg block w-full py-2 px-3 focus:outline-none"
+         
+           
               {...register("almacenArea", {
                 required: { value: true, message: "Seleccione un Alamacen" },
               })}
             >
-           
               <option value="">Seleccione el almacen</option>
-              {almacenArea.map((item) => {
-                 
-                   return  <option key={item._id} value={item._id}>
-                    {item.nombre}
-                  </option>
-              })}
+              {almacenArea.map((item) => (
+                <option key={item._id} value={item._id}>
+                  {item.nombre}
+                </option>
+              ))}
             </select>
             {mensajeError.length > 0 &&
               mensajeError.map((item) => {
@@ -447,6 +455,7 @@ export const FormStock = () => {
                 type="radio"
                 id="venta"
                 value="VENTA"
+                defaultChecked
                 className="w-5 h-5 border-gray-300 text-blue-600 focus:ring-blue-500"
                 {...register("tipo")}
               />
@@ -509,7 +518,6 @@ export const FormStock = () => {
               })}
           </div>
 
-
           <div className="mt-6 flex space-x-4  justify-center">
             <button
               type="submit"
@@ -521,21 +529,23 @@ export const FormStock = () => {
         </form>
       </div>
 
-     
-
       <ProductoSeleccioando data={dataSeleccionada} nuevaData={nuevosdatos} />
-       <div className="mt-6 flex space-x-4  justify-center">
-
-            {dataSeleccionada.length > 0 &&   <button
-          onClick={() => {
-            guradaStock();
-          }}
-          className="bg-yellow-500 text-white py-2 px-4 rounded w-full sm:w-auto text-sm"
-        >
-          Guardar
-        </button>}
+      <div className="mt-6 flex space-x-4  justify-center">
+        {dataSeleccionada.length > 0 && (
+          <button
+            onClick={() => {
+              guardarStocks();
+            }}
+            className="bg-yellow-500 text-white py-2 px-4 rounded w-full sm:w-auto text-sm"
+          >
+            Guardar
+          </button>
+        )}
         {mensaje && <span>{mensaje}</span>}
       </div>
+
     </div>
   );
 };
+
+

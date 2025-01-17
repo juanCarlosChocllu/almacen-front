@@ -28,7 +28,7 @@ export const ProductosModal = ({ productoSeleccionado }: {productoSeleccionado(d
   useEffect(() => {
     const listarPro = async () => {
       try {
-    if(token){
+    if(token){      
       const response = await listarProductos(limite,pagina,buscadorProducto.codigo, buscadorProducto.categoria, buscadorProducto.subCategoria,buscadorProducto.marca,token);
       setProductos(response.data);
       setPaginas(response.paginas)

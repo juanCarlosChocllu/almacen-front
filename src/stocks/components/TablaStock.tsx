@@ -14,7 +14,7 @@ export const TablaStock = () => {
   const [stocks, setStock] = useState<StockI[]>([])
   const [paginaSelecionada, setPaginaSeleccionada] = useState<number>(1)
   const [paginas, setPaginas] = useState<number>(1)
-  const [itemPage, setItemPage] = useState<number>(10)
+  const [itemPage, setItemPage] = useState<number>(20)
   const [buscadorStock , setBuscadorStock]= useState<BuscadorStockI>({
     almacen:null,
     codigo:null,
