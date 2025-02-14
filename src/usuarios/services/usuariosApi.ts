@@ -1,6 +1,7 @@
 import { instance } from "../../config/instanceConfig";
-import { httpRespuetaI } from "../../interfaces/httpRespuestaInterface";
+import { httpRespuetaI } from "../../core/interfaces/httpRespuestaInterface";
 import { FormUsuariosI } from "../interfaces/formUsuarioInterface";
+import { UserInfo } from "../interfaces/userInfo";
 import { UsuariosI } from "../interfaces/usuariosInterface";
 
 export const crearUsuarios=async(data:FormUsuariosI, token:string):Promise<httpRespuetaI>=>{
@@ -21,6 +22,20 @@ export const crearUsuarios=async(data:FormUsuariosI, token:string):Promise<httpR
 export const listarUsuarios=async(token:string):Promise<UsuariosI[]>=>{
     try {   
         const response = await instance.get('usuarios',{
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        })
+        return response.data
+    } catch (error) {
+        throw error
+    }
+}
+
+
+export const informacionUsuario=async(token:string):Promise<UserInfo>=>{
+    try {   
+        const response = await instance.get('usuarios/informacion',{
             headers:{
                 Authorization:`Bearer ${token}`
             }

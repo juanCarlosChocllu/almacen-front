@@ -3,14 +3,28 @@ import { almacenSucursalI } from "../../almacenSucursal/interfaces/almacenSucurs
 import { marcaI } from "../../marca/interfaces/marcaInterface";
 import { listarMarcas, marcasBuscador } from "../../marca/service/marcaApi";
 import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
-import { listarAlmacenSucursal } from "../../almacenSucursal/services/almacenSucursalApi";
+import { listarAlmaceBuscadorSucursal, listarAlmacenSucursal } from "../../almacenSucursal/services/almacenSucursalApi";
 import { useForm } from "react-hook-form";
 import { BuscadorStockSucursalI } from "../interfaces/buscadorStockSucursal";
+import { listarEmpresaBuscador } from "../../empresa/services/empresaApi";
+import { empresaI } from "../../empresa/interfaces/empresaInterface";
+import { PermisosContext } from "../../autenticacion/context/permisos.context";
+
+import { TipoUsuarioE } from "../../core/enums/tipoUsuario";
+import { listarSucursalEmpresaBuscador } from "../../sucursal/services/sucursalApi";
+import { sucursalI } from "../../sucursal/interface/sucursalInterface";
 
 export const BuscadorStockSucursal = ({onSubmit}:{onSubmit (data:BuscadorStockSucursalI):void}) => {
-  const {register, handleSubmit}=useForm<BuscadorStockSucursalI>()
-  const {token}=useContext(AutenticacionContext)
+  const {register, handleSubmit, watch}=useForm<BuscadorStockSucursalI>()
+  const empresa = watch("empresa")
+  const sucursal = watch("sucursal") || undefined
+  const {token }=useContext(AutenticacionContext)
+  const { tipo} =useContext(PermisosContext)
+  console.log(sucursal);
+  
   const [almacenes, setAlmacenes] = useState<almacenSucursalI[]>([]);
+  const [empresas, setEmpresas] = useState<empresaI[]>([]);
+  const [sucursales, setSucursales] = useState<sucursalI[]>([]);
   const [marcas, setMarcas] = useState<marcaI[]>([]);
   useEffect(()=>{
     if(token){
@@ -25,16 +39,49 @@ export const BuscadorStockSucursal = ({onSubmit}:{onSubmit (data:BuscadorStockSu
 
       (async()=>{
         try {
-            const response = await listarAlmacenSucursal(token)
-            setAlmacenes(response)
+            if(token){
+             const response = await listarAlmaceBuscadorSucursal(sucursal, token)
+              setAlmacenes(response)
+            }
         } catch (error) {
+          console.log(error);
           
         }
       })()
     }
-  },[])
+
+
+  },[empresa, sucursal])
+
+
+  useEffect(()=>{
+    listarEmpresa()
+    listarSucursal()
+  },[empresa])
 
   
+    const listarEmpresa=async()=>{
+      try {
+         if(token){
+          const respose = await listarEmpresaBuscador(token)
+          setEmpresas(respose)
+         }
+      } catch (error) {
+        
+      }
+    }
+    const listarSucursal=async()=>{
+      try {
+         if(token && empresa){
+          const response = await listarSucursalEmpresaBuscador(empresa,token)
+       
+          
+          setSucursales(response)
+         }
+      } catch (error) {
+        
+      }
+    }
 
   return (
     <div >
@@ -53,7 +100,38 @@ export const BuscadorStockSucursal = ({onSubmit}:{onSubmit (data:BuscadorStockSu
             />
           </div>
           
-    
+
+        {
+          tipo !== TipoUsuarioE.SUCURSAL &&  <div className="flex flex-col">
+          <label htmlFor="empresa" className="text-gray-600 font-medium mb-2">Empresa</label>
+          <select
+             {...register('empresa')}
+            name="empresa"
+            id="empresa"
+            className="border border-gray-300 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
+          >
+            <option value="">Seleccione la empresa</option>
+            {empresas.map((item)=> <option key={item._id} value={item._id}> {item.nombre} </option> )}
+          </select>
+        </div>
+        }
+
+{
+          tipo !== TipoUsuarioE.SUCURSAL &&  <div className="flex flex-col">
+          <label htmlFor="almacenSucursal" className="text-gray-600 font-medium mb-2">Sucursal</label>
+          <select
+             {...register('sucursal')}
+            name="sucursal"
+            id="sucursal"
+            className="border border-gray-300 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
+          >
+            <option value="">Seleccione la sucursal</option>
+            {sucursales.map((item)=> <option key={item._id} value={item._id}> {item.nombre} </option> )}
+          </select>
+        </div>
+        }
+
+          
           <div className="flex flex-col">
             <label htmlFor="almacenSucursal" className="text-gray-600 font-medium mb-2">Almacén</label>
             <select

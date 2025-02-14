@@ -17,10 +17,14 @@ export const TablaRol = () => {
     useEffect(()=>{
         listarRoles()
     },[])
+    console.log('rol');
+    
     const listarRoles = async()=>{
             try {
                if(token){
                 const response = await listarRol(token)
+                console.log('e', response);
+                
                 setroles(response)
                }
             } catch (error) {

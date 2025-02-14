@@ -1,14 +1,16 @@
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import { HttpStatus } from "../../../enums/httStatusEnum";
-import { httAxiosError } from "../../../utils/error/error.util";
-import { errorPropiedadesI } from "../../../interfaces/errorPropiedades";
-import { errorClassValidator } from "../../../utils/error/errorClassValidator";
+import { HttpStatus } from "../../../core/enums/httStatusEnum";
+
+import { errorPropiedadesI } from "../../../core/interfaces/errorPropiedades";
+
 import { formSucursalI } from "../../interface/formScursalIterface";
 import { listarEmpresa } from "../../../empresa/services/empresaApi";
 import { empresaI } from "../../../empresa/interfaces/empresaInterface";
 import { crearSucursal } from "../../services/sucursalApi";
 import { AutenticacionContext } from "../../../autenticacion/context/crear.autenticacion.context";
+import { httAxiosError } from "../../../core/utils/error.util";
+import { errorClassValidator } from "../../../core/utils/errorClassValidator";
 
 export const FormScursal = () => {
   const {token}= useContext(AutenticacionContext)

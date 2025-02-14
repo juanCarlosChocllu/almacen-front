@@ -4,21 +4,23 @@ import { listarRol } from "../../../rol/services/rolApi";
 import { useForm } from "react-hook-form";
 import { FormUsuariosI } from "../../interfaces/formUsuarioInterface";
 import { crearUsuarios } from "../../services/usuariosApi";
-import { httAxiosError } from "../../../utils/error/error.util";
-import { HttpStatus } from "../../../enums/httStatusEnum";
-import { errorPropiedadesI } from "../../../interfaces/errorPropiedades";
-import { errorClassValidator } from "../../../utils/error/errorClassValidator";
-import { errorConflictoI } from "../../../interfaces/errorConflictoInterface";
+
+import { HttpStatus } from "../../../core/enums/httStatusEnum";
+import { errorPropiedadesI } from "../../../core/interfaces/errorPropiedades";
+
+import { errorConflictoI } from "../../../core/interfaces/errorConflictoInterface";
 import { TipoE } from "../../enums/tipo.enum";
 import { listarAreas } from "../../../areas/service/areasApi";
 import { areasI } from "../../../areas/interfaces/areasInterface";
 import { empresaI } from "../../../empresa/interfaces/empresaInterface";
 import { listarEmpresa } from "../../../empresa/services/empresaApi";
 
-import { listarSucursalEmpresa } from "../../../sucursal/services/sucursalApi";
+import { listarSucursalEmpresaBuscador } from "../../../sucursal/services/sucursalApi";
 import { sucursalI } from "../../../sucursal/interface/sucursalInterface";
 import { AutenticacionContext } from "../../../autenticacion/context/crear.autenticacion.context";
 import { MdDelete } from "react-icons/md";
+import { httAxiosError } from "../../../core/utils/error.util";
+import { errorClassValidator } from "../../../core/utils/errorClassValidator";
 
 export const FormUsuarios = () => {
     const {token}=useContext(AutenticacionContext)
@@ -136,7 +138,7 @@ export const FormUsuarios = () => {
   const sucursales= async()=>{
     try {
       if(token){
-        const response = await  listarSucursalEmpresa(empresaSeleccionado, token)
+        const response = await  listarSucursalEmpresaBuscador(empresaSeleccionado, token)
       setSucursales(response)
       }
   } catch (error) {

@@ -1,5 +1,5 @@
 import { instance } from "../../config/instanceConfig"
-import { httpResponsePagiandor } from "../../interfaces/httpRespuestaInterface"
+import { httpResponsePagiandor } from "../../core/interfaces/httpRespuestaInterface"
 import { tipoE } from "../../stocks/enums/tipos.enum"
 import { BuscadorStockSucursalI, ParamsStockSucursalI } from "../interfaces/buscadorStockSucursal"
 import { StockSucursalI } from "../interfaces/stockSucursal"
@@ -22,8 +22,12 @@ export const verificarCantidadStockSucursal =async(stock:string, almacen:string,
 
 
 export const listarStockSucursal= async(token:string , limite:number, pagina:number,buscador:BuscadorStockSucursalI ):Promise<httpResponsePagiandor<StockSucursalI>>=>{  
-    console.log(buscador);
     
+  
+  if(buscador.empresa) {
+    delete buscador.empresa
+  }
+
  
   try {
     const params:ParamsStockSucursalI={
@@ -35,6 +39,7 @@ export const listarStockSucursal= async(token:string , limite:number, pagina:num
     buscador.codigo ? params.codigo = buscador.codigo : params
     buscador.marca ? params.marca = buscador.marca : params
     buscador.tipo ? params.tipo = buscador.tipo : params
+    buscador.sucursal ? params.sucursal = buscador.sucursal : params
     const response = await instance.get(`stock/sucursal`,{
       headers:{
         Authorization:`Bearer ${token}`,

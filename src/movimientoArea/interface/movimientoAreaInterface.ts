@@ -14,6 +14,8 @@ export interface MovimientoAreaI {
     fechaVencimiento: string;
     proveedor: string;
     fecha: string;
+    imagen: string;
+    codigoBarra: string;
 
 
   }

@@ -1,5 +1,5 @@
 import { instance } from "../../config/instanceConfig"
-import { httpRespuetaI } from "../../interfaces/httpRespuestaInterface"
+import { httpRespuetaI } from "../../core/interfaces/httpRespuestaInterface"
 import { almacenSucursalI } from "../interfaces/almacenSucursalInterface"
 import { formAlmacenSucursalI } from "../interfaces/formAlmacenSucursal"
 
@@ -30,7 +30,7 @@ export const crearAlmacenSucursal=async(data:formAlmacenSucursalI, token:string)
     }
 }
 
-export const listraAlmacenPorSucursal=async(sucursal:string, token:string):Promise<almacenSucursalI[]>=>{
+export const listraAlmacenPorSucursalBuscador=async(sucursal:string, token:string):Promise<almacenSucursalI[]>=>{
     console.log(token);
     
     try {
@@ -44,4 +44,21 @@ export const listraAlmacenPorSucursal=async(sucursal:string, token:string):Promi
         throw error
     }
 }
+
+
+export const listarAlmaceBuscadorSucursal=async(sucursal:string | undefined, token:string):Promise<almacenSucursalI[]>=>{
+    console.log(token);
+    
+    try {
+        const response = await instance.get(`almacen/sucursal/listar/buscador/${sucursal}`,{
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        })
+        return response.data        
+    } catch (error) {
+        throw error
+    }
+}
+
 

@@ -9,6 +9,7 @@ export interface StockSucursalI{
     imagen:string
     codigo:string
     almacen:string
+    fechaVencimiento:string
 
     codigoProducto:string
 }

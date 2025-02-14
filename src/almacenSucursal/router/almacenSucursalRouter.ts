@@ -1,4 +1,4 @@
-import { routerI } from "../../interfaces/routerInterface";
+import { routerI } from "../../core/interfaces/routerInterface";
 import { AlmAcenSucursalPage } from "../page/AlmAcenSucursalPage";
 
 export const almacenSucursalRouter:routerI[]=[

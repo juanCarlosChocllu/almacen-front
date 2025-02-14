@@ -1,10 +1,11 @@
 import { useForm } from "react-hook-form";
 import { LoginI } from "../interface/loginInterface";
 import { login } from "../services/autenticacionApi";
-import { HttpStatus } from "../../enums/httStatusEnum";
+import { HttpStatus } from "../../core/enums/httStatusEnum";
 import { useContext, useState } from "react";
 import { AutenticacionContext } from "../context/crear.autenticacion.context";
-import { httAxiosError } from "../../utils/error/error.util";
+import { httAxiosError } from "../../core/utils/error.util";
+
 
 
 export const Login = () => {

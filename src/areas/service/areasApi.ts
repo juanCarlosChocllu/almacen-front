@@ -1,6 +1,6 @@
 
 import { instance } from "../../config/instanceConfig"
-import { httpRespuetaI } from "../../interfaces/httpRespuestaInterface"
+import { httpRespuetaI } from "../../core/interfaces/httpRespuestaInterface"
 import { areasI } from "../interfaces/areasInterface"
 import { formAreasI } from "../interfaces/formInterface"
 

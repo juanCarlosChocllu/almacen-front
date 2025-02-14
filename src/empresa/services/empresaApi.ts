@@ -1,5 +1,5 @@
 import { instance } from "../../config/instanceConfig";
-import { httpRespuetaI } from "../../interfaces/httpRespuestaInterface";
+import { httpRespuetaI } from "../../core/interfaces/httpRespuestaInterface";
 import { empresaI } from "../interfaces/empresaInterface";
 import { formEmpresaI } from "../interfaces/formEmpresaInterface";
 

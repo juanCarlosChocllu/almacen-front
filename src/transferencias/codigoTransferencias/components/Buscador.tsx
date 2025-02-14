@@ -1,0 +1,48 @@
+import { useForm } from "react-hook-form"
+import { BuscadorI } from "../interfaces/buscador"
+import { Areas } from "../../../core/components/Areas"
+import { useState } from "react"
+
+
+export const Buscador = ({onsubmit}:{onsubmit:(data:BuscadorI)=> void}) => {
+  const [area, setAreas] = useState<string>()
+
+
+  const {register, handleSubmit,setValue}= useForm<BuscadorI>()
+  setValue('area', area)
+  return (
+    <div>
+    <form onSubmit={handleSubmit(onsubmit)}>
+      <div className="flex space-x-4">
+        <div>
+          <label htmlFor="codigo" className="block text-sm font-medium text-gray-700">Código</label>
+          <input 
+          {...register('codigo')}
+          type="text" id="codigo" placeholder="Código" className="w-48 px-3 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+        </div>
+        <div>
+
+        <Areas  onsubmit={setAreas}/>
+        </div>
+        <div>
+          <label htmlFor="fechaInicio" className="block text-sm font-medium text-gray-700">Fecha Inicio</label>
+          <input  {...register('fechaInicio')} type="date" id="fechaInicio" className="w-48 px-3 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+        </div>
+        <div>
+          <label htmlFor="fechaFin" className="block text-sm font-medium text-gray-700">Fecha Fin</label>
+          <input type="date"  {...register('fechaFin')} id="fechaFin" className="w-48 px-3 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+        </div>
+        <div>
+          <button type="submit" className="w-48 bg-indigo-500 text-white text-sm px-4 py-2 rounded-lg hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 mt-5 ">
+            Buscar
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+  
+  
+  
+  )
+}
+

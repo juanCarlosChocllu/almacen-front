@@ -1,5 +1,5 @@
 import { instance } from "../../config/instanceConfig"
-import { httpRespuetaI } from "../../interfaces/httpRespuestaInterface"
+import { httpRespuetaI } from "../../core/interfaces/httpRespuestaInterface"
 import { formProveedorPersonaI } from "../interfaces/formProveedorPersonaInterface"
 import { proveedorPersonaI } from "../interfaces/proveedorPersonaInterface"
 

@@ -1,12 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { listarIngresos } from '../services/movimientoAreaApi';
+import { listarIngresos } from '../services/movimientoAreaService';
 import { MovimientoAreaI } from '../interface/movimientoAreaInterface';
 import { BuscadorMovimientoArea } from './BuscadorMovimientoArea';
 import { BuscadorMAreaI } from '../interface/buscadorMAreaInterface';
-import { Paginador } from '../../utils/components/Paginador';
-import { Paginas } from '../../utils/components/Paginas';
-import { GenerarExcel } from '../../utils/components/GenerarExcel';
+
 import { AutenticacionContext } from '../../autenticacion/context/crear.autenticacion.context';
+import { GenerarExcel } from '../../core/components/GenerarExcel';
+import { ItemsPorPagina } from '../../core/components/ItemsPorPagina';
+import { Paginador } from '../../core/components/Paginador';
 
 
 
@@ -44,9 +45,7 @@ const onsubmit = (data:BuscadorMAreaI)=>{
   setBuscadorMarea(data)
   
 }
-const cantidadItem= (cantidad:string)=>{
-   setLimite(Number(cantidad))
-} 
+
 const paginaSeleccionada=(pagina:number)=>{
   setpagina(pagina)
 }
@@ -60,7 +59,7 @@ const paginaSeleccionada=(pagina:number)=>{
   <div >
       <GenerarExcel<MovimientoAreaI> data={ingresosDta} nombre={'Ingresos'} />
     </div>
-  <Paginas page={cantidadItem}/>
+  <ItemsPorPagina page={setLimite}/>
       <table className="min-w-full table-auto">
     
         <thead className="bg-gray-800 text-white text-xs">

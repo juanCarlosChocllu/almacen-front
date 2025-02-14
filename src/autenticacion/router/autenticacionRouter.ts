@@ -1,6 +1,6 @@
 
 
-import { routerI } from "../../interfaces/routerInterface";
+import { routerI } from "../../core/interfaces/routerInterface";
 import { Logout } from "../components/Logout";
 import { AuntenticacionPage } from "../page/AuntenticacionPage";
 

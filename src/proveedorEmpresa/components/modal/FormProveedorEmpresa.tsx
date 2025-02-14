@@ -2,11 +2,13 @@ import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { formProveedorEmpresaI } from "../../interface/formEmpresaInterface";
 import { crearProveedorEmpresas } from "../../services/proveedorEmpresaApi";
-import { HttpStatus } from "../../../enums/httStatusEnum";
-import { httAxiosError } from "../../../utils/error/error.util";
-import { errorPropiedadesI } from "../../../interfaces/errorPropiedades";
-import { errorClassValidator } from "../../../utils/error/errorClassValidator";
+import { HttpStatus } from "../../../core/enums/httStatusEnum";
+
+import { errorPropiedadesI } from "../../../core/interfaces/errorPropiedades";
+
 import { AutenticacionContext } from "../../../autenticacion/context/crear.autenticacion.context";
+import { httAxiosError } from "../../../core/utils/error.util";
+import { errorClassValidator } from "../../../core/utils/errorClassValidator";
 
 export const FormProveedorEmpresa = () => {
   const { register, handleSubmit } = useForm<formProveedorEmpresaI>();

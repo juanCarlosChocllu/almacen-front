@@ -7,4 +7,5 @@ username:string
 celular:string
 rol:string
 rolNombre:string
+
 }

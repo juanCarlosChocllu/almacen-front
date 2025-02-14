@@ -2,11 +2,13 @@ import React, { useContext, useEffect, useState } from 'react'
 import { listarStockSucursal } from '../services/stockSucursalApi'
 import { AutenticacionContext } from '../../autenticacion/context/crear.autenticacion.context'
 import { StockSucursalI } from '../interfaces/stockSucursal'
-import { MostarImagenes } from '../../utils/components/modal/MostarImagenes'
+
 import { BuscadorStockSucursal } from './BuscadorStockSucursal'
 import { BuscadorStockSucursalI } from '../interfaces/buscadorStockSucursal'
-import { Paginas } from '../../utils/components/Paginas'
-import { Paginador } from '../../utils/components/Paginador'
+import { ItemsPorPagina } from '../../core/components/ItemsPorPagina'
+import { Paginador } from '../../core/components/Paginador'
+import { MostarImagenes } from '../../core/components/modal/MostarImagenes'
+import { diasRestantes } from '../../core/utils/diasVencimiento'
 
 export const TablaStockSucursal = () => {
   const [stocks, setStocks] = useState<StockSucursalI[]>([])
@@ -18,7 +20,7 @@ export const TablaStockSucursal = () => {
   })
   const [paginas, setPaginas]=useState<number> (1)
   const [pagina, setPagina]=useState<number> (1)
-  const [limite, setLimite]=useState<number> (10)
+  const [limite, setLimite]=useState<number> (20)
   const {token}= useContext(AutenticacionContext)
   useEffect(()=>{
     stock()
@@ -46,20 +48,15 @@ export const TablaStockSucursal = () => {
       
   }
 
-  const cantidadItem=(cantidad:String)=>{
-       setLimite(Number(cantidad))
-  }
 
- const  paginaSeleccionada=(pagina:number)=>{
-      setPagina(pagina)
- }
+
   
   return (
   <div>
     
 
        <BuscadorStockSucursal onSubmit={onsubmit}/>
-      <Paginas page={cantidadItem} />
+      <ItemsPorPagina page={setLimite} />
       <table className="min-w-full table-auto text-sm">
         <thead>
           <tr className="bg-gray-800 text-white">
@@ -71,6 +68,8 @@ export const TablaStockSucursal = () => {
             
             <th className="px-2 py-1 text-left">Color</th>
             <th className="px-2 py-1 text-left">Tipo</th>
+            <th className="px-2 py-1 text-left">fecha de vencimiento</th>
+            <th className="px-2 py-1 text-left">Dias</th>
             <th className="px-2 py-1 text-left">Imagen</th>
        
           </tr>
@@ -85,13 +84,14 @@ export const TablaStockSucursal = () => {
               <td className="px-2 py-1">{item.cantidad || 0}</td>
               <td className="px-2 py-1">{item.color}</td>
               <td className="px-2 py-1">{item.tipo}</td>
-
+              <td className="px-2 py-1">{item.fechaVencimiento}</td>
+              <td className="px-2 py-1">{diasRestantes(item.fechaVencimiento)}</td>
               <td className="px-2 py-1"><MostarImagenes  key={item._id} url={item.imagen}/></td>
             </tr>
           ))}
         </tbody>
       </table>
-          <Paginador paginas={paginas} paginaSeleccionada={paginaSeleccionada} paginaActual={pagina}/>
+          <Paginador paginas={paginas} paginaSeleccionada={setPagina} paginaActual={pagina}/>
     </div>
   )
 }

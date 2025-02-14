@@ -1,12 +1,15 @@
 import { instance } from "../../config/instanceConfig"
 import { ActualizarDetalleI } from "../interfaces/actulizarArea"
-import { DetalleAreaI } from "../interfaces/detalleArea"
+import { DetalleAreaI } from "../../core/interfaces/detalleArea"
+import { httpRespuetaI } from "../../core/interfaces/httpRespuestaInterface";
 
 
 
-export const listarDetalleArea = async(token:string):Promise<DetalleAreaI[]>=>{
+export const listarDetalleAreaPorUsuario = async(token:string):Promise<DetalleAreaI[]>=>{
     try {
-        const response = await instance.get('detalle/area',{
+        console.log('hola');
+        
+        const response = await instance.get('detalle/area/usuario',{
             headers:{
                 Authorization:`Bearer ${token}`
             }
@@ -19,7 +22,7 @@ export const listarDetalleArea = async(token:string):Promise<DetalleAreaI[]>=>{
 }
 
 
-export const actualizarDetalleArea = async(data:ActualizarDetalleI, token:string):Promise<DetalleAreaI[]>=>{
+export const actualizarDetalleArea = async(data:ActualizarDetalleI, token:string):Promise<httpRespuetaI>=>{
     try {
         const response = await instance.post('detalle/area',data,{
             headers:{

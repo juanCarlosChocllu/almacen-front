@@ -1,31 +1,33 @@
 import { useContext, useEffect, useState } from "react";
-import { ListraStock } from "../../stocks/components/modal/ListraStock";
-import { listarEmpresa, listarEmpresaBuscador } from "../../empresa/services/empresaApi";
+import { ListraStock } from "../../stocks/modal/ListraStock";
+import {  listarEmpresaBuscador } from "../../empresa/services/empresaApi";
 import { empresaI } from "../../empresa/interfaces/empresaInterface";
 import { useForm } from "react-hook-form";
-import { formTransferenciaI } from "../interface/formTranferenciaInterface";
+import { formTransferenciaI } from "../core/interface/formTranferenciaInterface";
 import { sucursalI } from "../../sucursal/interface/sucursalInterface";
-import { listarSucursalEmpresa } from "../../sucursal/services/sucursalApi";
+import { listarSucursalEmpresaBuscador } from "../../sucursal/services/sucursalApi";
 import { almacenSucursalI } from "../../almacenSucursal/interfaces/almacenSucursalInterface";
-import { listraAlmacenPorSucursal } from "../../almacenSucursal/services/almacenSucursalApi";
+import { listraAlmacenPorSucursalBuscador } from "../../almacenSucursal/services/almacenSucursalApi";
 import { StockI } from "../../stocks/interfaces/stockInterface";
 import { TranferenciaRegistrada } from "./TranferenciaRegistrada";
-import { registrarTranferenciaI } from "../interface/registrarTransferenciaInterface";
+import { registrarTranferenciaI } from "../core/interface/registrarTransferenciaInterface";
 import { v4 as uuidv4 } from "uuid";
 import {
   dataTransferenciaI,
   realizarTransferenciaI,
-} from "../interface/realizarTransferenciaInterface";
+} from "../core/interface/realizarTransferenciaInterface";
 import { realizarTransferencias } from "../services/transferenciaApi";
 import { StockSeleccionado } from "./StockSeleccionado";
-import { HttpStatus } from "../../enums/httStatusEnum";
-import { httAxiosError } from "../../utils/error/error.util";
+import { HttpStatus } from "../../core/enums/httStatusEnum";
+
 import { verificarCantidadStockSucursal } from "../../stockSucursal/services/stockSucursalApi";
 import { StockSucursalVerificarI } from "../../stockSucursal/interfaces/stockSucursalInterface";
 
-import { errorPersonalizadoI } from "../../interfaces/errorPersonalizado";
-import { Loader } from "../../utils/components/Loader";
+import { errorPersonalizadoI } from "../../core/interfaces/errorPersonalizado";
+
 import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
+import { httAxiosError } from "../../core/utils/error.util";
+import { Loader } from "../../core/components/Loader";
 
 export const CrearTransferencia = () => {
   const {token}= useContext(AutenticacionContext)
@@ -83,7 +85,7 @@ export const CrearTransferencia = () => {
   const listarSucursales = async () => {
     try {
       if(token){
-        const response = await listarSucursalEmpresa(empresa,token);
+        const response = await listarSucursalEmpresaBuscador(empresa,token);
         setSucursales(response);
       }
     } catch (error) {
@@ -94,7 +96,7 @@ export const CrearTransferencia = () => {
   const listarSucursaAlmacen = async () => {
     try {
       if(token){
-        const response = await listraAlmacenPorSucursal(sucursal, token);
+        const response = await listraAlmacenPorSucursalBuscador(sucursal, token);
         setAlmacenSucursal(response);
       }
     } catch (error) {
@@ -144,6 +146,9 @@ export const CrearTransferencia = () => {
         tipo: item.tipo,
         stock: item.idStock,
         almacenArea: item.almacenArea,
+        codigoProducto:item.codigoProducto,
+        sucursal:item.sucursal,
+        nombreProducto:item.producto
       };
     });
 
@@ -156,7 +161,6 @@ export const CrearTransferencia = () => {
         const response = await realizarTransferencias(newDta, token);
       if (response.status == HttpStatus.OK) {
         setMensaje(response.message);
-
         setDataRegistrada([]);
       }
        }

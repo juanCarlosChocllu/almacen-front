@@ -1,7 +1,7 @@
 import {  useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { errorPropiedadesI } from "../../../interfaces/errorPropiedades";
+import { errorPropiedadesI } from "../../../core/interfaces/errorPropiedades";
 
 
 import { empresaI } from "../../../empresa/interfaces/empresaInterface";
@@ -9,13 +9,15 @@ import { empresaI } from "../../../empresa/interfaces/empresaInterface";
 import { formAlmacenAreaI } from "../../interfaces/formAlmacenAreaInterface";
 import { listarAreas } from "../../../areas/service/areasApi";
 
-import { HttpStatus } from "../../../enums/httStatusEnum";
-import { httAxiosError } from "../../../utils/error/error.util";
+import { HttpStatus } from "../../../core/enums/httStatusEnum";
+
 import { crearAlmacenArea } from "../../services/almacenAreaApi";
-import { errorClassValidator } from "../../../utils/error/errorClassValidator";
+
 import { AutenticacionContext } from "../../../autenticacion/context/crear.autenticacion.context";
 import { PermisosContext } from "../../../autenticacion/context/permisos.context";
 import { TipoE } from "../../../usuarios/enums/tipo.enum";
+import { httAxiosError } from "../../../core/utils/error.util";
+import { errorClassValidator } from "../../../core/utils/errorClassValidator";
 
 
 export const FormAlmacenArea = () => {

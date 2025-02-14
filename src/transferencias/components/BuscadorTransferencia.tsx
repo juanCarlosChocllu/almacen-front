@@ -2,12 +2,12 @@ import {useContext, useEffect, useState } from "react";
 import { listarMarcas } from "../../marca/service/marcaApi";
 import { marcaI } from "../../marca/interfaces/marcaInterface";
 import { empresaI } from "../../empresa/interfaces/empresaInterface";
-import { listarSucursalEmpresa } from "../../sucursal/services/sucursalApi";
+import { listarSucursalEmpresaBuscador } from "../../sucursal/services/sucursalApi";
 import { sucursalI } from "../../sucursal/interface/sucursalInterface";
 import { almacenSucursalI } from "../../almacenSucursal/interfaces/almacenSucursalInterface";
-import { listraAlmacenPorSucursal } from "../../almacenSucursal/services/almacenSucursalApi";
+import { listraAlmacenPorSucursalBuscador } from "../../almacenSucursal/services/almacenSucursalApi";
 import { useForm } from "react-hook-form";
-import { BuscadorTransFerenciaI } from "../interface/buscadorTransferencia";
+import { BuscadorTransFerenciaI } from "../core/interface/buscadorTransferencia";
 import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
 import { listarEmpresaBuscador } from "../../empresa/services/empresaApi";
 
@@ -62,7 +62,7 @@ export const BuscadorTransferencia = ({onsudmit}:{onsudmit(data:BuscadorTransFer
   const sucursal = async () => {
     try {
      if(token){
-      const response = await listarSucursalEmpresa(empresaSeleccioanda,token);
+      const response = await listarSucursalEmpresaBuscador(empresaSeleccioanda,token);
       setSucursales(response)
      }
     } catch (error) {
@@ -73,7 +73,7 @@ export const BuscadorTransferencia = ({onsudmit}:{onsudmit(data:BuscadorTransFer
   const almacen = async () => {
     try {
     if(sucursalSelecionada && token){
-        const response = await listraAlmacenPorSucursal(sucursalSelecionada, token);
+        const response = await listraAlmacenPorSucursalBuscador(sucursalSelecionada, token);
         setAlmacenes(response)
     }
     } catch (error) {

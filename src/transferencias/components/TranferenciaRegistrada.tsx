@@ -1,5 +1,5 @@
 import { FaTrash } from "react-icons/fa";
-import { registrarTranferenciaI } from "../interface/registrarTransferenciaInterface";
+import { registrarTranferenciaI } from "../core/interface/registrarTransferenciaInterface";
 
 export const TranferenciaRegistrada = ({
   data,

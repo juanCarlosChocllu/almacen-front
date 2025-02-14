@@ -1,13 +1,15 @@
 import { useContext, useEffect, useState } from "react";
 import { StockI } from "../interfaces/stockInterface";
-import { Paginas } from "../../utils/components/Paginas";
-import { Paginador } from "../../utils/components/Paginador";
-import { listarStock } from "../service/stockApi";
+
+import { listarStock } from "../service/stockService";
 import { BuscadorStock } from "./BuscadorStock";
 import { BuscadorStockI } from "../interfaces/buscadorStock";
-import { GenerarExcel } from "../../utils/components/GenerarExcel";
-import { MostarImagenes } from "../../utils/components/modal/MostarImagenes";
+
 import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
+import { GenerarExcel } from "../../core/components/GenerarExcel";
+import { ItemsPorPagina } from "../../core/components/ItemsPorPagina";
+import { MostarImagenes } from "../../core/components/modal/MostarImagenes";
+import { Paginador } from "../../core/components/Paginador";
 
 export const TablaStock = () => {
   const {token} =useContext(AutenticacionContext)
@@ -49,11 +51,7 @@ export const TablaStock = () => {
   
 
 
-  const cantidadItems=(cantidad:string)=>{
-    setItemPage(Number(cantidad))
   
-    
-  }
 
   const paginaSelect=(pagina:number)=>{
     setPaginaSeleccionada(pagina)
@@ -69,7 +67,7 @@ export const TablaStock = () => {
 
           <BuscadorStock onSubmit={onSubmit}/>
           <GenerarExcel<StockI> data={stocks} nombre={'Stock'}/>
-          {<Paginas  page={cantidadItems}/>}
+          {<ItemsPorPagina  page={setItemPage}/>}
       <table className="min-w-full table-auto text-sm">
         <thead>
           <tr className="bg-gray-800 text-white">

@@ -1,15 +1,17 @@
 import { useContext, useEffect, useState } from "react";
-import { listarProductos } from "../service/productosApi";
+import { listarProductos } from "../service/productosService";
 import { productoI } from "../interface/productoInterface";
 import { Buscador } from "./Buscador";
 import { BuscadorI } from "../interface/buscardorInterface";
-import { Paginador } from "../../utils/components/Paginador";
-import { Paginas } from "../../utils/components/Paginas";
+
 import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
-import { GenerarExcel } from "../../utils/components/GenerarExcel";
-import {MostarImagenes} from '../../utils/components/modal/MostarImagenes'
+
 import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
+import { GenerarExcel } from "../../core/components/GenerarExcel";
+import { ItemsPorPagina } from "../../core/components/ItemsPorPagina";
+import { MostarImagenes } from "../../core/components/modal/MostarImagenes";
+import { Paginador } from "../../core/components/Paginador";
 
 export const TablaProductos = () => {
   const [productos, setProductos] = useState<productoI[]>([]);
@@ -45,9 +47,7 @@ export const TablaProductos = () => {
     listarPro();
   }, [subCategoria, codigo, categoria, marca, paginaSeleccionada, limite]);
 
-  const cantidadIntems = (cantidad: string) => {
-    setLimite(Number(cantidad));
-  };
+ 
 
   const pagina = (pagina: number) => {
     setPaginaSeleccioanda(pagina);
@@ -63,7 +63,7 @@ export const TablaProductos = () => {
     <div className="p-6">
       {<Buscador onsudmit={handleBuscador} />}
       <GenerarExcel<productoI> data={productos} nombre={'Productos'}/>
-      <Paginas page={cantidadIntems} />
+      <ItemsPorPagina page={setLimite} />
       <table className="min-w-full table-auto border-collapse">
         <thead>
           <tr className="bg-gray-200 text-left">

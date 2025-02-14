@@ -1,6 +1,6 @@
 
 
-import { routerI } from "../../interfaces/routerInterface.ts";
+import { routerI } from "../../core/interfaces/routerInterface.ts";
 import { MarcaPage } from "../page/MarcaPage.tsx";
 
 export const marcasRouter:routerI[]=[

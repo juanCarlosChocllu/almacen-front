@@ -1,6 +1,7 @@
 import { StockPage } from "../page/StockPage";
-import { routerI } from "../../interfaces/routerInterface";
+import { routerI } from "../../core/interfaces/routerInterface";
 import { StockPageListar } from "../page/StockPageListar";
+
 
 export const stockRouter:routerI[]=[
     {
@@ -12,5 +13,6 @@ export const stockRouter:routerI[]=[
         path: '/stock/listar',
         component: StockPageListar, 
       },
+
 ]
 

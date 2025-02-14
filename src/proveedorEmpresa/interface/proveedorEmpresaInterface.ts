@@ -1,4 +1,4 @@
-import { ModalPropsI } from "../../interfaces/modalProps.Interface"
+import { ModalPropsI } from "../../core/interfaces/modalProps.Interface"
 
 export interface proveedorEmpresaI {
     

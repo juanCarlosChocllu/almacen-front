@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 
 
-import { ModalPropsI } from "../../../interfaces/modalProps.Interface";
+import { ModalPropsI } from "../../../core/interfaces/modalProps.Interface";
 import { marcaI } from "../../interfaces/marcaInterface";
 import { listarMarcas } from "../../service/marcaApi";
-import { errorPropiedadesI } from "../../../interfaces/errorPropiedades";
+import { errorPropiedadesI } from "../../../core/interfaces/errorPropiedades";
 
 
 export const ModalMarca = ({isOpen ,closeModal}:ModalPropsI) => {

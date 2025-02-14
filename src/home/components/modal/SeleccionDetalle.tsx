@@ -1,11 +1,12 @@
 import { useContext, useEffect, useState } from 'react';
-import { actualizarDetalleArea, listarDetalleArea } from '../../../detalleArea/services/detalleAreaApi';
+import { actualizarDetalleArea, listarDetalleAreaPorUsuario } from '../../../detalleArea/services/detalleAreaApi';
 import { AutenticacionContext } from '../../../autenticacion/context/crear.autenticacion.context';
-import { DetalleAreaI } from '../../../detalleArea/interfaces/detalleArea';
+import { DetalleAreaI } from '../../../core/interfaces/detalleArea';
 import { useForm } from 'react-hook-form';
 import { SeleccionAreaI } from '../../../detalleArea/interfaces/selececcionArea';
 import { ActualizarDetalleI } from '../../../detalleArea/interfaces/actulizarArea';
 import { PermisosContext } from '../../../autenticacion/context/permisos.context';
+import { HttpStatus } from '../../../core/enums/httStatusEnum';
 
 export const SeleccionDetalle = () => {
   const {tipo}=useContext(PermisosContext)
@@ -31,7 +32,7 @@ export const SeleccionDetalle = () => {
   const detalleArea =async()=>{
     try {
        if(token){
-        const response= await listarDetalleArea(token)
+        const response= await listarDetalleAreaPorUsuario(token)       
         setAreas(response)
        }
     } catch (error) {
@@ -47,7 +48,9 @@ export const SeleccionDetalle = () => {
      try {
         if(token){
           const response = await actualizarDetalleArea(newData, token)
-          console.log(response);
+            if(response.status == HttpStatus.OK) {
+              window.location.reload()
+            }
           
         }
      } catch (error) {

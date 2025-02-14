@@ -21,12 +21,13 @@ import { RiAdminFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import { AutenticacionContext } from "../autenticacion/context/crear.autenticacion.context";
 import { PermisosContext } from "../autenticacion/context/permisos.context";
-import { ModulosE } from "../enums/modulos.enum";
+import { ModulosE } from "../core/enums/modulos.enum";
+import { UsuarioContex } from "../usuarios/context/usuarioContext";
 
 export const Sidebar = ({ children }: { children: ReactNode }) => {
   const { isAutenticacion, token } = useContext(AutenticacionContext);
   const { permisos } = useContext(PermisosContext);
-  console.log(permisos);
+  const {nombres , apellidos, rol ,area ,sucursal} = useContext(UsuarioContex)
   
   const [isOpen, setIsOpen] = useState(false);
   const [isClasificacionOpen, setIsClasificacionOpen] = useState(false);
@@ -83,29 +84,29 @@ export const Sidebar = ({ children }: { children: ReactNode }) => {
 
 
             <div className="flex items-center mb-6 p-4 border-b border-gray-600">
-              <img
-                src="ruta-a-imagen.jpg" 
-                alt="Imagen de perfil"
-                className="w-12 h-12 rounded-full border-2 border-gray-300 mr-4"
-              />
+             
 
               {isOpen && (
                 <div>
-                  <h2 className="text-xl font-semibold">Nombre Completo</h2>
+                  <h2 className="text-xl font-semibold">Nombre:{nombres} {apellidos}</h2>
                   <p className="text-sm text-gray-500">
-                    Rol: <span className="font-medium">Desarrollador Web</span>
+                    Rol: <span className="font-medium">{rol}</span>
                   </p>
                   <p className="text-sm text-gray-500">
-                    Área: <span className="font-medium">Tecnología</span>
+                  {area &&  <>Area: {area} <br /> </> }
+                    {area &&  <> <Link  to='/bienvenido'>Cambiar de area </Link>  </>}
+                  
                   </p>
+                  
                 </div>
+                  
               )}
             </div>
 
 
 
             <div>
-              {permisos.map((item) => {
+              {permisos.map((item , index) => {
                 if (item.modulo === ModulosE.EMPRESAS) {
                   return (
                     <Link to={"/empresas"}>
@@ -243,6 +244,7 @@ export const Sidebar = ({ children }: { children: ReactNode }) => {
                                 <FaArrowRight className="mr-2" /> Asignar Stock
                               </Link>
                             </li>
+                           
                             <li className="mt-2">
                               <Link
                                 to="/stock/listar"
@@ -251,6 +253,8 @@ export const Sidebar = ({ children }: { children: ReactNode }) => {
                                 <FaList className="mr-2" /> Listar Stock
                               </Link>
                             </li>
+
+                            
                           </ol>
                         </div>
                       )}
@@ -277,6 +281,16 @@ export const Sidebar = ({ children }: { children: ReactNode }) => {
                                 className="w-full block text-gray-300 hover:text-white py-2 px-4 rounded-lg bg-gray-700 hover:bg-gray-600 transition duration-300"
                               >
                                 <FaList className="mr-2" /> Listar Stock
+                              </Link>
+                            </li>
+                          </ol>
+                          <ol>
+                            <li className="mt-2">
+                              <Link
+                                to="/recibir/transferencia"
+                                className="w-full block text-gray-300 hover:text-white py-2 px-4 rounded-lg bg-gray-700 hover:bg-gray-600 transition duration-300"
+                              >
+                                <FaList className="mr-2" /> Recibir Transferencia
                               </Link>
                             </li>
                           </ol>
@@ -356,7 +370,20 @@ export const Sidebar = ({ children }: { children: ReactNode }) => {
                                 className="w-full block text-gray-300 hover:text-white py-2 px-4 rounded-lg bg-gray-700 hover:bg-gray-600 transition duration-300"
                               >
                                 <FaList className="mr-2" /> Listar
-                                Transferencias
+                                Transferencias 
+                              </Link>
+                            </li>
+
+                           
+
+
+                            <li className="mt-2">
+                              <Link
+                                to="/listar/codigo/transferencia"
+                                className="w-full block text-gray-300 hover:text-white py-2 px-4 rounded-lg bg-gray-700 hover:bg-gray-600 transition duration-300"
+                              >
+                                <FaList className="mr-2" /> 
+                                Transferencias enviadas
                               </Link>
                             </li>
                           </ol>
@@ -390,7 +417,17 @@ export const Sidebar = ({ children }: { children: ReactNode }) => {
                                 <FaArrowRight className="mr-2" /> Ingresos Stock
                               </Link>
                             </li>
+                            
+                          <li className="mt-2">
+                              <Link
+                                to="/codigo/stock"
+                                className="w-full block text-gray-300 hover:text-white py-2 px-4 rounded-lg bg-gray-700 hover:bg-gray-600 transition duration-300"
+                              >
+                                <FaList className="mr-2" />Ingresos por codigo
+                              </Link>
+                            </li>
                           </ol>
+
                         </div>
                       )}
                     </div>

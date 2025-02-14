@@ -1,11 +1,12 @@
 import { useContext, useEffect, useState } from "react";
-import { transferenciasI } from "../interface/transferenciasInterface";
+import { transferenciasI } from "../core/interface/transferenciasInterface";
 import { listarTransferencias } from "../services/transferenciaApi";
-import { Paginas } from "../../utils/components/Paginas";
-import { Paginador } from "../../utils/components/Paginador";
+
 import { BuscadorTransferencia } from "./BuscadorTransferencia";
-import { BuscadorTransFerenciaI } from "../interface/buscadorTransferencia";
+import { BuscadorTransFerenciaI } from "../core/interface/buscadorTransferencia";
 import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
+import { Paginador } from "../../core/components/Paginador";
+import { ItemsPorPagina } from "../../core/components/ItemsPorPagina";
 
 
 export const TablaTransferencias = () => {
@@ -44,9 +45,7 @@ export const TablaTransferencias = () => {
             
         }
     }
-  const cantidadItem=(cantidad:string)=>{
-    setcanitdaditem(Number(cantidad))
-  }
+
   const paginaSeleccionada=(pagina:number)=>{
     setSelectPagina(pagina)
 
@@ -59,7 +58,7 @@ export const TablaTransferencias = () => {
     <div className="p-6 bg-white shadow-md rounded-lg">
     <h2 className="text-2xl font-semibold text-gray-700 mb-4">Tabla de Transferencias</h2>
     <BuscadorTransferencia onsudmit={onsubmit}/>
-    {<Paginas page={cantidadItem}/>}
+    {<ItemsPorPagina page={setcanitdaditem}/>}
     <table className="min-w-full table-auto border-collapse text-xs">
     <thead className="bg-gray-800 text-white">
         <tr className="bg-gray-800 text-white">
@@ -72,6 +71,7 @@ export const TablaTransferencias = () => {
           <th className="px-4 py-2 border-b">Sucursal Destino</th>
           <th className="px-4 py-2 border-b">Almacén Destino</th>
           <th className="px-4 py-2 border-b">fecha</th>
+     
 
         </tr>
       </thead>

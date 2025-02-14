@@ -1,15 +1,17 @@
 import  { useContext, useState } from 'react'
-import { errorPropiedadesI } from '../../../interfaces/errorPropiedades';
-import { httAxiosError } from '../../../utils/error/error.util';
-import { HttpStatus } from '../../../enums/httStatusEnum';
+
+import { HttpStatus } from '../../../core/enums/httStatusEnum';
 import { formSubCategoriaI } from '../../interfaces/formSubCategoriaInterface';
 import { useForm } from 'react-hook-form';
 
 import { listarCategorias } from '../../../categorias/service/categoriasApi';
 import { categoriasI } from '../../../categorias/interfaces/categoriasInterface';
 import { crearSubCategoria } from '../../services/subCategoriasApi';
-import { errorClassValidator } from '../../../utils/error/errorClassValidator';
+
 import { AutenticacionContext } from '../../../autenticacion/context/crear.autenticacion.context';
+import { errorPropiedadesI } from '../../../core/interfaces/errorPropiedades';
+import { httAxiosError } from '../../../core/utils/error.util';
+import { errorClassValidator } from '../../../core/utils/errorClassValidator';
 
 export const FormSubCategorias = () => {
       const {token}=useContext(AutenticacionContext)

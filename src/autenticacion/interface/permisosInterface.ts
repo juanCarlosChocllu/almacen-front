@@ -5,6 +5,7 @@ export interface  PermisosContextI {
 }
 export interface  TipocontextI  {
     tipo:string | null
+    sucursal:string | null 
 }
 
 

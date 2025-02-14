@@ -1,17 +1,19 @@
 import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { HttpStatus } from "../../../enums/httStatusEnum";
-import { httAxiosError } from "../../../utils/error/error.util";
-import { errorPropiedadesI } from "../../../interfaces/errorPropiedades";
-import { errorClassValidator } from "../../../utils/error/errorClassValidator";
+import { HttpStatus } from "../../../core/enums/httStatusEnum";
+
+import { errorPropiedadesI } from "../../../core/interfaces/errorPropiedades";
+
 import { formAlmacenSucursalI } from "../../interfaces/formAlmacenSucursal";
 import { empresaI } from "../../../empresa/interfaces/empresaInterface";
-import { listarEmpresa } from "../../../empresa/services/empresaApi";
+import { listarEmpresaBuscador } from "../../../empresa/services/empresaApi";
 import { sucursalI } from "../../../sucursal/interface/sucursalInterface";
-import { listarSucursalEmpresa } from "../../../sucursal/services/sucursalApi";
+import { listarSucursalEmpresaBuscador } from "../../../sucursal/services/sucursalApi";
 import { crearAlmacenSucursal } from "../../services/almacenSucursalApi";
 import { AutenticacionContext } from "../../../autenticacion/context/crear.autenticacion.context";
+import { httAxiosError } from "../../../core/utils/error.util";
+import { errorClassValidator } from "../../../core/utils/errorClassValidator";
 
 export const FormAlmacenSucursal = () => {
   
@@ -34,7 +36,7 @@ export const FormAlmacenSucursal = () => {
      try {
         if(empresa){
          if(token){
-          const response = await listarSucursalEmpresa(empresa, token)  
+          const response = await listarSucursalEmpresaBuscador(empresa, token)  
           setSucursales(response)
          }
         }
@@ -47,7 +49,7 @@ export const FormAlmacenSucursal = () => {
   const openModal = async () => {
     try {
      if(token){
-      const response = await listarEmpresa(token);
+      const response = await listarEmpresaBuscador(token);
       setEmpresas(response);
      }
       setMensaje("");

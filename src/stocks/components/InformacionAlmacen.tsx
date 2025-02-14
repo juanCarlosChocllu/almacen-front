@@ -12,6 +12,7 @@ export const InformacionAlmacen = ({ stock }: { stock: StockVerificarI[]; }) => 
               <th className="px-2 py-1 border text-sm">Almacén</th>
               <th className="px-2 py-1 border text-sm">Tipo</th>
               <th className="px-2 py-1 border text-sm">Cantidad</th>
+              <th className="px-2 py-1 border text-sm">Fecha de Vencimiento</th>
             </tr>
           </thead>
           <tbody>
@@ -20,6 +21,7 @@ export const InformacionAlmacen = ({ stock }: { stock: StockVerificarI[]; }) => 
                 <td className="px-2 py-1 text-sm">{item.almacen}</td>
                 <td className="px-2 py-1 text-sm">{item.tipo}</td>
                 <td className="px-2 py-1 text-sm">{item.cantidad}</td>
+                <td className="px-2 py-1 text-sm">{item.fechaVencimiento}</td>
               </tr>
             ))}
           </tbody>

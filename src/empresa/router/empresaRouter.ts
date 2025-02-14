@@ -1,7 +1,7 @@
 
 
 import { EmpresaPage } from "../../empresa/page/EmpresaPage";
-import { routerI } from "../../interfaces/routerInterface";
+import { routerI } from "../../core/interfaces/routerInterface";
 
 export const empresaRouter:routerI[]=[
     {

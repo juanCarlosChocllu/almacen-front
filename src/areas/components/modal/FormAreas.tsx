@@ -2,12 +2,14 @@ import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { formAreasI } from "../../interfaces/formInterface";
 
-import { errorPropiedadesI } from "../../../interfaces/errorPropiedades";
-import { httAxiosError } from "../../../utils/error/error.util";
-import { HttpStatus } from "../../../enums/httStatusEnum";
-import { errorClassValidator } from "../../../utils/error/errorClassValidator";
+import { errorPropiedadesI } from "../../../core/interfaces/errorPropiedades";
+
+import { HttpStatus } from "../../../core/enums/httStatusEnum";
+
 import { crearArea } from "../../service/areasApi";
 import { AutenticacionContext } from "../../../autenticacion/context/crear.autenticacion.context";
+import { httAxiosError } from "../../../core/utils/error.util";
+import { errorClassValidator } from "../../../core/utils/errorClassValidator";
 
 export const FormAreas = () => {
   const { token } = useContext(AutenticacionContext);

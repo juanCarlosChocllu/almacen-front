@@ -1,6 +1,6 @@
 
 import { instance } from "../../config/instanceConfig";
-import { httpRespuetaI } from "../../interfaces/httpRespuestaInterface";
+import { httpRespuetaI } from "../../core/interfaces/httpRespuestaInterface";
 import { formSucursalI } from "../interface/formScursalIterface";
 import { sucursalI } from "../interface/sucursalInterface";
 
@@ -37,7 +37,7 @@ export const crearSucursal= async(data:formSucursalI, token:string):Promise<http
 
 
 
-export const listarSucursalEmpresa= async(empresa:string | undefined, token:string):Promise<sucursalI[]>=>{    
+export const listarSucursalEmpresaBuscador= async(empresa:string | undefined, token:string):Promise<sucursalI[]>=>{    
     try {
         const response = await instance.get(`sucursal/empresa/${empresa}`,{
             headers:{

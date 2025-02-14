@@ -7,7 +7,7 @@ export interface formProductoI{
     talla?:string 
     color?:string 
     subCategoria?:string 
-    codigoBarra:string
+    codigoBarra?:string
     imagen:File[]
     marca:string
 

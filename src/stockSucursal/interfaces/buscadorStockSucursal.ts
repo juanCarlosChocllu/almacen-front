@@ -3,7 +3,8 @@ export interface BuscadorStockSucursalI{
     almacenSucursal?:string | null,
     marca?:string | null,
     tipo?:string| null,
-
+    sucursal?:string| null,
+    empresa?:string| null,
     
 }
 

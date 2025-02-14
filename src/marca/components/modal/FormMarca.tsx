@@ -1,15 +1,15 @@
 import {  useContext, useState } from "react";
 
 import { crearMarca } from "../../service/marcaApi";
-import { errorPropiedadesI } from "../../../interfaces/errorPropiedades";
+import { errorPropiedadesI } from "../../../core/interfaces/errorPropiedades";
 import { formMarcaI } from "../../interfaces/formMarcaInterface";
 import { useForm } from "react-hook-form";
 
-import { HttpStatus } from "../../../enums/httStatusEnum";
+import { HttpStatus } from "../../../core/enums/httStatusEnum";
 
-import { httAxiosError } from "../../../utils/error/error.util";
-import { errorClassValidator } from "../../../utils/error/errorClassValidator";
 import { AutenticacionContext } from "../../../autenticacion/context/crear.autenticacion.context";
+import { httAxiosError } from "../../../core/utils/error.util";
+import { errorClassValidator } from "../../../core/utils/errorClassValidator";
 
 
 export const FormMarca = () => {

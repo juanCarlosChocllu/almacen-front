@@ -34,4 +34,5 @@ export interface StockVerificarI {
           almacen:string,
           idAlmacen:string,
           cantidad:number
+          fechaVencimiento:string
 }

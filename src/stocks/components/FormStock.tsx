@@ -1,12 +1,12 @@
-import { useContext, useEffect, useState } from "react";
-import { ProductosModal } from "../../productos/components/modal/ProductosModal";
+import React, { useContext, useEffect, useState } from "react";
+
 import { productoI } from "../../productos/interface/productoInterface";
 import { useForm } from "react-hook-form";
 import { formStockI } from "../interfaces/formStockInterface";
 import { dataProductoI, dataProductoStock } from "../interfaces/dataProducto";
 import { ProductoSeleccioando } from "./ProductoSeleccioando";
 import { guardarStockI, StockVerificarI } from "../interfaces/stockInterface";
-import { guardarStock, vericarStockProducto } from "../service/stockApi";
+import { guardarStock, vericarStockProducto } from "../service/stockService";
 import { almacenAreaI } from "../../almacenArea/interfaces/almacenAreaInterface";
 import { listarAlmacenPorArea } from "../../almacenArea/services/almacenAreaApi";
 import { SelectProducto } from "./SelectProducto";
@@ -19,12 +19,15 @@ import { MostrarProveedores } from "./MostrarProveedores";
 import { tipoE } from "../enums/tipos.enum";
 import { v4 as uuidv4 } from "uuid";
 
-import { httAxiosError } from "../../utils/error/error.util";
-import { errorPropiedadesI } from "../../interfaces/errorPropiedades";
-import { errorPersonalizadoI } from "../../interfaces/errorPersonalizado";
-import { errorClassValidator } from "../../utils/error/errorClassValidator";
+
+import { errorPropiedadesI } from "../../core/interfaces/errorPropiedades";
+import { errorPersonalizadoI } from "../../core/interfaces/errorPersonalizado";
+
 import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
 import { InformacionAlmacen } from "./InformacionAlmacen";
+import { errorClassValidator } from "../../core/utils/errorClassValidator";
+import { httAxiosError } from "../../core/utils/error.util";
+import { ProductosModal } from "../../productos/modal/ProductosModal";
 
 export const FormStock = () => {
   const { token } = useContext(AutenticacionContext);
@@ -33,6 +36,7 @@ export const FormStock = () => {
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors },
   } = useForm<formStockI>();
 
@@ -40,9 +44,12 @@ export const FormStock = () => {
   const [dataSeleccionada, setDataSeleccionada] = useState<dataProductoI[]>([]);
   const [almacenArea, setAlmacenArea] = useState<almacenAreaI[]>([]);
   const [mensaje, setMensaje] = useState<string | null>(null);
+  const [estadoFechaVencimiento, setEstadoFechaVencimiento]= useState(true)
   const [stockExisteProducto, setStockExisteProducto] = useState<
     StockVerificarI[]
   >([]);
+
+  
   const [mensajeError, setMensajeError] = useState<errorPersonalizadoI[]>([]);
 
   const [mensajeErrorClassValidator, setMensajeErrorClassValidator] = useState<
@@ -60,10 +67,9 @@ export const FormStock = () => {
   const openModalProveedores = () => setIsOpenProveedores(true);
   const closeModalProveedores = () => setIsOpenProveedores(false);
 
-
   const almacenAreaSeleccionado = watch("almacenArea");
   console.log(almacenAreaSeleccionado);
-  
+
   const cantidawatch = watch("cantidad");
   const precioWatch = watch("precio");
 
@@ -145,7 +151,7 @@ export const FormStock = () => {
   };
   const eliminarProductoSeleccionado = () => {
     setProductoSeleccionado(null);
-    setStockExisteProducto([])
+    setStockExisteProducto([]);
   };
 
   const guardarStocks = async () => {
@@ -154,7 +160,7 @@ export const FormStock = () => {
         return {
           cantidad: Number(item.cantidad),
           fechaCompra: item.fechaCompra,
-          fechaVencimiento: item.fechaCompra,
+          fechaVencimiento: item.fechaVencimiento,
           precio: Number(item.precio),
           producto: item.id,
           total: Number(item.total),
@@ -164,7 +170,6 @@ export const FormStock = () => {
         };
       }
     );
-
 
     const data: guardarStockI = {
       data: dataStock,
@@ -190,9 +195,18 @@ export const FormStock = () => {
     }
   };
 
+ const  habilitarFechaDeVencimiento=(e:React.MouseEvent<HTMLInputElement>)=>{
+    const input = e.target as HTMLInputElement
+    console.log(input);
+    
+    if( input.checked){
+      setEstadoFechaVencimiento(false)
 
-
-
+    }else {
+      setEstadoFechaVencimiento(true)
+      setValue('fechaVencimiento','')
+    }
+  }
 
   return (
     <div className="p-6">
@@ -249,8 +263,10 @@ export const FormStock = () => {
             eliminar={eliminarProductoSeleccionado}
           />
         )}
-   
-  {stockExisteProducto.length > 0 && <InformacionAlmacen stock={stockExisteProducto} />}
+
+        {stockExisteProducto.length > 0 && (
+          <InformacionAlmacen stock={stockExisteProducto} />
+        )}
 
         {mensajeError.length > 0 &&
           mensajeError.map((item, index) => {
@@ -275,14 +291,6 @@ export const FormStock = () => {
         )}
       </div>
 
-
-
-
-
-
-     
-
-        
       <div className="mt-6">
         <h2 className="text-xl font-semibold mb-4">Detalles del Producto</h2>
         <form
@@ -299,8 +307,6 @@ export const FormStock = () => {
             <select
               id="almacenArea"
               className="h-10 border sm:w-3/4 p-2 border-gray-300 text-gray-600 text-base rounded-lg block w-full py-2 px-3 focus:outline-none"
-         
-           
               {...register("almacenArea", {
                 required: { value: true, message: "Seleccione un Alamacen" },
               })}
@@ -478,14 +484,26 @@ export const FormStock = () => {
           </div>
 
           <div>
+
+            
             <label className="block text-sm text-gray-700">
               Fecha de Compra
             </label>
             <input
-              {...register("fechaCompra")}
+              {...register("fechaCompra", {
+                
+                  validate: (value) => {
+                    if (!value) {
+                      return "Ingrese la fecha de compra";
+                    } else {
+                      return true;
+                    }
+                  },
+                
+              })}
               type="date"
               className="w-full sm:w-2/4 p-2 border border-gray-300 rounded text-sm"
-              defaultValue="2024-12-06"
+             
             />
 
             {mensajeError.length > 0 &&
@@ -496,17 +514,22 @@ export const FormStock = () => {
                   return null;
                 }
               })}
+
+{errors.fechaCompra && <span>{errors.fechaCompra.message}</span>}
           </div>
 
           <div>
+          <input type="checkbox"  onClick={(e)=>habilitarFechaDeVencimiento(e)}/>
             <label className="block text-sm text-gray-700">
               Fecha de Vencimiento
             </label>
             <input
+            disabled={estadoFechaVencimiento}
               {...register("fechaVencimiento")}
               type="date"
+           
               className="w-full sm:w-2/4 p-2 border border-gray-300 rounded text-sm"
-              defaultValue="2025-12-06"
+            
             />
             {mensajeError.length > 0 &&
               mensajeError.map((item) => {
@@ -543,9 +566,6 @@ export const FormStock = () => {
         )}
         {mensaje && <span>{mensaje}</span>}
       </div>
-
     </div>
   );
 };
-
-

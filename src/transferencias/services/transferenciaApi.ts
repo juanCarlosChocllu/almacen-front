@@ -1,14 +1,14 @@
 import { instance } from "../../config/instanceConfig";
-import { httpResponsePagiandor, httpRespuetaI } from "../../interfaces/httpRespuestaInterface";
-import { BuscadorTransFerenciaI } from "../interface/buscadorTransferencia";
-import { ParamsTransFerenciaI } from "../interface/parametrosTranferenciaInterface";
-import { dataTransferenciaI } from "../interface/realizarTransferenciaInterface";
-import { transferenciasI } from "../interface/transferenciasInterface";
+import { httpResponsePagiandor, httpRespuetaI } from "../../core/interfaces/httpRespuestaInterface";
+import { BuscadorTransFerenciaI } from "../core/interface/buscadorTransferencia";
+import { ParamsTransFerenciaI } from "../core/interface/parametrosTranferenciaInterface";
+import { dataTransferenciaI } from "../core/interface/realizarTransferenciaInterface";
+import { transferenciasI } from "../core/interface/transferenciasInterface";
 
 
  
 export const  realizarTransferencias =async(data:dataTransferenciaI, token:string):Promise<httpRespuetaI>=>{
-    try {
+    try {        
         const response= await instance.post('transferencias', data,{
             headers:{
                 Authorization:`Bearer ${token}`

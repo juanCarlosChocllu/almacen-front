@@ -11,7 +11,7 @@ import { empresaRouter } from "../empresa/router/empresaRouter";
 import { categoriasRouter } from "../categorias/router/categoriasRouter";
 import { sucursalRouter } from "../sucursal/router/sucursalRouter";
 import { almacenSucursalRouter } from "../almacenSucursal/router/almacenSucursalRouter";
-import { transferenciaRouter } from "../transferencias/router/transferenciasRouter";
+
 import { areasRouter } from "../areas/router/areasRouter";
 import { almacenAreaRouter } from "../almacenArea/router/almacenAreaRouter";
 import { marcasRouter } from "../marca/router/marcaRouter";
@@ -30,10 +30,10 @@ import { AutenticacionContext } from "../autenticacion/context/crear.autenticaci
 import { homeRouter } from "../home/router/homeRouter";
 import { stockSucursalRouter } from "../stockSucursal/router/sotckSucursalRouter";
 import { PermisosContext } from "../autenticacion/context/permisos.context";
-import { ModulosE } from "../enums/modulos.enum";
+import { ModulosE } from "../core/enums/modulos.enum";
 import { NotFound } from "../notFound/NotFound";
-
-
+import { codigoTransferenciaRouter } from "../transferencias/codigoTransferencias/router/codigoTransferenciaRouter";
+import { transferenciaRouter } from "../transferencias/router/transferenciasRouter";
 
 const rutas = (routes: any[], isAutenticacion: boolean) => {
   return routes.map((route, index) => (
@@ -70,7 +70,7 @@ export const IndexRouter = () => {
         </Routes>
         <Sidebar>
           <Routes>
-            {permisos.map((item) => {
+            {permisos.map((item, index) => {
               switch (item.modulo) {
                 case ModulosE.PRODUCTOS:
                   return rutas(productosRouter, isAutenticacion);
@@ -85,7 +85,8 @@ export const IndexRouter = () => {
                 case ModulosE.ALMACEN_SUCURSAL:
                   return rutas(almacenSucursalRouter, isAutenticacion);
                 case ModulosE.TRANSFERENCIAS:
-                  return rutas(transferenciaRouter, isAutenticacion);
+                  const rutasTransferencias= transferenciaRouter.concat(...codigoTransferenciaRouter)
+                    return rutas(rutasTransferencias, isAutenticacion);
                 case ModulosE.AREAS:
                   return rutas(areasRouter, isAutenticacion);
                 case ModulosE.ALMACEN_AREA:

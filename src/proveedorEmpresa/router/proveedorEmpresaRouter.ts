@@ -1,5 +1,5 @@
 
-import { routerI } from "../../interfaces/routerInterface";
+import { routerI } from "../../core/interfaces/routerInterface";
 import { ProveedorEmpresaPage } from "../page/ProveedorEmpresaPage";
 
 export const proveedorEmpresaRouter:routerI[]=[
