@@ -28,6 +28,8 @@ import { InformacionAlmacen } from "./InformacionAlmacen";
 import { errorClassValidator } from "../../core/utils/errorClassValidator";
 import { httAxiosError } from "../../core/utils/error.util";
 import { ProductosModal } from "../../productos/modal/ProductosModal";
+import { AlertaConfirmacion } from "../../core/modal/AlertaConfirmacion";
+import { alertaDeconfirmacion } from "../../core/utils/alertaDeConfirmacion";
 
 export const FormStock = () => {
   const { token } = useContext(AutenticacionContext);
@@ -399,7 +401,7 @@ export const FormStock = () => {
                   return null;
                 }
               })}
-            {errors.precio && <span>{errors.precio.message}</span>}
+            {errors.precio && <span className="text-red-500 text-xs">{errors.precio.message}</span>}
           </div>
 
           <div>
@@ -435,7 +437,7 @@ export const FormStock = () => {
                   return null;
                 }
               })}
-            {errors.total && <span>{errors.total.message}</span>}
+            {errors.total && <span className="text-red-500 text-xs">{errors.total.message}</span>}
           </div>
 
           <div className="flex items-center space-x-4">
@@ -514,8 +516,9 @@ export const FormStock = () => {
                   return null;
                 }
               })}
+              <br />
 
-{errors.fechaCompra && <span>{errors.fechaCompra.message}</span>}
+{errors.fechaCompra && <span className="text-red-500 text-xs">{errors.fechaCompra.message}</span>}
           </div>
 
           <div>
@@ -557,7 +560,7 @@ export const FormStock = () => {
         {dataSeleccionada.length > 0 && (
           <button
             onClick={() => {
-              guardarStocks();
+             alertaDeconfirmacion(guardarStocks)
             }}
             className="bg-yellow-500 text-white py-2 px-4 rounded w-full sm:w-auto text-sm"
           >

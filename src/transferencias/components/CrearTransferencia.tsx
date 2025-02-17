@@ -29,12 +29,13 @@ import { AutenticacionContext } from "../../autenticacion/context/crear.autentic
 import { httAxiosError } from "../../core/utils/error.util";
 import { Loader } from "../../core/components/Loader";
 import { diasRestantes } from "../../core/utils/diasVencimiento";
-import { AlertaConfirmacion } from "../../core/modal/AlertaConfirmacion";
+import { alertaDeconfirmacion } from "../../core/utils/alertaDeConfirmacion";
 
 export const CrearTransferencia = () => {
   const {token}= useContext(AutenticacionContext)
   const [empresas, setEmpresas] = useState<empresaI[]>([]);
   const [sucursales, setSucursales] = useState<sucursalI[]>([]);
+
   const [almacenSucursal, setAlmacenSucursal] = useState<almacenSucursalI[]>(
     []
   );
@@ -61,17 +62,6 @@ export const CrearTransferencia = () => {
   const sucursal = watch("sucursal");
   const almacenSucursalSeleccionado = watch("almacenSucursal");
   const [alerModal, setModalAlert]= useState<boolean>(false)
- /* const [Confirmación, setConfirmacion]= useState<boolean>(false)
-  const handleConfirmacion = (data: boolean) => {
-    setConfirmacion(data);
-    setModalAlert(false);
-
-    if (data) {
-      console.log('Acción confirmada');
-    } else {
-      console.log('Acción cancelada');
-    }
-  };*/
 
 
     useEffect(() => {
@@ -241,6 +231,25 @@ export const CrearTransferencia = () => {
   const verificar = () => {
     verificarStockTransferencia();
   };
+
+
+
+   /* const alertaDeconfirmacion = () => {
+      Swal.fire({
+        title: '¿Estás seguro?',
+        text: 'Esta acción no se puede deshacer.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, seguro',
+        cancelButtonText: 'Cancelar',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          realizarTransferencia();
+        } 
+      });
+    };*/
+  
+  
   return (
     <>
       {<ListraStock stock={selectStock} />}
@@ -448,10 +457,10 @@ export const CrearTransferencia = () => {
 
         <button
           onClick={() => {
-            realizarTransferencia();
-          
+            alertaDeconfirmacion(realizarTransferencia)
           }}
           type="button"
+          disabled={dataRegistrada.length > 0 ?false :true}
           className="mt-4 p-2 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-md transition duration-300 transform hover:scale-105"
         >
           Guardar
@@ -465,13 +474,6 @@ export const CrearTransferencia = () => {
           eliminarData={dataEliminada}
         />
       )}
-
-      {/*alerModal &&  <AlertaConfirmacion
-          mensaje="Esta seguro de realizar la transferencia?"
-          isOpen={alerModal}
-          setConfirmacion={setConfirmacion}
-        />*/}
-   
     </>
   );
 };

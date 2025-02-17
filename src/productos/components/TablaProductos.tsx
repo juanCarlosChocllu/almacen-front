@@ -47,7 +47,7 @@ export const TablaProductos = () => {
     };
 
     listarPro();
-  }, [subCategoria, codigo, categoria, marca, paginaSeleccionada, limite]);
+  }, [subCategoria, codigo, categoria, marca, paginaSeleccionada, limite, recargarData]);
 
  
 
