@@ -1,21 +1,23 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 
-import { ModalPropsI } from "../../../core/interfaces/modalProps.Interface";
-import { marcaI } from "../../interfaces/marcaInterface";
-import { listarMarcas } from "../../service/marcaApi";
-import { errorPropiedadesI } from "../../../core/interfaces/errorPropiedades";
+import { ModalPropsI } from "../../core/interfaces/modalProps.Interface";
+import { marcaI } from "../interfaces/marcaInterface";
+import { listarMarcas } from "../service/marcaApi";
+import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
 
 
 export const ModalMarca = ({isOpen ,closeModal}:ModalPropsI) => {
   const [marca, setMarca] = useState<marcaI[]>([]);   
-
+  const {token}=useContext(AutenticacionContext)
   useEffect(() => {
     const listarM = async () => {
       try {
-        const response = await listarMarcas();
-        console.log(response);
-        setMarca(response);
+        if(token){
+          const response = await listarMarcas(token);
+          console.log(response);
+          //setMarca(response);
+        }
       } catch (error) {
         console.log(error);
       }

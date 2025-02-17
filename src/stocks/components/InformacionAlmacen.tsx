@@ -1,3 +1,4 @@
+import { diasRestantes } from "../../core/utils/diasVencimiento";
 import { StockVerificarI } from "../interfaces/stockInterface";
 
 export const InformacionAlmacen = ({ stock }: { stock: StockVerificarI[]; }) => {
@@ -13,6 +14,7 @@ export const InformacionAlmacen = ({ stock }: { stock: StockVerificarI[]; }) => 
               <th className="px-2 py-1 border text-sm">Tipo</th>
               <th className="px-2 py-1 border text-sm">Cantidad</th>
               <th className="px-2 py-1 border text-sm">Fecha de Vencimiento</th>
+              <th className="px-2 py-1 border text-sm">Dias restantes</th>
             </tr>
           </thead>
           <tbody>
@@ -22,6 +24,7 @@ export const InformacionAlmacen = ({ stock }: { stock: StockVerificarI[]; }) => 
                 <td className="px-2 py-1 text-sm">{item.tipo}</td>
                 <td className="px-2 py-1 text-sm">{item.cantidad}</td>
                 <td className="px-2 py-1 text-sm">{item.fechaVencimiento}</td>
+                <td className="px-2 py-1 text-sm">{diasRestantes(item.fechaVencimiento)}</td>
               </tr>
             ))}
           </tbody>

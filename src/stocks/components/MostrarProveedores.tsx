@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { ListarProveedorEmpresa } from "../../proveedorEmpresa/components/modal/TablaProveedorEmpresa";
-import { TablaProveedorPersona } from "../../proveedorPersona/components/modal/TablaProveedorPersona";
+
 import { proveedorEmpresaI } from "../../proveedorEmpresa/interface/proveedorEmpresaInterface";
 import { proveedorPersonaI } from "../../proveedorPersona/interfaces/proveedorPersonaInterface";
+import { TablaProveedorPersona } from "../../proveedorPersona/modal/TablaProveedorPersona";
+import { ListarProveedorEmpresa } from "../../proveedorEmpresa/modal/TablaProveedorEmpresa";
 
 export const MostrarProveedores = ({
   isOpen,

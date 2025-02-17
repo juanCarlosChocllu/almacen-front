@@ -6,7 +6,7 @@ import { subCategoriaI } from "../../subCategorias/interfaces/subCategoriaInterf
 import { BuscadorI } from "../interface/buscardorInterface";
 import { useForm } from "react-hook-form";
 import { marcaI } from "../../marca/interfaces/marcaInterface";
-import { listarMarcas, marcasBuscador } from "../../marca/service/marcaApi";
+import { marcasPublicas } from "../../marca/service/marcaApi";
 import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
 
 export const Buscador = ({onsudmit}:{onsudmit(data:BuscadorI):void}) => {
@@ -51,7 +51,7 @@ export const Buscador = ({onsudmit}:{onsudmit(data:BuscadorI):void}) => {
     try {
    
        if(token){
-        const response = await marcasBuscador(token)
+        const response = await marcasPublicas(token)
     
         
         setMarcas(response);

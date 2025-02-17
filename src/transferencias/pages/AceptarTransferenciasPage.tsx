@@ -1,6 +1,7 @@
+import { AceptarTransferenciasTabla } from "../components/AceptarTransferenciasTabla"
 
 export const AceptarTransferenciasPage = () => {
   return (
-    <div>AceptarTransferenciasPage</div>
+    <div><AceptarTransferenciasTabla/></div>
   )
 }

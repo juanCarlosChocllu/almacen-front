@@ -1,17 +1,18 @@
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import { dataCategoria } from "../../interfaces/categoriasInterface";
-import { httpRespuetaI } from "../../../core/interfaces/httpRespuestaInterface";
-import { crearCategoria } from "../../service/categoriasApi";
-import { errorPropiedadesI } from "../../../core/interfaces/errorPropiedades";
+import { dataCategoria } from "../interfaces/categoriasInterface";
+import { httpRespuetaI } from "../../core/interfaces/httpRespuestaInterface";
+import { crearCategoria } from "../service/categoriasApi";
+import { errorPropiedadesI } from "../../core/interfaces/errorPropiedades";
 
-import { HttpStatus } from "../../../core/enums/httStatusEnum";
+import { HttpStatus } from "../../core/enums/httStatusEnum";
 
-import { AutenticacionContext } from "../../../autenticacion/context/crear.autenticacion.context";
-import { httAxiosError } from "../../../core/utils/error.util";
-import { errorClassValidator } from "../../../core/utils/errorClassValidator";
+import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
+import { httAxiosError } from "../../core/utils/error.util";
+import { errorClassValidator } from "../../core/utils/errorClassValidator";
+import { RecargarDataI } from "../../core/interfaces/recargarData";
 
-export const FormCategorias = () => {
+export const FormCategorias = ({ recargarData, setRecargarData}:RecargarDataI) => {
     const {token}=useContext(AutenticacionContext)
   const{ register,handleSubmit}=useForm<dataCategoria>()
   const [modalClose, setModalClose] = useState<Boolean>(false)
@@ -28,6 +29,7 @@ export const FormCategorias = () => {
         const response:httpRespuetaI = await crearCategoria(data, token)
         if(response.status === 201){
           setMensajeError('Categoria registrada')
+          setRecargarData(!recargarData)
         }
       }
     } catch (error) {
@@ -49,7 +51,7 @@ export const FormCategorias = () => {
   className="bg-blue-500 text-white px-4 py-2 rounded-sm shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 transition duration-300 ease-in-out transform hover:scale-105"
   onClick={() => abrirModal(true)}
 >
-  Añadir Catrgoria
+  Añadir Categoria
 </button>
 
 

@@ -2,10 +2,12 @@ import { useContext, useEffect, useState } from 'react';
 import { proveedorEmpresaI } from '../interface/proveedorEmpresaInterface';
 import { proveedorEmpresas } from '../services/proveedorEmpresaApi';
 import { AutenticacionContext } from '../../autenticacion/context/crear.autenticacion.context';
+import { FormProveedorEmpresa } from '../modal/FormProveedorEmpresa';
 
 
 export const TablaProveedorEmpresa = () => {
   const {token}=useContext(AutenticacionContext)
+  const [recargarData, setRecargarData]=useState<boolean>( false)
   const [proveedores, setProveedores] = useState<proveedorEmpresaI[]>([]);
 
   const listarProveedoresEmpresa = async () => {
@@ -21,10 +23,11 @@ export const TablaProveedorEmpresa = () => {
 
   useEffect(() => {
     listarProveedoresEmpresa();
-  }, []);
+  }, [recargarData]);
 
   return (
     <div className="p-4 bg-white shadow-md rounded-md">
+            <FormProveedorEmpresa recargarData={recargarData} setRecargarData={setRecargarData}/>
       <h2 className="text-xl font-semibold mb-3">Lista de Proveedores de Empresa</h2>
       <table className="min-w-full table-auto text-left border-collapse">
         <thead className="bg-gray-200 text-gray-700 text-sm">

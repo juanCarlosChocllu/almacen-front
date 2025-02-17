@@ -1,18 +1,18 @@
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import { formEmpresaI } from "../../interfaces/formEmpresaInterface";
-import { crearEmpresa } from "../../services/empresaApi";
-import { HttpStatus } from "../../../core/enums/httStatusEnum";
+import { formEmpresaI } from "../interfaces/formEmpresaInterface";
+import { crearEmpresa } from "../services/empresaApi";
+import { HttpStatus } from "../../core/enums/httStatusEnum";
 
-import { errorPropiedadesI } from "../../../core/interfaces/errorPropiedades";
+import { errorPropiedadesI } from "../../core/interfaces/errorPropiedades";
 
-import { AutenticacionContext } from "../../../autenticacion/context/crear.autenticacion.context";
-import { errorClassValidator } from "../../../core/utils/errorClassValidator";
-import { httAxiosError } from "../../../core/utils/error.util";
+import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
+import { errorClassValidator } from "../../core/utils/errorClassValidator";
+import { httAxiosError } from "../../core/utils/error.util";
 
-export const FormEmpresa = () => {
+export const FormEmpresa = ({setCargarData, cargarData }:{setCargarData:(data:boolean)=> void, cargarData:boolean} ) => {
   const {token}=useContext(AutenticacionContext)
-  const { register, handleSubmit } = useForm<formEmpresaI>();
+  const { register, handleSubmit, setValue } = useForm<formEmpresaI>();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [mensaje, setMensaje] = useState<string>();
   const [mensajePropiedades, setMensajePropiedades] = useState<
@@ -37,7 +37,8 @@ export const FormEmpresa = () => {
       if (response.status == HttpStatus.CREATED) {
         setMensaje(response.message);
         setMensajePropiedades([])
-   
+        setCargarData(!cargarData)
+        setValue('nombre','')
       }
      }
     } catch (error) {

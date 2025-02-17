@@ -7,7 +7,7 @@ import { BuscadorStock } from "../components/BuscadorStock";
 import { BuscadorStockI } from "../interfaces/buscadorStock";
 import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
 import { BiAddToQueue } from "react-icons/bi";
-import { MostarImagenes } from "../../core/components/modal/MostarImagenes";
+import { MostarImagenes } from "../../core/modal/MostarImagenes";
 import { ItemsPorPagina } from "../../core/components/ItemsPorPagina";
 import { Paginador } from "../../core/components/Paginador";
 import { diasRestantes } from "../../core/utils/diasVencimiento";

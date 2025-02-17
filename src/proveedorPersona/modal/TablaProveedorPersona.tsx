@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
-import { proveedorPersonas } from '../../services/proveedorPersonaApi';
-import { proveedorPersonaI } from '../../interfaces/proveedorPersonaInterface';
-import { AutenticacionContext } from '../../../autenticacion/context/crear.autenticacion.context';
+import { AutenticacionContext } from '../../autenticacion/context/crear.autenticacion.context';
+import { proveedorPersonas } from '../services/proveedorPersonaApi';
+import { proveedorPersonaI } from '../interfaces/proveedorPersonaInterface';
 
 export const TablaProveedorPersona = ({ proveedorPersona }: { proveedorPersona: (proveedor: proveedorPersonaI) => void }) => {
   const [proveedores, setProveedores] = useState<proveedorPersonaI[]>([]);

@@ -15,4 +15,5 @@ export const codigoTransferenciaRouter:routerI[]=[
         path: '/transferencia/:id',
         component: TransferenciasPageInformacion, 
     },
+
 ]

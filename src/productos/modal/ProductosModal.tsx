@@ -5,7 +5,7 @@ import { BuscadorI } from "../interface/buscardorInterface";
 import { listarProductos } from "../service/productosService";
 import { ItemsPorPagina } from "../../core/components/ItemsPorPagina";
 import { Buscador } from "../components/Buscador";
-import { MostarImagenes } from "../../core/components/modal/MostarImagenes";
+import { MostarImagenes } from "../../core/modal/MostarImagenes";
 import { BiAddToQueue } from "react-icons/bi";
 import { Paginador } from "../../core/components/Paginador";
 

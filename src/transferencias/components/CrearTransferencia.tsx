@@ -16,7 +16,7 @@ import {
   dataTransferenciaI,
   realizarTransferenciaI,
 } from "../core/interface/realizarTransferenciaInterface";
-import { realizarTransferencias } from "../services/transferenciaApi";
+import { realizarTransferencias } from "../services/transferenciaService";
 import { StockSeleccionado } from "./StockSeleccionado";
 import { HttpStatus } from "../../core/enums/httStatusEnum";
 
@@ -28,6 +28,8 @@ import { errorPersonalizadoI } from "../../core/interfaces/errorPersonalizado";
 import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
 import { httAxiosError } from "../../core/utils/error.util";
 import { Loader } from "../../core/components/Loader";
+import { diasRestantes } from "../../core/utils/diasVencimiento";
+import { AlertaConfirmacion } from "../../core/modal/AlertaConfirmacion";
 
 export const CrearTransferencia = () => {
   const {token}= useContext(AutenticacionContext)
@@ -41,6 +43,7 @@ export const CrearTransferencia = () => {
     watch,
     handleSubmit,
     formState: { errors },
+    setValue
   } = useForm<formTransferenciaI>();
   const [stockSeleccionado, setStockSeleccionado] = useState<StockI | null>();
   const [dataRegistrada, setDataRegistrada] = useState<
@@ -49,14 +52,31 @@ export const CrearTransferencia = () => {
   const [cantidadStockTransferencia, setCantidadStockTransferencia] =
     useState<StockSucursalVerificarI>();
   const [cantidad, setCantidad] = useState<number>(0);
+  const [tipo, setTipo] = useState<string>('');
+  const [fechaVencimiento, setFechaVencimiento] = useState<string>()
   const [mensajeError, setMensajeError] = useState<errorPersonalizadoI[]>([]);
   const [mensaje, setMensaje] = useState<string>();
   const [loading, setLoading] = useState<boolean>(false);
   const empresa = watch("empresa");
   const sucursal = watch("sucursal");
   const almacenSucursalSeleccionado = watch("almacenSucursal");
+  const [alerModal, setModalAlert]= useState<boolean>(false)
+ /* const [Confirmación, setConfirmacion]= useState<boolean>(false)
+  const handleConfirmacion = (data: boolean) => {
+    setConfirmacion(data);
+    setModalAlert(false);
 
-  useEffect(() => {
+    if (data) {
+      console.log('Acción confirmada');
+    } else {
+      console.log('Acción cancelada');
+    }
+  };*/
+
+
+    useEffect(() => {
+
+    
     listarEmpresas();
     if (empresa) {
       listarSucursales();
@@ -64,7 +84,14 @@ export const CrearTransferencia = () => {
     if (sucursal) {
       listarSucursaAlmacen();
     }
-  }, [empresa, sucursal]);
+   
+  }, [empresa, sucursal ]);
+
+  useEffect(() => {
+    setValue('almacenSucursal','')
+   
+   
+  }, [stockSeleccionado]);
 
   const listarEmpresas = async () => {
     try {
@@ -80,6 +107,8 @@ export const CrearTransferencia = () => {
   const selectStock = (stock: StockI) => {
     setStockSeleccionado(stock);
     setCantidad(stock.cantidad);
+    setTipo(stock.tipo),
+    setFechaVencimiento(stock.fechaVencimiento)
   };
 
   const listarSucursales = async () => {
@@ -139,6 +168,9 @@ export const CrearTransferencia = () => {
     setDataRegistrada(data);
   };
   const realizarTransferencia = async () => {
+    setModalAlert(!alerModal)
+  
+    
     const data: realizarTransferenciaI[] = dataRegistrada.map((item) => {
       return {
         almacenSucursal: item.almacen,
@@ -157,7 +189,8 @@ export const CrearTransferencia = () => {
         data: data,
       };
 
-       if(token){
+       
+       if(token  ){
         const response = await realizarTransferencias(newDta, token);
       if (response.status == HttpStatus.OK) {
         setMensaje(response.message);
@@ -319,25 +352,44 @@ export const CrearTransferencia = () => {
             <div className="mb-4">
               <div className="p-4 bg-gray-100">
                 {cantidad != 0 && (
-                  <span className="text-gray-800 text-xs font-semibold mr-4">
-                    Cant. Stock.:{" "}
-                    <span className="text-blue-500">{cantidad}</span>
-                  </span>
+                    <div className="flex flex-col space-y-2">
+                    <span className="text-gray-800 text-xs font-semibold">
+                      Cant. Stock Origen:
+                      <span className="text-blue-500"> {cantidad}</span>
+                    </span>
+                    <span className="text-gray-800 text-xs font-semibold">
+                      Tipo:
+                      <span className="text-blue-500"> {tipo}</span>
+                    </span>
+                    <span className="text-gray-800 text-xs font-semibold">
+                      Fecha de vencimiento:
+                      <span className="text-blue-500"> {fechaVencimiento}</span>
+                    </span>
+                    <span className="text-gray-800 text-xs font-semibold">
+                      Dias restante:
+                      {fechaVencimiento &&   <span className="text-blue-500"> {diasRestantes(fechaVencimiento)}</span>}
+                    </span>
+                  </div>
+                  
                 )}
                 {loading ? (
                   <Loader />
                 ) : (
                   cantidadStockTransferencia && (
-                    <span className="text-gray-800 text-xs">
+                    <div className="mt-4">
+                    <span className="text-gray-800 text-xs font-semibold">
                       Cant. Stock Destino:
                       <span className="text-green-500">
                         {cantidadStockTransferencia.cantidad}
                       </span>
+                    </span>
+                    <span className="text-gray-800 text-xs font-semibold ml-2">
                       - Tipo:
                       <span className="text-teal-500">
                         {cantidadStockTransferencia.tipo}
                       </span>
                     </span>
+                  </div>
                   )
                 )}
               </div>
@@ -397,6 +449,7 @@ export const CrearTransferencia = () => {
         <button
           onClick={() => {
             realizarTransferencia();
+          
           }}
           type="button"
           className="mt-4 p-2 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-md transition duration-300 transform hover:scale-105"
@@ -412,6 +465,13 @@ export const CrearTransferencia = () => {
           eliminarData={dataEliminada}
         />
       )}
+
+      {/*alerModal &&  <AlertaConfirmacion
+          mensaje="Esta seguro de realizar la transferencia?"
+          isOpen={alerModal}
+          setConfirmacion={setConfirmacion}
+        />*/}
+   
     </>
   );
 };

@@ -4,13 +4,15 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 import { areasI } from "../interfaces/areasInterface";
 import { listarAreas } from "../service/areasApi";
 import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
+import { FormAreas } from "../modal/FormAreas";
 
 export const TablaAreas = () => {
+  const [recargarData, setRecargarData] = useState<boolean>(false)
   const {token}= useContext(AutenticacionContext)
   const [areas, setAreas] = useState<areasI[]>([]);
   useEffect(() => {
     listraAreas();
-  }, []);
+  }, [recargarData]);
   const listraAreas = async () => {
     try {
       if(token){
@@ -25,6 +27,7 @@ export const TablaAreas = () => {
 
   return (
     <div className="overflow-x-auto shadow-lg rounded-lg border border-gray-300">
+          <FormAreas recargarData={recargarData} setRecargarData={setRecargarData}/>
       <table className="min-w-full table-auto">
         <thead className="bg-gray-800 text-white">
           <tr>

@@ -1,39 +1,54 @@
-import { useContext, useState } from "react";
+import {  useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import { HttpStatus } from "../../../core/enums/httStatusEnum";
 
-import { errorPropiedadesI } from "../../../core/interfaces/errorPropiedades";
+import { errorPropiedadesI } from "../../core/interfaces/errorPropiedades";
 
-import { formSucursalI } from "../../interface/formScursalIterface";
-import { listarEmpresa } from "../../../empresa/services/empresaApi";
-import { empresaI } from "../../../empresa/interfaces/empresaInterface";
-import { crearSucursal } from "../../services/sucursalApi";
-import { AutenticacionContext } from "../../../autenticacion/context/crear.autenticacion.context";
-import { httAxiosError } from "../../../core/utils/error.util";
-import { errorClassValidator } from "../../../core/utils/errorClassValidator";
 
-export const FormScursal = () => {
+import { empresaI } from "../../empresa/interfaces/empresaInterface";
+
+import {formAlmacenAreaI } from "../interfaces/formAlmacenAreaInterface";
+import { listarAreasPublicas } from "../../areas/service/areasApi";
+
+import { HttpStatus } from "../../core/enums/httStatusEnum";
+
+import { crearAlmacenArea } from "../services/almacenAreaApi";
+
+import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
+import { PermisosContext } from "../../autenticacion/context/permisos.context";
+import { TipoE } from "../../usuarios/enums/tipo.enum";
+import { httAxiosError } from "../../core/utils/error.util";
+import { errorClassValidator } from "../../core/utils/errorClassValidator";
+import { RecargarDataI } from "../../core/interfaces/recargarData";
+
+
+export const FormAlmacenArea = ({recargarData,setRecargarData}:RecargarDataI) => {
+  
   const {token}= useContext(AutenticacionContext)
-  const { register, handleSubmit } = useForm<formSucursalI>();
+  const {tipo}= useContext(PermisosContext)
+  const { register, handleSubmit} = useForm<formAlmacenAreaI>();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [mensaje, setMensaje] = useState<string>();
   const [mensajePropiedades, setMensajePropiedades] = useState<
     errorPropiedadesI[]
   >([]);
-  const [empresas, setEmpresas] = useState<empresaI[]>([])
+  const [areas, setAreas] = useState<empresaI[]>([]);
 
-  const openModal = async() => {
-     try {
-        if(token){
-          const response = await listarEmpresa(token)
-          setEmpresas(response)
-        }
-        setIsOpen(true);
-     } catch (error) {
-        console.log(error);
-        
-        
-     }
+  
+    
+
+
+  const openModal = async () => {
+    try {
+      if(token){
+        const response = await listarAreasPublicas(token);
+        setAreas(response);
+      }
+      setMensaje("");
+      setMensajePropiedades([]);
+      setIsOpen(true);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const closeModal = () => {
@@ -42,23 +57,29 @@ export const FormScursal = () => {
     setIsOpen(false);
   };
 
-  const onSudmit = async (data: formSucursalI) => {
-
-    
+  const onSudmit = async (data: formAlmacenAreaI) => {
+    if(tipo == TipoE.AREA ){
+      delete data.area
+    }
      try {
-      if(token){
-        const response = await crearSucursal(data,token);
+    if(token){
+      const response = await crearAlmacenArea(data,token);
       if (response.status == HttpStatus.CREATED) {
-        setMensajePropiedades([]);
         setMensaje(response.message);
+        setMensajePropiedades([]);
+        setRecargarData(!recargarData)
       }
-      }
-    } catch (error) {
+    }
+    } catch (error) {     
+
+        console.log(error);
+        
       const e = httAxiosError(error);
       if (e.response.status == HttpStatus.CONFLICT) {
         setMensaje(e.response.data.message);
       } else if (e.response.status == HttpStatus.BAD_REQUEST) {
-        setMensajePropiedades(errorClassValidator(e.response.data.errors));
+     
+       setMensajePropiedades(errorClassValidator(e.response.data.errors));
       }
     }
   };
@@ -69,20 +90,20 @@ export const FormScursal = () => {
         onClick={openModal}
         className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none"
       >
-        Crear Empresa
+        Crear Almacen
       </button>
 
       {isOpen && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded-lg w-96">
-            <h2 className="text-xl font-bold mb-4">Crear Nueva Sucursal</h2>
+            <h2 className="text-xl font-bold mb-4">Crear Nuevo Almacen</h2>
             <form onSubmit={handleSubmit(onSudmit)}>
               <div className="mb-4">
                 <label
                   htmlFor="nombre"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Nombre de la sucursal
+                  Nombre de almacen
                 </label>
                 <input
                   type="text"
@@ -101,28 +122,36 @@ export const FormScursal = () => {
                     return null;
                   }
                 })}
-       
-              <div className="mb-4">
+
+            { tipo === TipoE.NINGUNO &&     
+             <div className="mb-4">
                 <label
                   htmlFor="nombre"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Nombre de la Empresa
+                  Nombre de la Area
                 </label>
                 <select
                   id="nombre"
-                  {...register("empresa")}
+                  {...register("area")}
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 >
-                  <option value="">Selecciona una Empresa</option>
-                   {empresas.map((item)=>(
-                    <option key={item._id} value={item._id}>{item.nombre}</option>
-                  
-                   ))}
+                  <option value="">Selecciona una Area</option>
+                  {areas.map((item) => (
+                    <option key={item._id} value={item._id}>
+                      {item.nombre}
+                    </option>
+                  ))}
                 </select>
+              </div>
+              }
+
+              
+            <div>
+
                 {mensajePropiedades.length > 0 &&
                 mensajePropiedades.map((item) => {
-                  if (item.propiedad === "empresa") {
+                  if (item.propiedad === "area") {
                     return item.errors.map((e) => (
                       <p key={item.propiedad}>{e}</p>
                     ));
@@ -131,7 +160,9 @@ export const FormScursal = () => {
                   }
                 })}
               </div>
+
               {mensaje && <p>{mensaje}</p>}
+
               <div className="flex justify-end space-x-4">
                 <button
                   type="button"

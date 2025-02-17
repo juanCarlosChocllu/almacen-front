@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from "react";
 import { almacenSucursalI } from "../../almacenSucursal/interfaces/almacenSucursalInterface";
 import { marcaI } from "../../marca/interfaces/marcaInterface";
-import { listarMarcas, marcasBuscador } from "../../marca/service/marcaApi";
+import { marcasPublicas } from "../../marca/service/marcaApi";
 import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
-import { listarAlmaceBuscadorSucursal, listarAlmacenSucursal } from "../../almacenSucursal/services/almacenSucursalApi";
+import { listarAlmaceBuscadorSucursal,  } from "../../almacenSucursal/services/almacenSucursalApi";
 import { useForm } from "react-hook-form";
 import { BuscadorStockSucursalI } from "../interfaces/buscadorStockSucursal";
 import { listarEmpresaBuscador } from "../../empresa/services/empresaApi";
@@ -30,7 +30,7 @@ export const BuscadorStockSucursal = ({onSubmit}:{onSubmit (data:BuscadorStockSu
     if(token){
       (async()=>{
         try {
-            const response = await marcasBuscador(token)
+            const response = await marcasPublicas(token)
             setMarcas(response)
         } catch (error) {
           

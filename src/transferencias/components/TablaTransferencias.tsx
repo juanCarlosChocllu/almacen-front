@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { transferenciasI } from "../core/interface/transferenciasInterface";
-import { listarTransferencias } from "../services/transferenciaApi";
+import { listarTransferencias } from "../services/transferenciaService";
 
 import { BuscadorTransferencia } from "./BuscadorTransferencia";
 import { BuscadorTransFerenciaI } from "../core/interface/buscadorTransferencia";

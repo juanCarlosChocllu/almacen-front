@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from 'react'
 import { AutenticacionContext } from '../../../autenticacion/context/crear.autenticacion.context'
 import { transferenciasPorCodigo } from '../services/codigoTransferenciasService'
 import { transferenciasI } from '../../core/interface/transferenciasInterface'
+import { ImCancelCircle } from 'react-icons/im'
+import { EstadoTransferenciaE } from '../../../core/enums/estadoTranferencia'
 
 export const TablaTransferencias = ({id}:{id:string| undefined}) => {
     const [data, setData] = useState<transferenciasI[]>([])
@@ -44,6 +46,7 @@ export const TablaTransferencias = ({id}:{id:string| undefined}) => {
           <th className="px-4 py-2 border-b">Almacén Destino</th>
           <th className="px-4 py-2 border-b">fecha</th>
           <th className="px-4 py-2 border-b">Estado</th>
+          <th className="px-4 py-2 border-b">Accion</th>
 
         </tr>
       </thead>
@@ -60,6 +63,7 @@ export const TablaTransferencias = ({id}:{id:string| undefined}) => {
             <td className="px-4 py-2 border-b">{transferencia.almacenSucursal}</td>
             <td className="px-4 py-2 border-b">{transferencia.fecha}</td>
             <td className="px-4 py-2 border-b">{transferencia.estado}</td>
+          {transferencia.estado ==EstadoTransferenciaE.PENDIENTE ?  <td className="px-4 py-2 border-b"><button className='text-red-600'><ImCancelCircle /></button></td> : 'RECIBIDO'}
           </tr>
         ))}
       </tbody>

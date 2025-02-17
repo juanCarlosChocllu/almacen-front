@@ -8,7 +8,7 @@ import { BuscadorStockI } from "../interfaces/buscadorStock";
 import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
 import { GenerarExcel } from "../../core/components/GenerarExcel";
 import { ItemsPorPagina } from "../../core/components/ItemsPorPagina";
-import { MostarImagenes } from "../../core/components/modal/MostarImagenes";
+import { MostarImagenes } from "../../core/modal/MostarImagenes";
 import { Paginador } from "../../core/components/Paginador";
 
 export const TablaStock = () => {

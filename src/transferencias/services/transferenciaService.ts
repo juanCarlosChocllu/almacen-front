@@ -4,6 +4,7 @@ import { BuscadorTransFerenciaI } from "../core/interface/buscadorTransferencia"
 import { ParamsTransFerenciaI } from "../core/interface/parametrosTranferenciaInterface";
 import { dataTransferenciaI } from "../core/interface/realizarTransferenciaInterface";
 import { transferenciasI } from "../core/interface/transferenciasInterface";
+import { TransFerenciaSucursal } from "../core/interface/transferenciaSucursal";
 
 
  
@@ -53,5 +54,31 @@ export const  listarTransferencias =async(pagina:number, limite:number, buscador
         return response.data
     } catch (error) {
         throw error
+    }
+
+
+}
+
+
+
+export const transferenciasSucursal= async(token:string):Promise<TransFerenciaSucursal[]> =>{
+    try {
+      
+        
+        
+        const response= await instance.get(`transferencias/sucursal`,
+            {
+               
+                headers:{
+                    Authorization:`Bearer ${token}`
+                }
+            }
+        )
+        console.log(response);
+        
+        return response.data
+        
+    } catch (error) {
+         throw error
     }
 }

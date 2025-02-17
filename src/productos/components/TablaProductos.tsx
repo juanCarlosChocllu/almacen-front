@@ -10,10 +10,12 @@ import { FaEdit } from "react-icons/fa";
 import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
 import { GenerarExcel } from "../../core/components/GenerarExcel";
 import { ItemsPorPagina } from "../../core/components/ItemsPorPagina";
-import { MostarImagenes } from "../../core/components/modal/MostarImagenes";
+import { MostarImagenes } from "../../core/modal/MostarImagenes";
 import { Paginador } from "../../core/components/Paginador";
+import { FormularioProducto } from "../modal/FormularioProducto";
 
 export const TablaProductos = () => {
+  const [recargarData, setRecargarData]= useState<boolean>(false)
   const [productos, setProductos] = useState<productoI[]>([]);
   const [paginas, setPaginas] = useState<number>(0);
   const [limite, setLimite] = useState<number>(20);
@@ -61,6 +63,7 @@ export const TablaProductos = () => {
 
   return (
     <div className="p-6">
+     <FormularioProducto recargarData={recargarData} setRecargarData={setRecargarData} /> 
       {<Buscador onsudmit={handleBuscador} />}
       <GenerarExcel<productoI> data={productos} nombre={'Productos'}/>
       <ItemsPorPagina page={setLimite} />

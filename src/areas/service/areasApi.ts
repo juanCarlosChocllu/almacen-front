@@ -5,7 +5,7 @@ import { areasI } from "../interfaces/areasInterface"
 import { formAreasI } from "../interfaces/formInterface"
 
 export const listarAreas =async(token:string):Promise<areasI[]>=>{
-    console.log(token);
+  ///corregir
     
     try {
         const response =await instance.get('areas',{
@@ -20,6 +20,22 @@ export const listarAreas =async(token:string):Promise<areasI[]>=>{
 
 }
 
+
+export const listarAreasPublicas =async(token:string):Promise<areasI[]>=>{
+    ///corregir
+      
+      try {
+          const response =await instance.get('areas/publico',{
+              headers:{
+                  Authorization:`Bearer ${token}`
+              }
+          })
+          return response.data
+      } catch (error) {
+          throw error
+      }
+  
+  }
 
 export const crearArea =async(data:formAreasI, token:string):Promise<httpRespuetaI>=>{
     try {

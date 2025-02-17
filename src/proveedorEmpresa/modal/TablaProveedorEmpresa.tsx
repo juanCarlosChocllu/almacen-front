@@ -1,7 +1,9 @@
 import { useContext, useEffect, useState } from 'react';
-import { proveedorEmpresas } from '../../services/proveedorEmpresaApi';
-import { proveedorEmpresaI } from '../../interface/proveedorEmpresaInterface';
-import { AutenticacionContext } from '../../../autenticacion/context/crear.autenticacion.context';
+
+import { FormProveedorEmpresa } from './FormProveedorEmpresa';
+import { AutenticacionContext } from '../../autenticacion/context/crear.autenticacion.context';
+import { proveedorEmpresaI } from '../interface/proveedorEmpresaInterface';
+import { proveedorEmpresas } from '../services/proveedorEmpresaApi';
 
 export const ListarProveedorEmpresa = ({ proveedorEmpresa }: { proveedorEmpresa: (proveedor: proveedorEmpresaI) => void }) => {
   const [proveedores, setProveedores] = useState<proveedorEmpresaI[]>([]);
@@ -23,6 +25,7 @@ export const ListarProveedorEmpresa = ({ proveedorEmpresa }: { proveedorEmpresa:
 
   return (
     <div className="p-4 bg-white shadow-md rounded-md">
+
       <h2 className="text-xl font-semibold mb-3">Lista de Proveedores de Empresa</h2>
       <table className="min-w-full table-auto text-left border-collapse">
         <thead className="bg-gray-200 text-gray-700 text-sm">

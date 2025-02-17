@@ -284,16 +284,7 @@ export const Sidebar = ({ children }: { children: ReactNode }) => {
                               </Link>
                             </li>
                           </ol>
-                          <ol>
-                            <li className="mt-2">
-                              <Link
-                                to="/recibir/transferencia"
-                                className="w-full block text-gray-300 hover:text-white py-2 px-4 rounded-lg bg-gray-700 hover:bg-gray-600 transition duration-300"
-                              >
-                                <FaList className="mr-2" /> Recibir Transferencia
-                              </Link>
-                            </li>
-                          </ol>
+                         
                         </div>
                       )}
                     </div>
@@ -386,6 +377,17 @@ export const Sidebar = ({ children }: { children: ReactNode }) => {
                                 Transferencias enviadas
                               </Link>
                             </li>
+
+                            
+                            <li className="mt-2">
+                              <Link
+                                to="/recibir/transferencia"
+                                className="w-full block text-gray-300 hover:text-white py-2 px-4 rounded-lg bg-gray-700 hover:bg-gray-600 transition duration-300"
+                              >
+                                <FaList className="mr-2" /> Recibir Transferencia
+                              </Link>
+                            </li>
+                          
                           </ol>
                         </div>
                       )}

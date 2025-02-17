@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react"
 
 import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context"
-import { MostarImagenes } from "../../core/components/modal/MostarImagenes"
+import { MostarImagenes } from "../../core/modal/MostarImagenes"
 import { MovimientoAreaI } from "../interface/movimientoAreaInterface"
 import { listarStockPorCodigo } from "../services/movimientoAreaService"
 

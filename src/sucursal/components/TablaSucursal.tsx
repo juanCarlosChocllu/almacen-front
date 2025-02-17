@@ -3,12 +3,14 @@ import { sucursalI } from "../interface/sucursalInterface";
 import { useContext, useEffect, useState } from "react";
 import { listarSucursal } from "../services/sucursalApi";
 import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
+import { FormScursal } from "../modal/FormSucursal";
 export const TablaSucursal = () => {
   const [sucursales, setSucursales] = useState<sucursalI[]>([]);
+   const [recargarData, setRecargarData]= useState<boolean>(false)
   const { token } = useContext(AutenticacionContext);
   useEffect(() => {
     listarScursales();
-  }, []);
+  }, [recargarData]);
 
   const listarScursales = async () => {
     try {
@@ -22,7 +24,8 @@ export const TablaSucursal = () => {
   };
 
   return (
-    <div className="p-4">
+    <div className="p-4">'
+  <FormScursal recargarData={recargarData} setRecargarData={setRecargarData}/>
       <h2 className="text-xl font-bold mb-4">Sucursales</h2>
 
       <div className="overflow-x-auto shadow-lg rounded-lg border border-gray-300">

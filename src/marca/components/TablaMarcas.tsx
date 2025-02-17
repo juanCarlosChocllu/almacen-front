@@ -3,27 +3,35 @@ import { marcaI } from '../interfaces/marcaInterface';
 import { listarMarcas } from '../service/marcaApi';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { AutenticacionContext } from '../../autenticacion/context/crear.autenticacion.context';
+import { ItemsPorPagina } from '../../core/components/ItemsPorPagina';
+import { Paginador } from '../../core/components/Paginador';
+import { FormMarca } from '../modal/FormMarca';
 
 export const TablaMarcas = () => {
       const {token}=useContext(AutenticacionContext)
       const [marcas, setMarca] = useState<marcaI[]>([]);   
+      const [limite, setLimite]=useState<number>(20)
+      const [pagina, setPagina]=useState<number>(1)
+      const [paginas, setPaginas]=useState<number>(1)
+      const [recargarData, setRecargarData] = useState<boolean>(false)
       useEffect(() => {
         listarM();
-      }, []);
-
-
+      }, [limite, pagina,recargarData]);
       const listarM = async () => {
         try {
           if(token){
             const response = await listarMarcas(token);
-            setMarca(response);
+            setMarca(response.data);
+            setPaginas(response.paginas)
           }
         } catch (error) {
           console.log(error);
         }
       };
   return (
-     <div className="overflow-x-auto shadow-lg rounded-lg border border-gray-300">
+     <div className="overflow-x-auto shadow-lg rounded-lg ">
+    <FormMarca recargarData={recargarData} setRecargarData={setRecargarData}/>  
+      <ItemsPorPagina page={setLimite}/> 
           <table className="min-w-full table-auto">
             <thead className="bg-gray-800 text-white">
               <tr>
@@ -48,6 +56,7 @@ export const TablaMarcas = () => {
               ))}
             </tbody>
           </table>
+          <Paginador paginaActual={pagina}  paginaSeleccionada={setPagina} paginas={paginas}/>
         </div>
   )
 }

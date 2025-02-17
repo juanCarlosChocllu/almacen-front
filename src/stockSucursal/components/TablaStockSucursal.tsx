@@ -7,7 +7,7 @@ import { BuscadorStockSucursal } from './BuscadorStockSucursal'
 import { BuscadorStockSucursalI } from '../interfaces/buscadorStockSucursal'
 import { ItemsPorPagina } from '../../core/components/ItemsPorPagina'
 import { Paginador } from '../../core/components/Paginador'
-import { MostarImagenes } from '../../core/components/modal/MostarImagenes'
+import { MostarImagenes } from '../../core/modal/MostarImagenes'
 import { diasRestantes } from '../../core/utils/diasVencimiento'
 
 export const TablaStockSucursal = () => {

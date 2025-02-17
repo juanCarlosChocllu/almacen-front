@@ -1,24 +1,26 @@
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import { formAreasI } from "../../interfaces/formInterface";
+import { formAreasI } from "../interfaces/formInterface";
 
-import { errorPropiedadesI } from "../../../core/interfaces/errorPropiedades";
+import { errorPropiedadesI } from "../../core/interfaces/errorPropiedades";
 
-import { HttpStatus } from "../../../core/enums/httStatusEnum";
+import { HttpStatus } from "../../core/enums/httStatusEnum";
 
-import { crearArea } from "../../service/areasApi";
-import { AutenticacionContext } from "../../../autenticacion/context/crear.autenticacion.context";
-import { httAxiosError } from "../../../core/utils/error.util";
-import { errorClassValidator } from "../../../core/utils/errorClassValidator";
+import { crearArea } from "../service/areasApi";
+import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
+import { httAxiosError } from "../../core/utils/error.util";
+import { errorClassValidator } from "../../core/utils/errorClassValidator";
+import { RecargarDataI } from "../../core/interfaces/recargarData";
 
-export const FormAreas = () => {
+export const FormAreas = ({recargarData,setRecargarData}:RecargarDataI) => {
   const { token } = useContext(AutenticacionContext);
-  const { register, handleSubmit } = useForm<formAreasI>();
+  const { register, handleSubmit , setValue} = useForm<formAreasI>();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [mensaje, setMensaje] = useState<string>();
   const [mensajePropiedades, setMensajePropiedades] = useState<
     errorPropiedadesI[]
   >([]);
+  
 
   const openModal = async () => {
     try {
@@ -41,6 +43,8 @@ export const FormAreas = () => {
         if (response.status == HttpStatus.CREATED) {
           setMensaje(response.message);
           setMensajePropiedades([]);
+          setRecargarData(!recargarData)
+            setValue('nombre','')
         }
       }
     } catch (error) {

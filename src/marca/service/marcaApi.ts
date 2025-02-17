@@ -1,9 +1,9 @@
 import { instance } from "../../config/instanceConfig"
-import { httpRespuetaI } from "../../core/interfaces/httpRespuestaInterface"
+import { httpResponsePagiandor, httpRespuetaI } from "../../core/interfaces/httpRespuestaInterface"
 import { formMarcaI } from "../interfaces/formMarcaInterface"
 import { marcaI } from "../interfaces/marcaInterface"
 
-export const listarMarcas =async (token:string):Promise<marcaI[]>=>{
+export const listarMarcas =async (token:string):Promise<httpResponsePagiandor<marcaI>>=>{
     try {
         const response= await instance.get('marca',{
             headers:{
@@ -20,7 +20,7 @@ export const listarMarcas =async (token:string):Promise<marcaI[]>=>{
 }
 
 
-export const marcasBuscador =async (token:string):Promise<marcaI[]>=>{
+export const marcasPublicas =async (token:string):Promise<marcaI[]>=>{
     try {
         const response= await instance.get('marca/buscador',{
             headers:{

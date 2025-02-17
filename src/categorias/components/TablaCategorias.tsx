@@ -3,8 +3,10 @@ import { categoriasI } from "../interfaces/categoriasInterface";
 import { listarCategorias } from "../service/categoriasApi";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
+import { FormCategorias } from "../modal/FormCategorias";
 
 export const TablaCategorias = () => {
+   const [recargarData, setRecargarData] = useState<boolean>(false)
   const {token}=useContext(AutenticacionContext)
   const [categorias, setCategorias] = useState<categoriasI[]>([]);
 
@@ -20,10 +22,11 @@ export const TablaCategorias = () => {
       }
     };
     obtenerCategorias();
-  }, []);
+  }, [recargarData]);
 
   return (
 <div>
+  <FormCategorias recargarData={recargarData} setRecargarData={setRecargarData}/>
   <table className="w-full table-auto border-collapse border border-gray-300 shadow-md rounded-md overflow-hidden mx-auto">
     <thead>
       <tr className="bg-gray-800 text-white">

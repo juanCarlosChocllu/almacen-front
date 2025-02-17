@@ -3,14 +3,16 @@ import { almacenAreaI } from "../interfaces/almacenAreaInterface"
 import { listarAlmacenArea } from "../services/almacenAreaApi"
 import { FaEdit, FaTrash } from "react-icons/fa"
 import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context"
+import { FormAlmacenArea } from "../modal/FormAlmacenArea"
 
 export const TablaAlmacenArea = () => {
+  const [recargarData, setRecargarData] = useState<boolean>(false)
   const {token}=useContext(AutenticacionContext)
     const [almacenArea, setAlmacenArea] = useState<almacenAreaI[]>([])
 
     useEffect(()=>{
         listaDeAlmacenArea()
-    },[token])
+    },[recargarData])
 
     const listaDeAlmacenArea=async()=>{
         try {
@@ -27,6 +29,10 @@ export const TablaAlmacenArea = () => {
     
   return (
 <div className="overflow-x-auto shadow-lg rounded-lg border border-gray-300">
+
+  <FormAlmacenArea recargarData={recargarData} setRecargarData={setRecargarData}/>
+
+
       <table className="min-w-full table-auto">
         <thead className="bg-gray-800 text-white">
           <tr>
@@ -52,6 +58,7 @@ export const TablaAlmacenArea = () => {
           ))}
         </tbody>
       </table>
+     
     </div>
   )
 }

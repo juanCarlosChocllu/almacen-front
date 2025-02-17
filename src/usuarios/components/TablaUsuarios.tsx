@@ -4,13 +4,15 @@ import { UsuariosI } from "../interfaces/usuariosInterface";
 import { AiFillDelete } from "react-icons/ai";
 import { FaRegEdit } from "react-icons/fa";
 import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
+import { FormUsuarios } from "./modal/FormUsuarios";
 
 export const TablaUsuarios = () => {
   const {token}=useContext(AutenticacionContext)
   const [usuarios, setUsuarios] = useState<UsuariosI[]>([]);
+  const [recargarData, setRecargarData] = useState<boolean>(false);
   useEffect(() => {
     listar();
-  }, []);
+  }, [recargarData]);
 
   const listar = async () => {
     try {
@@ -24,6 +26,7 @@ export const TablaUsuarios = () => {
   };
   return (
     <div className="overflow-x-auto">
+     <FormUsuarios recargarData={recargarData} setRecargarData={setRecargarData}/> 
       {usuarios.length > 0 && (
         <table className="min-w-full table-auto">
           <thead className="bg-gray-800 text-white">

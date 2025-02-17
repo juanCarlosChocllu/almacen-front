@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
 import { categoriasI } from "../../categorias/interfaces/categoriasInterface";
@@ -11,14 +11,15 @@ import { errorConflictoI } from "../../core/interfaces/errorConflictoInterface";
 import { httAxiosError } from "../../core/utils/error.util";
 import { httpRespuetaI } from "../../core/interfaces/httpRespuestaInterface";
 import { listarCategorias } from "../../categorias/service/categoriasApi";
-import { listarMarcas } from "../../marca/service/marcaApi";
+import {  marcasPublicas } from "../../marca/service/marcaApi";
 import { crearProducto } from "../service/productosService";
 import { HttpStatus } from "../../core/enums/httStatusEnum";
 import { errorClassValidator } from "../../core/utils/errorClassValidator";
 import { listarSubCategorias } from "../../subCategorias/services/subCategoriasApi";
+import { RecargarDataI } from "../../core/interfaces/recargarData";
 
 
-export const FormularioProducto = () => {
+export const FormularioProducto = ({recargarData,setRecargarData}:RecargarDataI) => {
   const { token } = useContext(AutenticacionContext);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [categorias, setCategorias] = useState<categoriasI[]>([]);
@@ -29,22 +30,31 @@ export const FormularioProducto = () => {
     register,
     handleSubmit,
     watch,
+    setValue,
+    reset,
     formState: { errors },
   } = useForm<formProductoI>();
   const [mensajeError, setMensajeError] = useState<errorPropiedadesI[]>([]);
   const [mensajeErrorImagen, setMensajeErrorImagen] = useState<errorImagenI>();
 
-  const [imagenPreview, setImagenPreview] = useState<string>();
+  const [imagenPreview, setImagenPreview] = useState<string | null>();
+
 
   const [mensajeErrorConflito, setMensajeErrorConflicto] =
     useState<errorConflictoI | null>();
   const categoriaSeleccionada = watch("categoria");
-
+useEffect(()=>{
+    if(categoriaSeleccionada) {
+      setMensaje('')
+    }
+},[
+  categoriaSeleccionada
+])
   
   const onSubmit = async (data: formProductoI) => {
     try {
+
     
-      
       const formDta: FormData = new FormData();
       formDta.append("categoria", data.categoria);
       data.subCategoria? formDta.append("subCategoria", data.subCategoria) : delete data.subCategoria;
@@ -65,8 +75,23 @@ export const FormularioProducto = () => {
           setMensajeError([]);
           setMensajeErrorConflicto(null);
           setMensaje("Producto registrado");
-      
+          setRecargarData(!recargarData)
+          reset({
+            categoria:'',
+             codigoBarra:'',
+             color:'',
+             descripcion:'',
+             genero:'',
+             imagen:[],
+             marca:'',
+             nombre:'',
+             subCategoria:'',
+             talla:''
+          })
+           setImagenPreview(null)
+         
         }
+
       }
     } catch (error) {
       const e = httAxiosError(error);
@@ -83,12 +108,13 @@ export const FormularioProducto = () => {
     }
   };
 
+
   const abrirModal = async (estado: boolean) => {
     try {
       if (token) {
         const [categorias, marcas] = await Promise.all([
           listarCategorias(token),
-          listarMarcas(token),
+          marcasPublicas(token),
         ]);
         setCategorias(categorias);
         setMarcas(marcas);
@@ -118,369 +144,310 @@ export const FormularioProducto = () => {
   };
 
   return (
-    <div>
-      <div>
-        <button
-          onClick={() => abrirModal(true)}
-          className=" bg-indigo-600 text-white p-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        >
-          Añadir producto
-        </button>
-      </div>
+<div>
+  <div>
+    <button
+      onClick={() => abrirModal(true)}
+      className="bg-indigo-600 text-white p-1.5 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+    >
+      Añadir producto
+    </button>
+  </div>
 
-      {isModalOpen && (
-        <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded-md shadow-lg w-full md:max-w-4xl max-w-full max-h-screen overflow-auto">
-            <h2 className="text-2xl font-bold mb-6 text-center">
-              Formulario Producto
-            </h2>
-            <form
-              onSubmit={handleSubmit(onSubmit)}
-              className="grid grid-cols-1 md:grid-cols-2 gap-6"
+  {isModalOpen && (
+    <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-50">
+      <div className="bg-white p-4 rounded-md shadow-lg w-full md:max-w-lg max-w-full max-h-screen overflow-auto">
+        <h2 className="text-xl font-semibold mb-4 text-center">Formulario Producto</h2>
+        <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+       
+          <div>
+            <label htmlFor="categoria" className="block text-xs font-medium text-gray-700">
+              Categoría
+            </label>
+            <select
+              id="categoria"
+              className="h-8 border border-gray-300 text-gray-600 text-sm rounded-md block w-full py-1.5 px-2 focus:outline-none focus:ring-indigo-500"
+              {...register("categoria", {
+                validate: (value) => {
+                  if(!value) {
+                    return "Seleccione una categoría"
+                  }
+                  return true
+                },
+              })}
+              onClick={() => {
+                if (categoriaSeleccionada) {
+                  subCategorias(categoriaSeleccionada);
+                }
+              }}
             >
-              <div>
-                <label
-                  htmlFor="categoria"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Categoría
-                </label>
-                <select
-                  id="categoria"
-                  className="h-10 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-2 px-3 focus:outline-none focus:ring-indigo-500"
-                  {...register("categoria", {
-                    validate: (value) => {
-                      if (!value) {
-                        return "Seleccione un categoria";
-                      }
-                      return true;
-                    },
-                  })}
-                  onClick={() => {
-                    if (categoriaSeleccionada) {
-                      subCategorias(categoriaSeleccionada);
-                    }
-                  }}
-                >
-                  <option value="">Seleccione la categoría</option>
-                  {categorias.map((item) => (
-                    <option key={item._id} value={item._id}>
-                      {item.nombre}
-                    </option>
-                  ))}
-                </select>
-                {mensajeError.length > 0 &&
-                  mensajeError.map((item) => {
-                    if (item.propiedad === "categoria") {
-                      return item.errors.map((e) => (
-                        <p key={item.propiedad} className="text-red-500">
-                          {e}
-                        </p>
-                      ));
-                    } else {
-                      return null;
-                    }
-                  })}
-                {errors.categoria && <p>{errors.categoria.message}</p>}
-              </div>
-
-              <div>
-                <label
-                  htmlFor="subCategoria"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Sub Categoría
-                </label>
-                <select
-                  id="subCategoria"
-                  className="h-10 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-2 px-3 focus:outline-none focus:ring-indigo-500"
-                  {...register("subCategoria")}
-                >
-                  <option value="">Seleccione la subcategoría</option>
-                  {subcategorias.map((item) => (
-                    <option key={item._id} value={item._id}>
-                      {item.nombre}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label
-                  htmlFor="marca"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Marcas
-                </label>
-                <select
-                  id="marca"
-                  className="h-10 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-2 px-3 focus:outline-none focus:ring-indigo-500"
-                  {...register("marca", {
-                    validate: (value) => {
-                      if (!value) {
-                        return "Seleccione una marca";
-                      }
-                      return true;
-                    },
-                  })}
-                >
-                  <option value="">Seleccione la marca</option>
-                  {marcas.map((item) => (
-                    <option key={item._id} value={item._id}>
-                      {item.nombre}
-                    </option>
-                  ))}
-                </select>
-                {mensajeError.length > 0 &&
-                  mensajeError.map((item) => {
-                    if (item.propiedad === "marca") {
-                      return item.errors.map((e) => (
-                        <p key={item.propiedad} className="text-red-500">
-                          {e}
-                        </p>
-                      ));
-                    } else {
-                      return null;
-                    }
-                  })}
-                {errors.marca && <p>{errors.marca.message}</p>}
-              </div>
-
-              <div>
-                <label
-                  htmlFor="nombre"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Nombre del Producto
-                </label>
-                <input
-                  type="text"
-                  id="nombre"
-                  {...register("nombre", {
-                    validate: (value) => {
-                      if (!value) {
-                        return "Ingrese un nombre";
-                      }
-                      return true;
-                    },
-                  })}
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                />
-                {mensajeError.length > 0 &&
-                  mensajeError.map((item) => {
-                    if (item.propiedad === "nombre") {
-                      return item.errors.map((e) => (
-                        <p key={item.propiedad} className="text-red-500">
-                          {e}
-                        </p>
-                      ));
-                    } else {
-                      return null;
-                    }
-                  })}
-                {errors.nombre && <p>{errors.nombre.message}</p>}
-              </div>
-
-              <div>
-                <label
-                  htmlFor="codigo"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Código de Barra
-                </label>
-                <input
-                  type="text"
-                  id="codigo"
-                  {...register("codigoBarra")}
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                />
-                {mensajeError.length > 0 &&
-                  mensajeError.map((item) => {
-                    if (item.propiedad === "codigoBarra") {
-                      return item.errors.map((e) => (
-                        <p key={item.propiedad} className="text-red-500">
-                          {e}
-                        </p>
-                      ));
-                    } else {
-                      return null;
-                    }
-                  })}
-                {mensajeErrorConflito && (
-                  <span className="text-red-500">
-                    {mensajeErrorConflito.message}
-                  </span>
-                )}
-                {errors.codigoBarra && <p>{errors.codigoBarra.message}</p>}
-              </div>
-
-              <div>
-                <label
-                  htmlFor="color"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Color
-                </label>
-                <input
-                  type="text"
-                  id="color"
-                  {...register("color")}
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                />
-                {mensajeError.length > 0 &&
-                  mensajeError.map((item) => {
-                    if (item.propiedad === "color") {
-                      return item.errors.map((e) => (
-                        <p key={item.propiedad} className="text-red-500">
-                          {e}
-                        </p>
-                      ));
-                    } else {
-                      return null;
-                    }
-                  })}
-              </div>
-
-              <div>
-                <label
-                  htmlFor="talla"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Talla
-                </label>
-                <select
-                  id="talla"
-                  {...register("talla")}
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                >
-                  <option value="">Seleccione una talla</option>
-                  <option value="S">S</option>
-                  <option value="M">M</option>
-                  <option value="L">L</option>
-                  <option value="XL">XL</option>
-                  <option value="XXL">XXL</option>
-                </select>
-                {mensajeError.length > 0 &&
-                  mensajeError.map((item) => {
-                    if (item.propiedad === "talla") {
-                      return item.errors.map((e) => (
-                        <p key={item.propiedad} className="text-red-500">
-                          {e}
-                        </p>
-                      ));
-                    } else {
-                      return null;
-                    }
-                  })}
-              </div>
-
-
-              <div>
-                <label
-                  htmlFor="talla"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Genero
-                </label>
-                <select
-                  id="talla"
-                  {...register("genero")}
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                >
-                  <option value="">Seleleccione un genero</option>
-                  <option value="MASCULINO">MASCULINO</option>
-                  <option value="FEMENINO">FEMENINO</option>
-                
-                </select>
-                {mensajeError.length > 0 &&
-                  mensajeError.map((item) => {
-                    if (item.propiedad === "genero") {
-                      return item.errors.map((e) => (
-                        <p key={item.propiedad} className="text-red-500">
-                          {e}
-                        </p>
-                      ));
-                    } else {
-                      return null;
-                    }
-                  })}
-              </div>
-
-              <div>
-                <label
-                  htmlFor="descripcion"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Descripción
-                </label>
-                <textarea
-                  id="descripcion"
-                  {...register("descripcion")}
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                ></textarea>
-                {mensajeError.length > 0 &&
-                  mensajeError.map((item) => {
-                    if (item.propiedad === "descripcion") {
-                      return item.errors.map((e) => (
-                        <p key={item.propiedad} className="text-red-500">
-                          {e}
-                        </p>
-                      ));
-                    } else {
-                      return null;
-                    }
-                  })}
-              </div>
-              <div>
-                <label
-                  htmlFor="imagen"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Imagen
-                </label>
-                <input
-                  type="file"
-                  id="imagen"
-                  {...register("imagen", { required: true })}
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                  onChange={manejarSeleccionImagen}
-                />
-                {mensajeErrorImagen && (
-                  <span className="text-red-500">
-                    {mensajeErrorImagen.message}
-                  </span>
-                )}
-              </div>
-              {imagenPreview && (
-                <div className="mt-4">
-                  <img
-                    src={imagenPreview}
-                    alt="Vista previa"
-                    className="max-w-xs max-h-48 object-cover"
-                  />
-                </div>
-              )}
-              {mensaje && <samp>{mensaje}</samp>}
-
-              <div className="col-span-2 flex space-x-4">
-                <button
-                  type="submit"
-                  className="w-full bg-indigo-600 text-white p-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                >
-                  Guardar
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setIsModalOpen(false)}
-                  className="w-full bg-gray-500 text-white p-2 rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500"
-                >
-                  Cancelar
-                </button>
-              </div>
-            </form>
+              <option value="">Seleccione la categoría</option>
+              {categorias.map((item) => (
+                <option key={item._id} value={item._id}>
+                  {item.nombre}
+                </option>
+              ))}
+            </select>
+            {mensajeError.length > 0 && mensajeError.map((item) => {
+              if (item.propiedad === "categoria") {
+                return item.errors.map((e) => (
+                  <p key={item.propiedad} className="text-red-500 text-xs">{e}</p>
+                ));
+              } else return null;
+            })}
+            {errors.categoria && <p className="text-red-500 text-xs">{errors.categoria.message}</p>}
           </div>
-        </div>
-      )}
+
+
+          <div>
+            <label htmlFor="subCategoria" className="block text-xs font-medium text-gray-700">
+              Sub Categoría
+            </label>
+            <select
+              id="subCategoria"
+              className="h-8 border border-gray-300 text-gray-600 text-sm rounded-md block w-full py-1.5 px-2 focus:outline-none focus:ring-indigo-500"
+              {...register("subCategoria")}
+            >
+              <option value="">Seleccione la subcategoría</option>
+              {subcategorias.map((item) => (
+                <option key={item._id} value={item._id}>
+                  {item.nombre}
+                </option>
+              ))}
+            </select>
+          </div>
+
+      
+          <div>
+            <label htmlFor="marca" className="block text-xs font-medium text-gray-700">
+              Marcas
+            </label>
+            <select
+              id="marca"
+              className="h-8 border border-gray-300 text-gray-600 text-sm rounded-md block w-full py-1.5 px-2 focus:outline-none focus:ring-indigo-500"
+              {...register("marca",  {
+                validate: (value) => {
+                  if(!value) {
+                    return "Seleccione una marca"
+                  }
+                  return true
+                },
+              })}
+            >
+              <option value="">Seleccione la marca</option>
+              {marcas.map((item) => (
+                <option key={item._id} value={item._id}>
+                  {item.nombre}
+                </option>
+              ))}
+            </select>
+            {mensajeError.length > 0 && mensajeError.map((item) => {
+              if (item.propiedad === "marca") {
+                return item.errors.map((e) => (
+                  <p key={item.propiedad} className="text-red-500 text-xs">{e}</p>
+                ));
+              } else return null;
+            })}
+            {errors.marca && <p className="text-red-500 text-xs">{errors.marca.message}</p>}
+          </div>
+
+          <div>
+            <label htmlFor="nombre" className="block text-xs font-medium text-gray-700">
+              Nombre del Producto
+            </label>
+            <input
+              type="text"
+              id="nombre"
+              {...register("nombre", {
+                validate: (value) => {
+                  if(!value) {
+                    return "Ingrese nombre del prodcuto"
+                  }
+                  return true
+                },
+              })}
+              className="mt-1 block w-full h-8 p-1.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+            />
+            {mensajeError.length > 0 && mensajeError.map((item) => {
+              if (item.propiedad === "nombre") {
+                return item.errors.map((e) => (
+                  <p key={item.propiedad} className="text-red-500 text-xs">{e}</p>
+                ));
+              } else return null;
+            })}
+            {errors.nombre && <p className="text-red-500 text-xs">{errors.nombre.message}</p>}
+          </div>
+
+
+          <div>
+            <label htmlFor="codigo" className="block text-xs font-medium text-gray-700">
+              Código de Barra
+            </label>
+            <input
+              type="text"
+              id="codigo"
+              {...register("codigoBarra")}
+              className="mt-1 block w-full h-8 p-1.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+            />
+            {mensajeError.length > 0 && mensajeError.map((item) => {
+              if (item.propiedad === "codigoBarra") {
+                return item.errors.map((e) => (
+                  <p key={item.propiedad} className="text-red-500 text-xs">{e}</p>
+                ));
+              } else return null;
+            })}
+            {mensajeErrorConflito && (
+              <span className="text-red-500 text-xs">
+                {mensajeErrorConflito.message}
+              </span>
+            )}
+            {errors.codigoBarra && <p className="text-red-500 text-xs">{errors.codigoBarra.message}</p>}
+          </div>
+
+ 
+          <div>
+            <label htmlFor="color" className="block text-xs font-medium text-gray-700">
+              Color
+            </label>
+            <input
+              type="text"
+              id="color"
+              {...register("color")}
+              className="mt-1 block w-full h-8 p-1.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+            />
+            {mensajeError.length > 0 && mensajeError.map((item) => {
+              if (item.propiedad === "color") {
+                return item.errors.map((e) => (
+                  <p key={item.propiedad} className="text-red-500 text-xs">{e}</p>
+                ));
+              } else return null;
+            })}
+          </div>
+
+
+          <div>
+            <label htmlFor="talla" className="block text-xs font-medium text-gray-700">
+              Talla
+            </label>
+            <select
+              id="talla"
+              {...register("talla")}
+              className="mt-1 block w-full h-8 p-1.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+            >
+              <option value="">Seleccione una talla</option>
+              <option value="S">S</option>
+              <option value="M">M</option>
+              <option value="L">L</option>
+              <option value="XL">XL</option>
+              <option value="XXL">XXL</option>
+            </select>
+            {mensajeError.length > 0 && mensajeError.map((item) => {
+              if (item.propiedad === "talla") {
+                return item.errors.map((e) => (
+                  <p key={item.propiedad} className="text-red-500 text-xs">{e}</p>
+                ));
+              } else return null;
+            })}
+          </div>
+
+    
+          <div>
+            <label htmlFor="genero" className="block text-xs font-medium text-gray-700">
+              Género
+            </label>
+            <select
+              id="genero"
+              {...register("genero")}
+              className="mt-1 block w-full h-8 p-1.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+            >
+              <option value="">Seleccione un género</option>
+              <option value="MASCULINO">MASCULINO</option>
+              <option value="FEMENINO">FEMENINO</option>
+            </select>
+            {mensajeError.length > 0 && mensajeError.map((item) => {
+              if (item.propiedad === "genero") {
+                return item.errors.map((e) => (
+                  <p key={item.propiedad} className="text-red-500 text-xs">{e}</p>
+                ));
+              } else return null;
+            })}
+          </div>
+
+    
+          <div>
+            <label htmlFor="descripcion" className="block text-xs font-medium text-gray-700">
+              Descripción
+            </label>
+            <textarea
+              id="descripcion"
+              {...register("descripcion")}
+              className="mt-1 block w-full h-16 p-1.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+            ></textarea>
+            {mensajeError.length > 0 && mensajeError.map((item) => {
+              if (item.propiedad === "descripcion") {
+                return item.errors.map((e) => (
+                  <p key={item.propiedad} className="text-red-500 text-xs">{e}</p>
+                ));
+              } else return null;
+            })}
+          </div>
+
+
+          <div>
+            <label htmlFor="imagen" className="block text-xs font-medium text-gray-700">
+              Imagen
+            </label>
+            <input
+              type="file"
+              id="imagen"
+              {...register("imagen", {required:'La imagen es requerida'})}
+              className="mt-1 block w-full p-1.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+              onChange={manejarSeleccionImagen}
+            />
+            {mensajeErrorImagen && (
+              <span className="text-red-500 text-xs">
+                {mensajeErrorImagen.message}
+              </span>
+            )}
+               {errors.imagen && <p className="text-red-500 text-xs">{errors.imagen.message}</p>}
+          </div>
+
+
+          {imagenPreview && (
+            <div className="mt-4">
+              <img
+                src={imagenPreview}
+                alt="Vista previa"
+                className="max-w-xs max-h-48 object-cover"
+              />
+            </div>
+          )}
+
+
+          {mensaje && <samp className="text-xs">{mensaje}</samp>}
+
+
+          <div className="col-span-2 flex space-x-2">
+            <button
+              type="submit"
+              className="w-full bg-indigo-600 text-white p-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-xs"
+            >
+              Guardar
+            </button>
+            <button
+              type="button"
+              onClick={() => setIsModalOpen(false)}
+              className="w-full bg-gray-500 text-white p-2 rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 text-xs"
+            >
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
-  );
+  )}
+</div>
+
+
+  )
 };

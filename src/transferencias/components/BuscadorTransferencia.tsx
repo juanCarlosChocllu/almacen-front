@@ -1,5 +1,5 @@
 import {useContext, useEffect, useState } from "react";
-import { listarMarcas } from "../../marca/service/marcaApi";
+import { marcasPublicas } from "../../marca/service/marcaApi";
 import { marcaI } from "../../marca/interfaces/marcaInterface";
 import { empresaI } from "../../empresa/interfaces/empresaInterface";
 import { listarSucursalEmpresaBuscador } from "../../sucursal/services/sucursalApi";
@@ -40,7 +40,7 @@ export const BuscadorTransferencia = ({onsudmit}:{onsudmit(data:BuscadorTransFer
   const marca = async () => {
     try {
      if(token){
-      const response = await listarMarcas(token);
+      const response = await marcasPublicas(token);
       setMarcas(response);
      }
     } catch (error) {

@@ -3,9 +3,11 @@ import { FaTrash, FaEdit } from 'react-icons/fa';
 import { listarEmpresa } from '../services/empresaApi';
 import { empresaI } from '../interfaces/empresaInterface';
 import { AutenticacionContext } from '../../autenticacion/context/crear.autenticacion.context';
+import { FormEmpresa } from '../modal/FormEmpresa';
 
 export const TablaEmpresa = () => {
   const { token}= useContext(AutenticacionContext)
+  const [cargarData, setCargarData]=useState<boolean>(false)
 const [empresas, setEmpresas] = useState<empresaI[]>([])
     useEffect(()=>{
         const empresas =async()=>{
@@ -20,9 +22,10 @@ const [empresas, setEmpresas] = useState<empresaI[]>([])
             }
         }
         empresas()
-    },[])
+    },[cargarData])
   return (
     <div className="p-4">
+    <FormEmpresa setCargarData={setCargarData} cargarData={cargarData}/>  
     <h2 className="text-xl font-bold mb-4">Empresa</h2>
 
     <div className="overflow-x-auto shadow-lg rounded-lg border border-gray-300">

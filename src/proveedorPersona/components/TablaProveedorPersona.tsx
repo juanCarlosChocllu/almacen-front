@@ -2,10 +2,12 @@ import { useContext, useEffect, useState } from 'react';
 import { proveedorPersonaI } from '../interfaces/proveedorPersonaInterface';
 import { proveedorPersonas } from '../services/proveedorPersonaApi';
 import { AutenticacionContext } from '../../autenticacion/context/crear.autenticacion.context';
+import { FormProveedorPersona } from '../modal/FormProveedorPersona';
 
 
 export const TablaProveedorPersona = () => {
   const [proveedores, setProveedores] = useState<proveedorPersonaI[]>([]);
+  const [recargarData, setRecargarData]=useState<boolean>( false)
   const {token} =useContext(AutenticacionContext)
 
   const listarProveedoresPersona = async () => {
@@ -21,10 +23,11 @@ export const TablaProveedorPersona = () => {
 
   useEffect(() => {
     listarProveedoresPersona();
-  }, []);
+  }, [recargarData]);
 
   return (
     <div className="p-4 bg-white shadow-md rounded-md w-full">
+      <FormProveedorPersona recargarData={recargarData} setRecargarData={setRecargarData}/>
     <h2 className="text-xl font-semibold mb-3">Información del Proveedor Persona</h2>
     <table className="min-w-full table-auto text-left border-collapse">
       <thead className="bg-gray-200 text-gray-700 text-sm">

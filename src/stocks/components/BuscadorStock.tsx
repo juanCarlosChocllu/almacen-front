@@ -4,7 +4,7 @@ import { BuscadorStockI } from "../interfaces/buscadorStock";
 import { useContext, useEffect, useState } from "react";
 import { listarAlmacenArea } from "../../almacenArea/services/almacenAreaApi";
 import { almacenAreaI } from "../../almacenArea/interfaces/almacenAreaInterface";
-import {  marcasBuscador } from "../../marca/service/marcaApi";
+import { marcasPublicas } from "../../marca/service/marcaApi";
 import { marcaI } from "../../marca/interfaces/marcaInterface";
 import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
 
@@ -35,7 +35,7 @@ export const BuscadorStock = ({
   const listarMarca = async () => {
     try {
       if (token) {
-        const response = await marcasBuscador(token);
+        const response = await marcasPublicas(token);
         setMarcas(response);
       }
     } catch (error) {
@@ -132,3 +132,7 @@ export const BuscadorStock = ({
     </div>
   );
 };
+function marcasBuscador(token: string) {
+  throw new Error("Function not implemented.");
+}
+

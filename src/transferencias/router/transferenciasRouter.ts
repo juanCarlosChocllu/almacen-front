@@ -21,6 +21,10 @@ export const transferenciaRouter:routerI[]=[
         path: '/transferencia/codigo',
         component: mostrarTranferenciaCodigoPage, 
     },
+    {
+        path: '/recibir/transferencia',
+        component: AceptarTransferenciasPage, 
+    },
 
    
 

@@ -1,18 +1,19 @@
 import {  useContext, useState } from "react";
 
-import { crearMarca } from "../../service/marcaApi";
-import { errorPropiedadesI } from "../../../core/interfaces/errorPropiedades";
-import { formMarcaI } from "../../interfaces/formMarcaInterface";
+import { crearMarca } from "../service/marcaApi";
+import { errorPropiedadesI } from "../../core/interfaces/errorPropiedades";
+import { formMarcaI } from "../interfaces/formMarcaInterface";
 import { useForm } from "react-hook-form";
 
-import { HttpStatus } from "../../../core/enums/httStatusEnum";
+import { HttpStatus } from "../../core/enums/httStatusEnum";
 
-import { AutenticacionContext } from "../../../autenticacion/context/crear.autenticacion.context";
-import { httAxiosError } from "../../../core/utils/error.util";
-import { errorClassValidator } from "../../../core/utils/errorClassValidator";
+import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
+import { httAxiosError } from "../../core/utils/error.util";
+import { errorClassValidator } from "../../core/utils/errorClassValidator";
+import { RecargarDataI } from "../../core/interfaces/recargarData";
 
 
-export const FormMarca = () => {
+export const FormMarca = ({recargarData,setRecargarData}:RecargarDataI) => {
 const {token}=useContext(AutenticacionContext)
   const { register, handleSubmit } = useForm<formMarcaI>();
   const  [isOpen , setIsOpen]= useState<boolean>(false)  
@@ -35,6 +36,7 @@ const {token}=useContext(AutenticacionContext)
             if(response.status === HttpStatus.CREATED){
                 setMensaje(response.message)
                 setMensajePropiedades([])
+                setRecargarData(!recargarData)
             }   
             }    
         } catch (error) {
