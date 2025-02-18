@@ -10,7 +10,7 @@ import { errorPropiedadesI } from "../../../core/interfaces/errorPropiedades";
 
 import { errorConflictoI } from "../../../core/interfaces/errorConflictoInterface";
 import { TipoE } from "../../enums/tipo.enum";
-import { listarAreas } from "../../../areas/service/areasApi";
+import { listarAreasPublicas } from "../../../areas/service/areasApi";
 import { areasI } from "../../../areas/interfaces/areasInterface";
 import { empresaI } from "../../../empresa/interfaces/empresaInterface";
 import { listarEmpresa } from "../../../empresa/services/empresaApi";
@@ -133,7 +133,7 @@ useEffect(()=>{
   
     try {
         if(token){
-          const response = await listarAreas(token)
+          const response = await listarAreasPublicas(token)
           setAreas(response)
         }
     } catch (error) {

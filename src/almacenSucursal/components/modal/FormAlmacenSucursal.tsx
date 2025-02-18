@@ -14,8 +14,9 @@ import { crearAlmacenSucursal } from "../../services/almacenSucursalApi";
 import { AutenticacionContext } from "../../../autenticacion/context/crear.autenticacion.context";
 import { httAxiosError } from "../../../core/utils/error.util";
 import { errorClassValidator } from "../../../core/utils/errorClassValidator";
+import { RecargarDataI } from "../../../core/interfaces/recargarData";
 
-export const FormAlmacenSucursal = () => {
+export const FormAlmacenSucursal = ({ recargarData,setRecargarData}:RecargarDataI) => {
   
     const {token}=useContext(AutenticacionContext)
   const { register, handleSubmit , watch} = useForm<formAlmacenSucursalI>();
@@ -74,6 +75,7 @@ export const FormAlmacenSucursal = () => {
         if (response.status == HttpStatus.CREATED) {
           setMensajePropiedades([]);
           setMensaje(response.message);
+          setRecargarData(!recargarData)
         }
        }
     } catch (error) {     

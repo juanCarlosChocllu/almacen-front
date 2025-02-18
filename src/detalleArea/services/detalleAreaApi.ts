@@ -7,7 +7,7 @@ import { httpRespuetaI } from "../../core/interfaces/httpRespuestaInterface";
 
 export const listarDetalleAreaPorUsuario = async(token:string):Promise<DetalleAreaI[]>=>{
     try {
-        console.log('hola');
+
         
         const response = await instance.get('detalle/area/usuario',{
             headers:{

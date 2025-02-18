@@ -1,12 +1,14 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { AutenticacionContext } from '../../../autenticacion/context/crear.autenticacion.context'
-import { transferenciasPorCodigo } from '../services/codigoTransferenciasService'
-import { transferenciasI } from '../../core/interface/transferenciasInterface'
-import { ImCancelCircle } from 'react-icons/im'
-import { EstadoTransferenciaE } from '../../../core/enums/estadoTranferencia'
+import { useContext, useEffect, useState } from "react"
+import { transferenciasI } from "../core/interface/transferenciasInterface"
+import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context"
+import { transferenciasPorCodigo } from "../services/codigoTransferenciasService"
+import { ImCancelCircle } from "react-icons/im"
+import { TiTick } from "react-icons/ti"
+import { aprobarTransferencia } from "../services/transferenciaService"
 
-export const TablaTransferencias = ({id}:{id:string| undefined}) => {
-    const [data, setData] = useState<transferenciasI[]>([])
+
+export const ListarTransferenciaPorCodigoSucursal = ({id}:{id:string|undefined}) => {
+   const [data, setData] = useState<transferenciasI[]>([])
     const {token}=useContext(AutenticacionContext)
     useEffect(()=>{
         transferencia()
@@ -29,9 +31,22 @@ export const TablaTransferencias = ({id}:{id:string| undefined}) => {
     } 
 
 
+    const aprobar= async (transferencia:string)=>{
+      try {
+        console.log('hola');
+        
+        if(token && transferencia){
+          const response = await aprobarTransferencia(transferencia, token)
+        }
+      } catch (error) {
+        console.log(error);
+        
+      }
+    }
+
   return (
     <div>
-        <h1 className='text-center'>Listado de transferencia</h1>
+        <h1 className='text-center'>Listado de transferencia sucursal</h1>
         <table className="min-w-full table-auto border-collapse text-xs">
    
     <thead className="bg-gray-800 text-white">
@@ -63,7 +78,13 @@ export const TablaTransferencias = ({id}:{id:string| undefined}) => {
             <td className="px-4 py-2 border-b">{transferencia.almacenSucursal}</td>
             <td className="px-4 py-2 border-b">{transferencia.fecha}</td>
             <td className="px-4 py-2 border-b">{transferencia.estado}</td>
-          {transferencia.estado ==EstadoTransferenciaE.PENDIENTE ?  <td className="px-4 py-2 border-b"><button className='text-red-600'><ImCancelCircle /></button></td> : 'RECIBIDO'}
+           <td className="px-4 py-2 border-b"><button className='text-red-600 text-2xl'>
+            <ImCancelCircle /></button>
+            <button className="text-green-500 text-2xl"
+            onClick={()=>aprobar(transferencia._id)}
+            ><TiTick  /></button>
+            </td> 
+            
           </tr>
         ))}
       </tbody>

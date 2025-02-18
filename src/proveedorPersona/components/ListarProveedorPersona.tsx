@@ -3,18 +3,42 @@ import { proveedorPersonaI } from '../interfaces/proveedorPersonaInterface';
 import { proveedorPersonas } from '../services/proveedorPersonaApi';
 import { AutenticacionContext } from '../../autenticacion/context/crear.autenticacion.context';
 import { FormProveedorPersona } from '../modal/FormProveedorPersona';
+import { BuscadorProveedor } from './BuscadorProveedor';
+import { Paginador } from '../../core/components/Paginador';
+import { ItemsPorPagina } from '../../core/components/ItemsPorPagina';
 
 
-export const TablaProveedorPersona = () => {
+export const ListarProveedorPersona = () => {
   const [proveedores, setProveedores] = useState<proveedorPersonaI[]>([]);
   const [recargarData, setRecargarData]=useState<boolean>( false)
+  const [ci , setCi] = useState<string>()
+  const [apellidos , setApellidos] = useState<string>()
+  const [nit , setnit] = useState<string>()
+  const [nombre , setNombre] = useState<string>()
+  const [celular , setcelular] = useState<string>()
+
+  const [paginas , setPaginas] = useState<number>(1)
+  const [pagina , setPagina] = useState<number>(1)
+  const [limite , setLimite] = useState<number>(20)
   const {token} =useContext(AutenticacionContext)
 
   const listarProveedoresPersona = async () => {
+    
     try {
       if(token){
-        const response = await proveedorPersonas(token);
-        setProveedores(response);
+        const response = await proveedorPersonas(
+          token,
+          limite,
+          pagina,
+          ci,
+          nombre,
+          apellidos,
+          nit,
+          celular
+
+        );
+        setProveedores(response.data);
+        setPaginas(response.paginas)
       }
     } catch (error) {
       console.error("Error fetching proveedores:", error);
@@ -23,12 +47,27 @@ export const TablaProveedorPersona = () => {
 
   useEffect(() => {
     listarProveedoresPersona();
-  }, [recargarData]);
+  }, [recargarData,   limite,
+    pagina,
+    ci,
+    nombre,
+    apellidos,
+    nit,
+    celular
+]);
 
   return (
     <div className="p-4 bg-white shadow-md rounded-md w-full">
       <FormProveedorPersona recargarData={recargarData} setRecargarData={setRecargarData}/>
     <h2 className="text-xl font-semibold mb-3">Información del Proveedor Persona</h2>
+   <BuscadorProveedor 
+   apellidos={setApellidos} 
+   celular={setcelular} 
+   ci={setCi}
+   nit={setnit}
+   nombre={setNombre}
+   /> 
+   <ItemsPorPagina page={setLimite}/>
     <table className="min-w-full table-auto text-left border-collapse">
       <thead className="bg-gray-200 text-gray-700 text-sm">
         <tr>
@@ -60,6 +99,7 @@ export const TablaProveedorPersona = () => {
         ))}
       </tbody>
     </table>
+    <Paginador  paginaActual={pagina} paginaSeleccionada={setPagina} paginas={paginas}/>
   </div>
   
   );

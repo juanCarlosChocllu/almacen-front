@@ -1,9 +1,9 @@
 
-import { TablaProveedorPersona } from "../components/TablaProveedorPersona"
+import { ListarProveedorPersona } from "../components/ListarProveedorPersona"
 
 
 export const ProveedorPersonaPage = () => {
   return (
-    <div><TablaProveedorPersona/></div>
+    <div><ListarProveedorPersona/></div>
   )
 }

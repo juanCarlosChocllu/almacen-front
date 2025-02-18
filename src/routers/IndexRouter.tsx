@@ -32,8 +32,9 @@ import { stockSucursalRouter } from "../stockSucursal/router/sotckSucursalRouter
 import { PermisosContext } from "../autenticacion/context/permisos.context";
 import { ModulosE } from "../core/enums/modulos.enum";
 import { NotFound } from "../notFound/NotFound";
-import { codigoTransferenciaRouter } from "../transferencias/codigoTransferencias/router/codigoTransferenciaRouter";
+
 import { transferenciaRouter } from "../transferencias/router/transferenciasRouter";
+import { codigoTransferenciaRouter } from "../transferencias/router/codigoTransferenciaRouter";
 
 const rutas = (routes: any[], isAutenticacion: boolean) => {
   return routes.map((route, index) => (

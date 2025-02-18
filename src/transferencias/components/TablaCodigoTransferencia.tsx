@@ -1,13 +1,16 @@
 import { useContext, useEffect, useState } from "react"
-import { AutenticacionContext } from "../../../autenticacion/context/crear.autenticacion.context"
+import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context"
 import { CodigoTransferenciaI } from "../interfaces/codigoTransferencias"
-import { listarCodigoTransferencias } from "../services/codigoTransferenciasService"
-import { IoIosInformationCircle } from "react-icons/io"
-import { ItemsPorPagina } from "../../../core/components/ItemsPorPagina"
-import { Paginador } from "../../../core/components/Paginador"
+
+
+import { ItemsPorPagina } from "../../core/components/ItemsPorPagina"
+import { Paginador } from "../../core/components/Paginador"
 import { Buscador } from "./Buscador"
 import { BuscadorI } from "../interfaces/buscador"
 import { useNavigate } from "react-router-dom"
+import { MdOutlineCancel } from "react-icons/md"
+import { FaSheetPlastic } from "react-icons/fa6"
+import { listarCodigoTransferencias } from "../services/codigoTransferenciasService"
 
 export const TablaCodigoTransferencia = () => {  
   const navigate = useNavigate();
@@ -67,7 +70,9 @@ export const TablaCodigoTransferencia = () => {
           <th className="px-3 py-2">{item.codigo}</th>
           <th className="px-3 py-2">{item.usuario}</th>
           <th className="px-3 py-2">{item.fecha}</th>
-          <th className="px-3 py-2"> <button><IoIosInformationCircle onClick={()=> navigate(`/transferencia/${item._id}`)} /></button> </th>
+          <th className="px-3 py-2"> <button className="text-red-500 text-2xl"><MdOutlineCancel /></button> 
+           <button className="text-blue-500 text-2xl" onClick={()=> navigate(`/transferencia/${item._id}`)}><FaSheetPlastic  /></button> </th>
+
         </tr>
         ))
       }

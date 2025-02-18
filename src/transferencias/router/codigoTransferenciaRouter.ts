@@ -1,7 +1,7 @@
-import { routerI } from "../../../core/interfaces/routerInterface";
-
+import { routerI } from "../../core/interfaces/routerInterface";
 import { CodigoTransferenciaPage } from "../pages/CodigoTransferenciaPage";
 import { TransferenciasPageInformacion } from "../pages/TransferenciasPageInformacion";
+
 
 
 export const codigoTransferenciaRouter:routerI[]=[
@@ -15,5 +15,5 @@ export const codigoTransferenciaRouter:routerI[]=[
         path: '/transferencia/:id',
         component: TransferenciasPageInformacion, 
     },
-
+    
 ]

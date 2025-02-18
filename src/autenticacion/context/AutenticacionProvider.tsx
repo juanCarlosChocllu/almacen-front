@@ -1,7 +1,6 @@
 import { ReactNode, useContext, useEffect, useState } from 'react'
 import { AutenticacionContext } from './crear.autenticacion.context';
 import  cookies from 'js-cookie'
-import { autenticacionContextI } from '../interface/contextInterface';
 export const AutenticacionProvider = ({children}:{children:ReactNode}) => {
   const token:string |undefined= cookies.get('token')
     const [isAutenticacion, setIsAutenticacion] = useState<boolean>(true);

@@ -81,4 +81,24 @@ export const transferenciasSucursal= async(token:string):Promise<TransFerenciaSu
     } catch (error) {
          throw error
     }
+
+
+}
+
+
+
+export const aprobarTransferencia=async(transferencia:string, token:string)=>{
+    try {
+        const response = await instance.get(`transferencias/aprobar/sucursal/${transferencia}`,
+            {
+                headers:{
+                    Authorization:`Bearer ${token}`
+                }
+            }
+        )
+        
+    } catch (error) {
+        throw error
+    }
+
 }

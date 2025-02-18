@@ -3,9 +3,11 @@ import { almacenSucursalI } from "../interfaces/almacenSucursalInterface";
 import { listarAlmacenSucursal } from "../services/almacenSucursalApi";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
+import { FormAlmacenSucursal } from "./modal/FormAlmacenSucursal";
 
 export const TablaAlmacenSucursal = () => {
   const [almacenes, setAlmacenes] = useState<almacenSucursalI[]>([]);
+  const [recargarData, setRecargarData]=useState<boolean>(false)
   const {token}=useContext(AutenticacionContext)
   useEffect(() => {
     listraAlmacen();
@@ -23,6 +25,7 @@ export const TablaAlmacenSucursal = () => {
 
   return (
     <div className="overflow-x-auto shadow-lg rounded-lg border border-gray-300">
+      <FormAlmacenSucursal recargarData={recargarData} setRecargarData={setRecargarData}/>
       <table className="min-w-full table-auto">
         <thead className="bg-gray-800 text-white">
           <tr>

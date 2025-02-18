@@ -1,7 +1,8 @@
 import { useForm } from "react-hook-form"
 import { BuscadorI } from "../interfaces/buscador"
-import { Areas } from "../../../core/components/Areas"
+
 import { useState } from "react"
+import { Areas } from "../../core/components/Areas"
 
 
 export const Buscador = ({onsubmit}:{onsubmit:(data:BuscadorI)=> void}) => {

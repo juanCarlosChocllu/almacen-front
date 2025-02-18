@@ -3,18 +3,34 @@ import { proveedorEmpresaI } from '../interface/proveedorEmpresaInterface';
 import { proveedorEmpresas } from '../services/proveedorEmpresaApi';
 import { AutenticacionContext } from '../../autenticacion/context/crear.autenticacion.context';
 import { FormProveedorEmpresa } from '../modal/FormProveedorEmpresa';
+import { Paginador } from '../../core/components/Paginador';
+import { ItemsPorPagina } from '../../core/components/ItemsPorPagina';
+import {BuscadorProveedor} from './BuscadorProveedor';
 
 
-export const TablaProveedorEmpresa = () => {
+export const ListarProveedorEmpresa = () => {
   const {token}=useContext(AutenticacionContext)
   const [recargarData, setRecargarData]=useState<boolean>( false)
+  const [nit , setnit] = useState<string>()
+  const [nombre , setNombre] = useState<string>()
+  const [celular , setcelular] = useState<string>()
+
+  const [paginas , setPaginas] = useState<number>(1)
+  const [pagina , setPagina] = useState<number>(1)
+  const [limite , setLimite] = useState<number>(6)
   const [proveedores, setProveedores] = useState<proveedorEmpresaI[]>([]);
 
+
+  
+   
   const listarProveedoresEmpresa = async () => {
     try {
       if(token){
-        const response = await proveedorEmpresas(token);
-        setProveedores(response);
+        const response = await proveedorEmpresas(token,limite, pagina, nit, nombre,celular);
+        setProveedores(response.data);
+        setPaginas(response.paginas)
+  
+        
       }
     } catch (error) {
       console.error("Error fetching proveedores:", error);
@@ -23,12 +39,14 @@ export const TablaProveedorEmpresa = () => {
 
   useEffect(() => {
     listarProveedoresEmpresa();
-  }, [recargarData]);
+  }, [recargarData , nit , nombre , limite, celular, pagina]);
 
   return (
     <div className="p-4 bg-white shadow-md rounded-md">
             <FormProveedorEmpresa recargarData={recargarData} setRecargarData={setRecargarData}/>
       <h2 className="text-xl font-semibold mb-3">Lista de Proveedores de Empresa</h2>
+     <BuscadorProveedor celular={setcelular} nit={setnit} nombre={setNombre}/> 
+     <ItemsPorPagina page={setLimite}/> 
       <table className="min-w-full table-auto text-left border-collapse">
         <thead className="bg-gray-200 text-gray-700 text-sm">
           <tr>
@@ -57,6 +75,7 @@ export const TablaProveedorEmpresa = () => {
           ))}
         </tbody>
       </table>
+     <Paginador paginaActual={pagina} paginaSeleccionada={setPagina} paginas={paginas}/> 
     </div>
   );
 };

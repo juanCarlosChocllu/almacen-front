@@ -1,8 +1,11 @@
 import { routerI } from "../../core/interfaces/routerInterface";
-import { AceptarTransferenciasPage } from "../pages/AceptarTransferenciasPage";
+import { RecibirTranferenciaPage } from "../pages/RecibirTranferenciaPage";
 import { ListarTransferenciaPage } from "../pages/ListarTransferenciaPage";
 import { mostrarTranferenciaCodigoPage } from "../pages/MostrarTranferenciaCodigoPage";
 import { TransferenciaPage } from "../pages/TransferenciaPage";
+import { listarAlmaceBuscadorSucursal } from "../../almacenSucursal/services/almacenSucursalApi";
+import { ListarTransferenciaPorCodigoSucursal } from "../components/ListarTransferenciaPorCodigoSucursal";
+import { listarTransferenciaSucursalPage } from "../pages/listarTransferenciaSucursalPage";
 
 
 export const transferenciaRouter:routerI[]=[
@@ -23,8 +26,14 @@ export const transferenciaRouter:routerI[]=[
     },
     {
         path: '/recibir/transferencia',
-        component: AceptarTransferenciasPage, 
+        component: RecibirTranferenciaPage, 
     },
+
+     {
+            path: '/transferencia/sucursal/:id',
+            component: listarTransferenciaSucursalPage, 
+        },
+    
 
    
 
