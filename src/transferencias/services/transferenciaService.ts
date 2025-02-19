@@ -1,10 +1,10 @@
 import { instance } from "../../config/instanceConfig";
 import { httpResponsePagiandor, httpRespuetaI } from "../../core/interfaces/httpRespuestaInterface";
-import { BuscadorTransFerenciaI } from "../core/interface/buscadorTransferencia";
-import { ParamsTransFerenciaI } from "../core/interface/parametrosTranferenciaInterface";
-import { dataTransferenciaI } from "../core/interface/realizarTransferenciaInterface";
-import { transferenciasI } from "../core/interface/transferenciasInterface";
-import { TransFerenciaSucursal } from "../core/interface/transferenciaSucursal";
+import { BuscadorTransFerenciaI } from "../interface/buscadorTransferencia";
+import { ParamsTransFerenciaI } from "../interface/parametrosTranferenciaInterface";
+import { dataTransferenciaI } from "../interface/realizarTransferenciaInterface";
+import { transferenciasI } from "../interface/transferenciasInterface";
+import { TransFerenciaSucursal } from "../interface/transferenciaSucursal";
 
 
  
@@ -87,7 +87,7 @@ export const transferenciasSucursal= async(token:string):Promise<TransFerenciaSu
 
 
 
-export const aprobarTransferencia=async(transferencia:string, token:string)=>{
+export const aprobarTransferencia=async(transferencia:string, token:string):Promise<httpRespuetaI>=>{
     try {
         const response = await instance.get(`transferencias/aprobar/sucursal/${transferencia}`,
             {
@@ -96,9 +96,13 @@ export const aprobarTransferencia=async(transferencia:string, token:string)=>{
                 }
             }
         )
-        
+        return response.data
     } catch (error) {
         throw error
     }
 
 }
+
+
+
+

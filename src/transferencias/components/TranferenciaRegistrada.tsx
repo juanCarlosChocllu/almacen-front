@@ -1,13 +1,24 @@
 import { FaTrash } from "react-icons/fa";
-import { registrarTranferenciaI } from "../core/interface/registrarTransferenciaInterface";
+import { registrarTranferenciaI } from "../interface/registrarTransferenciaInterface";
 
 export const TranferenciaRegistrada = ({
   data,
   eliminarData,
+
+  setDisableEmpresa,
+  setDisableSucursal
 }: {
   data: registrarTranferenciaI[];
   eliminarData: (data: registrarTranferenciaI[]) => void;
+  setDisableEmpresa:(data:boolean) =>void
+
+  setDisableSucursal:(data:boolean) =>void
 }) => {  
+  if(data.length > 0) {
+    setDisableEmpresa(true)
+    setDisableSucursal(true)
+  }
+ 
   return (
     <div>
       <h2 className="text-2xl font-semibold text-center mb-4">
@@ -46,6 +57,10 @@ export const TranferenciaRegistrada = ({
                   onClick={() => {
                     const eliminar = data.filter((i) => i.uuid != item.uuid);
                     eliminarData(eliminar);
+                    if(data.length <= 1 ){
+                      setDisableSucursal(false)
+                      setDisableEmpresa(false)
+                    } 
                   }}
                 >
                   <FaTrash className="text-red-500 hover:text-red-700" />

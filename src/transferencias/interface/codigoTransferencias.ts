@@ -3,4 +3,6 @@ export interface CodigoTransferenciaI {
     codigo:string
     fecha:string
     usuario:string
+    area:string,
+    estado:string
 }

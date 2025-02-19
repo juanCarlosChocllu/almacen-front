@@ -2,7 +2,7 @@ import { HttpStatus } from "../enums/httStatusEnum";
 
 export  interface httpRespuetaI{
     status:HttpStatus,
-    message:string
+    message?:string
 
 }
 

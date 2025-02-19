@@ -37,6 +37,7 @@ export const Sidebar = ({ children }: { children: ReactNode }) => {
   const [isOpenMovimientoArea, setIsOpenMovimientoArea] = useState(false);
   const [isOpenUsuario, setIsOpenUsuario] = useState(false);
 
+
   const [isStockSucursalOpen, setIsStockSucursalOpen] = useState(false);
   const toggleSidebar = () => {
     if (isOpen) {
@@ -92,6 +93,9 @@ export const Sidebar = ({ children }: { children: ReactNode }) => {
                   <p className="text-sm text-gray-500">
                     Rol: <span className="font-medium">{rol}</span>
                   </p>
+                  {sucursal && <p className="text-sm text-gray-500">
+                    Sucursal: <span className="font-medium">{sucursal}</span>
+                  </p>}
                   <p className="text-sm text-gray-500">
                   {area &&  <>Area: {area} <br /> </> }
                     {area &&  <> <Link  to='/bienvenido'>Cambiar de area </Link>  </>}
@@ -345,8 +349,11 @@ export const Sidebar = ({ children }: { children: ReactNode }) => {
                       </div>
                       {isTraspasosOpen && (
                         <div className="pl-6">
-                          <ol>
-                            <li>
+                          
+                             {item.acciones.map((item)=>(
+                            <ol>
+                              {item === 'REALIZAR TRANSFERENCIAS' &&  
+                                         <li>
                               <Link
                                 to="/transferencia"
                                 className="w-full block text-gray-300 hover:text-white py-2 px-4 rounded-lg bg-gray-700 hover:bg-gray-600 transition duration-300"
@@ -355,7 +362,9 @@ export const Sidebar = ({ children }: { children: ReactNode }) => {
                                 Transferencia
                               </Link>
                             </li>
-                            <li className="mt-2">
+                                }
+
+                           {item === 'LISTAR' && <><li className="mt-2">
                               <Link
                                 to="/listar/transferencia"
                                 className="w-full block text-gray-300 hover:text-white py-2 px-4 rounded-lg bg-gray-700 hover:bg-gray-600 transition duration-300"
@@ -363,11 +372,7 @@ export const Sidebar = ({ children }: { children: ReactNode }) => {
                                 <FaList className="mr-2" /> Listar
                                 Transferencias 
                               </Link>
-                            </li>
-
-                           
-
-
+                            </li> 
                             <li className="mt-2">
                               <Link
                                 to="/listar/codigo/transferencia"
@@ -377,8 +382,14 @@ export const Sidebar = ({ children }: { children: ReactNode }) => {
                                 Transferencias enviadas
                               </Link>
                             </li>
-
+                            </>   
                             
+
+                           }
+
+
+
+                              {item === 'RECIBIR_TRANSFERENCIAS' && 
                             <li className="mt-2">
                               <Link
                                 to="/recibir/transferencia"
@@ -386,9 +397,11 @@ export const Sidebar = ({ children }: { children: ReactNode }) => {
                               >
                                 <FaList className="mr-2" /> Recibir Transferencia
                               </Link>
-                            </li>
+                            </li>}
                           
-                          </ol>
+                            </ol>
+                             ))}
+                          
                         </div>
                       )}
                     </div>

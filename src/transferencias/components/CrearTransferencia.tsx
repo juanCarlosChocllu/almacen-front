@@ -3,19 +3,19 @@ import { ListraStock } from "../../stocks/modal/ListraStock";
 import {  listarEmpresaBuscador } from "../../empresa/services/empresaApi";
 import { empresaI } from "../../empresa/interfaces/empresaInterface";
 import { useForm } from "react-hook-form";
-import { formTransferenciaI } from "../core/interface/formTranferenciaInterface";
+import { formTransferenciaI } from "../interface/formTranferenciaInterface";
 import { sucursalI } from "../../sucursal/interface/sucursalInterface";
 import { listarSucursalEmpresaBuscador } from "../../sucursal/services/sucursalApi";
 import { almacenSucursalI } from "../../almacenSucursal/interfaces/almacenSucursalInterface";
 import { listraAlmacenPorSucursalBuscador } from "../../almacenSucursal/services/almacenSucursalApi";
 import { StockI } from "../../stocks/interfaces/stockInterface";
 import { TranferenciaRegistrada } from "./TranferenciaRegistrada";
-import { registrarTranferenciaI } from "../core/interface/registrarTransferenciaInterface";
+import { registrarTranferenciaI } from "../interface/registrarTransferenciaInterface";
 import { v4 as uuidv4 } from "uuid";
 import {
   dataTransferenciaI,
   realizarTransferenciaI,
-} from "../core/interface/realizarTransferenciaInterface";
+} from "../interface/realizarTransferenciaInterface";
 import { realizarTransferencias } from "../services/transferenciaService";
 import { StockSeleccionado } from "./StockSeleccionado";
 import { HttpStatus } from "../../core/enums/httStatusEnum";
@@ -35,7 +35,8 @@ export const CrearTransferencia = () => {
   const {token}= useContext(AutenticacionContext)
   const [empresas, setEmpresas] = useState<empresaI[]>([]);
   const [sucursales, setSucursales] = useState<sucursalI[]>([]);
-
+  const [disableEmpresa, setDisableEmpresa] = useState<boolean>(false);
+  const [disableSucursal, setDisableSucursal] = useState<boolean>(false);
   const [almacenSucursal, setAlmacenSucursal] = useState<almacenSucursalI[]>(
     []
   );
@@ -61,7 +62,7 @@ export const CrearTransferencia = () => {
   const empresa = watch("empresa");
   const sucursal = watch("sucursal");
   const almacenSucursalSeleccionado = watch("almacenSucursal");
-  const [alerModal, setModalAlert]= useState<boolean>(false)
+
 
 
     useEffect(() => {
@@ -69,6 +70,7 @@ export const CrearTransferencia = () => {
     
     listarEmpresas();
     if (empresa) {
+    
       listarSucursales();
     }
     if (sucursal) {
@@ -79,8 +81,7 @@ export const CrearTransferencia = () => {
 
   useEffect(() => {
     setValue('almacenSucursal','')
-   
-   
+    
   }, [stockSeleccionado]);
 
   const listarEmpresas = async () => {
@@ -130,7 +131,8 @@ export const CrearTransferencia = () => {
       (item) => item._id === data.almacenSucursal
     )[0];
     if (stockSeleccionado) {
-      const registrarData: registrarTranferenciaI = {
+ 
+       const registrarData: registrarTranferenciaI = {
         uuid: uuidv4(),
         almacen: data.almacenSucursal,
         cantidad: Number(data.cantidad),
@@ -149,6 +151,8 @@ export const CrearTransferencia = () => {
       };
 
       setDataRegistrada([...dataRegistrada, registrarData]);
+    
+      (true)
     } else {
       setMensaje("Debe Seleccionar un producto");
     }
@@ -158,8 +162,7 @@ export const CrearTransferencia = () => {
     setDataRegistrada(data);
   };
   const realizarTransferencia = async () => {
-    setModalAlert(!alerModal)
-  
+    
     
     const data: realizarTransferenciaI[] = dataRegistrada.map((item) => {
       return {
@@ -177,6 +180,7 @@ export const CrearTransferencia = () => {
     try {
       const newDta: dataTransferenciaI = {
         data: data,
+        sucursal:sucursal
       };
 
        
@@ -185,6 +189,8 @@ export const CrearTransferencia = () => {
       if (response.status == HttpStatus.OK) {
         setMensaje(response.message);
         setDataRegistrada([]);
+        setDisableEmpresa(false)
+        setDisableSucursal(false)
       }
        }
     } catch (error) {
@@ -234,20 +240,7 @@ export const CrearTransferencia = () => {
 
 
 
-   /* const alertaDeconfirmacion = () => {
-      Swal.fire({
-        title: '¿Estás seguro?',
-        text: 'Esta acción no se puede deshacer.',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Sí, seguro',
-        cancelButtonText: 'Cancelar',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          realizarTransferencia();
-        } 
-      });
-    };*/
+ 
   
   
   return (
@@ -295,6 +288,8 @@ export const CrearTransferencia = () => {
                 {...register("empresa", {
                   required: { value: true, message: "Seleccione una empresa" },
                 })}
+
+                disabled={disableEmpresa}
                 className="w-full p-2 bg-white border border-gray-300 text-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="">Seleccione una empresa</option>
@@ -319,6 +314,7 @@ export const CrearTransferencia = () => {
                 {...register("sucursal", {
                   required: { value: true, message: "Seleccione una sucursal" },
                 })}
+                disabled={disableSucursal}
                 className="w-full p-2 bg-white border border-gray-300 text-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="">Seleccione una sucursal</option>
@@ -455,25 +451,33 @@ export const CrearTransferencia = () => {
           </button>
         </form>
 
-        <button
-          onClick={() => {
-            alertaDeconfirmacion(realizarTransferencia)
-          }}
-          type="button"
-          disabled={dataRegistrada.length > 0 ?false :true}
-          className="mt-4 p-2 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-md transition duration-300 transform hover:scale-105"
-        >
-          Guardar
-        </button>
+       
         {mensaje && <span>{mensaje}</span>}
       </div>
 
-      {dataRegistrada.length > 0 && (
+      {dataRegistrada.length > 0 && <>
         <TranferenciaRegistrada
           data={dataRegistrada}
           eliminarData={dataEliminada}
+       
+          setDisableEmpresa={setDisableEmpresa}
+          setDisableSucursal={setDisableSucursal}
+        
         />
-      )}
+
+       <div className="text-center">
+       <button
+        onClick={() => {
+          alertaDeconfirmacion(realizarTransferencia)
+        }}
+        type="button"
+        disabled={dataRegistrada.length > 0 ?false :true}
+        className="mt-4 p-2 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-md transition duration-300 transform hover:scale-105"
+      >
+        Guardar
+      </button>
+       </div>
+      </>}
     </>
   );
 };

@@ -14,4 +14,5 @@ export interface realizarTransferenciaI {
 
   export interface dataTransferenciaI{
     data:realizarTransferenciaI[]
+    sucursal:string
   }

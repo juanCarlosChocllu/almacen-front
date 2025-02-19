@@ -7,7 +7,7 @@ import { sucursalI } from "../../sucursal/interface/sucursalInterface";
 import { almacenSucursalI } from "../../almacenSucursal/interfaces/almacenSucursalInterface";
 import { listraAlmacenPorSucursalBuscador } from "../../almacenSucursal/services/almacenSucursalApi";
 import { useForm } from "react-hook-form";
-import { BuscadorTransFerenciaI } from "../core/interface/buscadorTransferencia";
+import { BuscadorTransFerenciaI } from "../interface/buscadorTransferencia";
 import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
 import { listarEmpresaBuscador } from "../../empresa/services/empresaApi";
 

@@ -1,8 +1,8 @@
-import { TablaCodigoTransferencia } from "../components/TablaCodigoTransferencia"
+import { ListarCodigoTransferenciaArea } from "../components/ListarCodigoTransferenciaArea"
 
 export const CodigoTransferenciaPage = () => {
   return (
-    <div> <TablaCodigoTransferencia/> </div>
+    <div> <ListarCodigoTransferenciaArea/> </div>
   )
 }
 

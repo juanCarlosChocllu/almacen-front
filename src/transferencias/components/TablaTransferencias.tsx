@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from "react";
-import { transferenciasI } from "../core/interface/transferenciasInterface";
+import { transferenciasI } from "../interface/transferenciasInterface";
 import { listarTransferencias } from "../services/transferenciaService";
 
 import { BuscadorTransferencia } from "./BuscadorTransferencia";
-import { BuscadorTransFerenciaI } from "../core/interface/buscadorTransferencia";
+import { BuscadorTransFerenciaI } from "../interface/buscadorTransferencia";
 import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
 import { Paginador } from "../../core/components/Paginador";
 import { ItemsPorPagina } from "../../core/components/ItemsPorPagina";
