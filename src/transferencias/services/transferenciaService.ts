@@ -104,5 +104,22 @@ export const aprobarTransferencia=async(transferencia:string, token:string):Prom
 }
 
 
+export const  editarTransferenciaRechazada= async(transferencia:string , cantidad:number , almacenSucursal:string , token:string):Promise<httpRespuetaI>=>{
+    try {
+        const response = await instance.get(`transferencias/editar/rechazada/${transferencia}/${cantidad}/${almacenSucursal}`,
+            {
+                headers:{
+                    Authorization:`Bearer ${token}`
+                }
+            }
+        )
+        return response.data
+    } catch (error) {
+        throw error
+    }
+
+}
+
+
 
 

@@ -1,9 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react'
+import  { useContext, useEffect, useState } from 'react'
 import { AutenticacionContext } from '../../autenticacion/context/crear.autenticacion.context'
 import { transferenciasI } from '../interface/transferenciasInterface'
-import { ImCancelCircle } from 'react-icons/im'
-import { EstadoTransferenciaE } from '../../core/enums/estadoTranferencia'
-import { transferenciasPorCodigo } from '../services/codigoTransferenciasService'
+
+import { cancelarTransferencia, transferenciasPorCodigo } from '../services/codigoTransferenciasService'
+import { HttpStatus } from '../../core/enums/httStatusEnum'
+import { alertaDeCancelacion } from '../../core/utils/alerteDeCancelacion'
 
 export const ListarTransferenciasPorCodigoArea = ({id}:{id:string| undefined}) => {
     const [data, setData] = useState<transferenciasI[]>([])
@@ -28,7 +29,18 @@ export const ListarTransferenciasPorCodigoArea = ({id}:{id:string| undefined}) =
         }
     } 
 
-
+const cancelar = async(codigo:string)=>{
+      try {
+        if(token){
+          const response = await cancelarTransferencia(codigo, token)
+          if(response.status === HttpStatus.OK){
+            
+          }
+        }
+      } catch (error) {
+        throw error
+      }
+  }
   return (
     <div>
         <h1 className='text-center'>Listado de transferencias areas</h1>
@@ -66,6 +78,10 @@ export const ListarTransferenciasPorCodigoArea = ({id}:{id:string| undefined}) =
         ))}
       </tbody>
     </table>
+    {id && <div className='text-center mt-2'>
+    <button onClick={()=>alertaDeCancelacion(()=>cancelar(id))} 
+         className="bg-red-500 text-white p-1 rounded-md">CANCELAR</button>
+    </div>}
     </div>
   )
 }

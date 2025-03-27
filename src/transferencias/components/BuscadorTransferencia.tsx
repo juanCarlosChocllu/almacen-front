@@ -5,11 +5,11 @@ import { empresaI } from "../../empresa/interfaces/empresaInterface";
 import { listarSucursalEmpresaBuscador } from "../../sucursal/services/sucursalApi";
 import { sucursalI } from "../../sucursal/interface/sucursalInterface";
 import { almacenSucursalI } from "../../almacenSucursal/interfaces/almacenSucursalInterface";
-import { listraAlmacenPorSucursalBuscador } from "../../almacenSucursal/services/almacenSucursalApi";
+import { listraAlmacenPorSucursalBuscador } from "../../almacenSucursal/services/almacenSucursalService";
 import { useForm } from "react-hook-form";
 import { BuscadorTransFerenciaI } from "../interface/buscadorTransferencia";
 import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
-import { listarEmpresaBuscador } from "../../empresa/services/empresaApi";
+import { listarEmpresaPublic } from "../../empresa/services/empresaApi";
 
 
 export const BuscadorTransferencia = ({onsudmit}:{onsudmit(data:BuscadorTransFerenciaI):  void }) => {
@@ -51,7 +51,7 @@ export const BuscadorTransferencia = ({onsudmit}:{onsudmit(data:BuscadorTransFer
   const empresa = async () => {
     try {
       if(token){
-        const response = await listarEmpresaBuscador(token);
+        const response = await listarEmpresaPublic(token);
         setEmpresas(response);
       }
     } catch (error) {

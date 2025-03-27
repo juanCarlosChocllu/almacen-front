@@ -1,13 +1,13 @@
 
-import { TablaAreas } from '../components/TablaAreas'
+import { ListarAreas } from '../components/ListarAreas'
 
 
 export const AreasPage = () => {
   return (
-    <div>
+  
 
-      <TablaAreas/>
+      <ListarAreas/>
       
-      </div>
+   
   )
 }

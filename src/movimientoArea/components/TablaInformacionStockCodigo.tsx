@@ -28,6 +28,7 @@ export const TablaInformacionStockCodigo = ({id}:{id:string}) => {
   }
   return (
     <div>
+      <h1 className="text-center text-2xl">Ingresos de producto</h1>
         <table className="min-w-full table-auto text-sm">
               <thead>
                 <tr className="bg-gray-800 text-white">

@@ -4,7 +4,7 @@ import { UsuariosI } from "../interfaces/usuariosInterface";
 import { AiFillDelete } from "react-icons/ai";
 import { FaRegEdit } from "react-icons/fa";
 import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
-import { FormUsuarios } from "./modal/FormUsuarios";
+import { FormUsuarios } from "../modal/FormUsuarios";
 
 export const TablaUsuarios = () => {
   const {token}=useContext(AutenticacionContext)

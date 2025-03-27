@@ -10,6 +10,7 @@ import { GenerarExcel } from "../../core/components/GenerarExcel";
 import { ItemsPorPagina } from "../../core/components/ItemsPorPagina";
 import { MostarImagenes } from "../../core/modal/MostarImagenes";
 import { Paginador } from "../../core/components/Paginador";
+import { diasRestantes } from "../../core/utils/diasVencimiento";
 
 export const TablaStock = () => {
   const {token} =useContext(AutenticacionContext)
@@ -80,6 +81,8 @@ export const TablaStock = () => {
             
             <th className="px-2 py-1 text-left">Color</th>
             <th className="px-2 py-1 text-left">Tipo</th>
+            <th className="px-2 py-1 text-left">Fecha vencimiento</th>
+            <th className="px-2 py-1 text-left">Dias</th>
             <th className="px-2 py-1 text-left">Imagen</th>
        
           </tr>
@@ -94,6 +97,8 @@ export const TablaStock = () => {
               <td className="px-2 py-1">{item.cantidad || 0}</td>
               <td className="px-2 py-1">{item.color}</td>
               <td className="px-2 py-1">{item.tipo}</td>
+              <td className="px-2 py-1">{item.fechaVencimiento}</td>
+              <td className={`px-2 py-1 ${ diasRestantes(item.fechaVencimiento) < 0 && 'bg-red-200' }`} >{diasRestantes(item.fechaVencimiento)}</td>
 
               <td className="px-2 py-1"><MostarImagenes  key={item.idProducto} url={item.imagen}/></td>
             </tr>

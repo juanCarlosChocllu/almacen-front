@@ -11,5 +11,7 @@ export interface transferenciasI{
     fecha:string
     codigoProducto:string
     estado:string
+    idSucursal:string,
+    idAlmacenSucursal:string,
 
 }

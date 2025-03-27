@@ -1,10 +1,10 @@
 
-import { TablaAlmacenArea } from "../components/TablaAlmacenArea"
+import { ListarAlmacenArea } from "../components/ListarAlmacenArea"
 
 
 export const AlmacenPage = () => {
   return (
 
-    <div><TablaAlmacenArea/></div>
+    <ListarAlmacenArea/>
   )
 }

@@ -1,9 +1,9 @@
 
-import { TablaMarcas } from '../components/TablaMarcas'
+import { ListarMarcas } from '../components/ListarMarcas'
 
 export const MarcaPage = () => {
   return (
 
-    <div><TablaMarcas/></div>
+    <ListarMarcas/>
   )
 }

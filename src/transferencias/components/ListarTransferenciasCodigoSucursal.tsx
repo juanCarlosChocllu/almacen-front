@@ -54,21 +54,7 @@ export const ListarTransferenciaCodigoSucursal = () => {
           
         }
     }
-  
-    const aprobarTransferencia = async( codigo:string)=>{
-          try {
-            if(token){
-              const response = await aprobarCodigoTransferencia(codigo, token)
-              if(response.status === HttpStatus.OK){
-                  setRecargarData(!recardarDAta)
-              } 
-            }
-            
-          } catch (error) {
-             console.log(error);
-             
-          }
-    }
+
 
 
     const rechazar = async( codigo:string)=>{
@@ -119,7 +105,7 @@ export const ListarTransferenciaCodigoSucursal = () => {
              className="text-red-500 text-2xl"><MdOutlineCancel /></button> }
 
              <button className="text-blue-500 text-2xl" onClick={()=> navigate(`/transferencia/sucursal/${item._id}`)}><FaSheetPlastic  /></button>
-            {item.estado != EstadoTransferenciaE.APROBADO &&   item.estado != EstadoTransferenciaE.RECHAZADO && <button onClick={()=>alertaDeconfirmacion(()=> aprobarTransferencia(item._id))} className="text-green-500 text-2xl"><TiTick  /></button>  }
+           
 
               </th>
   

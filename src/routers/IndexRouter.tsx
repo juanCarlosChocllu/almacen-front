@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 import { productosRouter } from "../productos/router/productosRouter";
 import { stockRouter } from "../stocks/router/stockRouter";
-import { Sidebar } from "../menu/Sidebar";
+import { Sidebar } from "../core/components/Sidebar";
 import { empresaRouter } from "../empresa/router/empresaRouter";
 import { categoriasRouter } from "../categorias/router/categoriasRouter";
 import { sucursalRouter } from "../sucursal/router/sucursalRouter";
@@ -96,10 +96,11 @@ export const IndexRouter = () => {
                   return rutas(marcasRouter, isAutenticacion);
                 case ModulosE.SUB_CATEGORIAS:
                   return rutas(subCategoriaRouter, isAutenticacion);
-                case ModulosE.PROVEEDOR_PERSONA:
-                  return rutas(proveedorPersonaRouter, isAutenticacion);
-                case ModulosE.PROVEEDOR_EMPRESA:
-                  return rutas(proveedorEmpresaRouter, isAutenticacion);
+                case ModulosE.PROVEEDORES:
+              
+                  const rutasProveedores = proveedorPersonaRouter.concat(proveedorEmpresaRouter)
+                  return rutas(rutasProveedores, isAutenticacion);
+       
                 case ModulosE.MOVIMIENTO_AREA:
                   return rutas(movimientoAreaRouter, isAutenticacion);
                 case ModulosE.ROL:

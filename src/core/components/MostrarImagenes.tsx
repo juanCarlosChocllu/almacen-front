@@ -18,3 +18,21 @@ export const MostrarImagenes = ({ url }: { url: string }) => {
     </div>
   );
 };
+
+
+
+export const MostrarImagene = ({ url }: { url: string }) => {
+  return (
+    <div className="flex flex-col items-center">
+      
+      
+    
+      <img 
+        src={`${import.meta.env.VITE_BACKEND_API}/${url}`} 
+        alt="Imagen"
+        className="w-[300px] h-[300px] object-contain mt-4"
+      />
+    </div>
+  );
+};
+

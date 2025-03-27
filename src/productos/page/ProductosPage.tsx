@@ -1,12 +1,12 @@
 
-import { TablaProductos } from "../components/TablaProductos.tsx"
+import { ListarProductos } from "../components/ListarProductos.tsx"
 
 
 export const ProductosPage = () => {
   return (
    <>
 
-    {<TablaProductos/>}
+    {<ListarProductos/>}
    </>
   )
 }

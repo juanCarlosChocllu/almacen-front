@@ -1,13 +1,13 @@
 import { useContext, useEffect, useState } from "react";
 import { ListraStock } from "../../stocks/modal/ListraStock";
-import {  listarEmpresaBuscador } from "../../empresa/services/empresaApi";
+import {  listarEmpresaPublic } from "../../empresa/services/empresaApi";
 import { empresaI } from "../../empresa/interfaces/empresaInterface";
 import { useForm } from "react-hook-form";
 import { formTransferenciaI } from "../interface/formTranferenciaInterface";
 import { sucursalI } from "../../sucursal/interface/sucursalInterface";
 import { listarSucursalEmpresaBuscador } from "../../sucursal/services/sucursalApi";
 import { almacenSucursalI } from "../../almacenSucursal/interfaces/almacenSucursalInterface";
-import { listraAlmacenPorSucursalBuscador } from "../../almacenSucursal/services/almacenSucursalApi";
+import { listraAlmacenPorSucursalBuscador } from "../../almacenSucursal/services/almacenSucursalService";
 import { StockI } from "../../stocks/interfaces/stockInterface";
 import { TranferenciaRegistrada } from "./TranferenciaRegistrada";
 import { registrarTranferenciaI } from "../interface/registrarTransferenciaInterface";
@@ -30,6 +30,7 @@ import { httAxiosError } from "../../core/utils/error.util";
 import { Loader } from "../../core/components/Loader";
 import { diasRestantes } from "../../core/utils/diasVencimiento";
 import { alertaDeconfirmacion } from "../../core/utils/alertaDeConfirmacion";
+import { alertaStockRegistrado } from "../utils/alertaStockRegistrado";
 
 export const CrearTransferencia = () => {
   const {token}= useContext(AutenticacionContext)
@@ -87,7 +88,7 @@ export const CrearTransferencia = () => {
   const listarEmpresas = async () => {
     try {
    if(token){
-    const response = await listarEmpresaBuscador(token);
+    const response = await listarEmpresaPublic(token);
     setEmpresas(response);
    }
     } catch (error) {
@@ -124,14 +125,15 @@ export const CrearTransferencia = () => {
     }
   };
 
-  const onSubmit = (data: formTransferenciaI) => {
+  const onSubmit = async (data: formTransferenciaI) => {
+    
     const empresa = empresas.filter((item) => item._id === data.empresa)[0];
     const sucursal = sucursales.filter((item) => item._id === data.sucursal)[0];
     const almacen = almacenSucursal.filter(
       (item) => item._id === data.almacenSucursal
     )[0];
     if (stockSeleccionado) {
- 
+
        const registrarData: registrarTranferenciaI = {
         uuid: uuidv4(),
         almacen: data.almacenSucursal,
@@ -149,10 +151,18 @@ export const CrearTransferencia = () => {
         almacenArea: stockSeleccionado?.almacenArea,
         codigoProducto:stockSeleccionado?.codigoProducto
       };
-
-      setDataRegistrada([...dataRegistrada, registrarData]);
-    
-      (true)
+      const existeStock = dataRegistrada.filter((stock) => stock.codigo == registrarData.codigo  && stock.almacen == registrarData.almacen)
+      if(existeStock.length > 0) {
+        const alerta =  await alertaStockRegistrado()
+        if(alerta.isConfirmed) {
+          for (let index = 0; index < existeStock.length; index++) {
+            existeStock[index].cantidad += registrarData.cantidad  
+          }
+        }        
+      }else {
+        setDataRegistrada([...dataRegistrada, registrarData]);
+      }
+      
     } else {
       setMensaje("Debe Seleccionar un producto");
     }
@@ -177,6 +187,7 @@ export const CrearTransferencia = () => {
       };
     });
 
+    
     try {
       const newDta: dataTransferenciaI = {
         data: data,

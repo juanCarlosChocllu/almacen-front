@@ -50,3 +50,33 @@ export const listarSucursalEmpresaBuscador= async(empresa:string | undefined, to
     }
 
 }
+
+
+export const eliminarSucursal= async(id:string, token:string):Promise<httpRespuetaI>=>{    
+    try {
+        const response = await instance.delete(`sucursal/${id}`,{
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        })
+        return response.data
+    } catch (error) {
+        throw error
+    }
+
+}
+
+
+export const actulizarSucursal= async(data:formSucursalI, token:string, id:string):Promise<httpRespuetaI>=>{
+    try {
+        const response = await instance.patch(`sucursal/${id}`,data,{
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        })
+        return response.data
+    } catch (error) {
+        throw error
+    }
+
+}

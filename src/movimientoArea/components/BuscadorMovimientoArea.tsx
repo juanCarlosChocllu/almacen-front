@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { BuscadorMAreaI } from "../interface/buscadorMAreaInterface";
-import { listarAlmacenArea } from "../../almacenArea/services/almacenAreaApi";
+import { listarAlmacenArea } from "../../almacenArea/services/almacenAreaService";
 import { almacenAreaI } from "../../almacenArea/interfaces/almacenAreaInterface";
 import { useForm } from "react-hook-form";
 import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";

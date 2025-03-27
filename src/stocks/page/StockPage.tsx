@@ -1,9 +1,7 @@
-import { FormStock } from "../components/FormStock"
+import { CrearStock } from "../components/CrearStock"
 export const StockPage = () => {
 
   return (
-    <>
-     <div>{ <FormStock/>}</div>
-    </>
+    <CrearStock/>
   )
 }

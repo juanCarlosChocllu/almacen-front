@@ -3,10 +3,10 @@ import { almacenSucursalI } from "../../almacenSucursal/interfaces/almacenSucurs
 import { marcaI } from "../../marca/interfaces/marcaInterface";
 import { marcasPublicas } from "../../marca/service/marcaApi";
 import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
-import { listarAlmaceBuscadorSucursal,  } from "../../almacenSucursal/services/almacenSucursalApi";
+import { listarAlmacenPublicas,  } from "../../almacenSucursal/services/almacenSucursalService";
 import { useForm } from "react-hook-form";
 import { BuscadorStockSucursalI } from "../interfaces/buscadorStockSucursal";
-import { listarEmpresaBuscador } from "../../empresa/services/empresaApi";
+import { listarEmpresaPublic } from "../../empresa/services/empresaApi";
 import { empresaI } from "../../empresa/interfaces/empresaInterface";
 import { PermisosContext } from "../../autenticacion/context/permisos.context";
 
@@ -40,7 +40,7 @@ export const BuscadorStockSucursal = ({onSubmit}:{onSubmit (data:BuscadorStockSu
       (async()=>{
         try {
             if(token){
-             const response = await listarAlmaceBuscadorSucursal(sucursal, token)
+             const response = await listarAlmacenPublicas(sucursal, token)
               setAlmacenes(response)
             }
         } catch (error) {
@@ -63,7 +63,7 @@ export const BuscadorStockSucursal = ({onSubmit}:{onSubmit (data:BuscadorStockSu
     const listarEmpresa=async()=>{
       try {
          if(token){
-          const respose = await listarEmpresaBuscador(token)
+          const respose = await listarEmpresaPublic(token)
           setEmpresas(respose)
          }
       } catch (error) {

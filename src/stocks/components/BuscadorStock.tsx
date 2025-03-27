@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 
 import { BuscadorStockI } from "../interfaces/buscadorStock";
 import { useContext, useEffect, useState } from "react";
-import { listarAlmacenArea } from "../../almacenArea/services/almacenAreaApi";
+import { listarAlmacenArea } from "../../almacenArea/services/almacenAreaService";
 import { almacenAreaI } from "../../almacenArea/interfaces/almacenAreaInterface";
 import { marcasPublicas } from "../../marca/service/marcaApi";
 import { marcaI } from "../../marca/interfaces/marcaInterface";

@@ -4,6 +4,7 @@ import {
   httpResponsePagiandor,
   httpRespuetaI,
 } from "../../core/interfaces/httpRespuestaInterface";
+import { formProductoI } from "../interface/formProductoInterface";
 import { ParamsAxiosI } from "../interface/paramsAxiosInterface";
 
 import { productoI } from "../interface/productoInterface";
@@ -65,3 +66,55 @@ export const listarProductos = async (
   }
 };
 
+
+
+export const productoFindOne = async (id:string, token:string): Promise<formProductoI> => {
+ 
+  
+  try {
+    const response = await instance.get(`productos/${id}`, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization:`Bearer ${token}`
+      },
+    
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+export const editarProducto = async (data: FormData, token:string, id:string): Promise<httpRespuetaI> => {
+ 
+  
+  try {
+    const response: httpRespuetaI = await instance.patch(`productos/${id}`, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization:`Bearer ${token}`
+      },
+    
+    });
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const eliminarProducto = async (id:string, token:string): Promise<httpRespuetaI> => {
+ 
+  
+  try {
+    const response = await instance.delete(`productos/${id}`, {
+      headers: {
+        Authorization:`Bearer ${token}`
+      },
+    
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

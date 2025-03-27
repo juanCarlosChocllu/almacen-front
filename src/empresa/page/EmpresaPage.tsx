@@ -1,11 +1,8 @@
-import { TablaEmpresa } from "../components/TablaEmpresa"
+import { ListarEmpresa } from "../components/ListarEmpresa"
 
 export const EmpresaPage = () => {
   return (
-     <>
-
-      <div>{<TablaEmpresa/>}</div>
-     </>
+     <ListarEmpresa/>
   )
 }
 

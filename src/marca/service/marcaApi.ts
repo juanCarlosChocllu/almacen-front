@@ -52,3 +52,42 @@ export const crearMarca =async (data:formMarcaI,token:string):Promise<httpRespue
     }
 
 }
+
+
+
+export const editarMarca =async (data:formMarcaI,token:string, id:string):Promise<httpRespuetaI>=>{
+    try {
+        const response= await instance.patch(`marca/${id}`,data,{
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        })
+        return response.data
+        
+    } catch (error) {
+        throw error
+        
+    }
+
+}
+
+
+export const eliminarMarca=async (id:string, token:string):Promise<httpRespuetaI>=>{
+    try {
+        const response= await instance.delete(`marca/${id}`,{
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        })
+        return response.data
+        
+    } catch (error) {
+        throw error
+        
+    }
+
+}
+
+
+
+

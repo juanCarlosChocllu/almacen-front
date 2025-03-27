@@ -8,13 +8,12 @@ import { Paginador } from "../../core/components/Paginador"
 import { Buscador } from "./Buscador"
 import { BuscadorI } from "../interface/buscador"
 import { useNavigate } from "react-router-dom"
-import { MdOutlineCancel } from "react-icons/md"
+
 import { FaSheetPlastic } from "react-icons/fa6"
-import { cancelarTransferencia, listarCodigoTransferencias } from "../services/codigoTransferenciasService"
+import {  listarCodigoTransferencias } from "../services/codigoTransferenciasService"
 import { EstadoTransferenciaE } from "../../core/enums/estadoTranferencia"
 import { FaRegEdit } from "react-icons/fa"
-import { HttpStatus } from "../../core/enums/httStatusEnum"
-import { alertaDeCancelacion } from "../../core/utils/alerteDeCancelacion"
+
 
 export const ListarCodigoTransferenciaArea = () => {  
 
@@ -53,21 +52,7 @@ export const ListarCodigoTransferenciaArea = () => {
         
       }
   }
-  const cancelar = async(codigo:string)=>{
-      try {
-        if(token){
-          const response = await cancelarTransferencia(codigo, token)
-          if(response.status === HttpStatus.OK){
-             setRecargarData(!recardarDAta)
-          }
-        }
-      } catch (error) {
-        throw error
-      }
-  }
-
-
-  return (
+    return (
 
 
 <div>
@@ -92,18 +77,11 @@ export const ListarCodigoTransferenciaArea = () => {
           <th className="px-3 py-2">{item.estado}</th>
           <th className="px-3 py-2">{item.fecha}</th>
           <th className="px-3 py-2"> 
-        {item.estado === EstadoTransferenciaE.PENDIENTE && 
-         <button onClick={()=>alertaDeCancelacion(()=>cancelar(item._id))} 
-         className="bg-red-500 text-white p-1 rounded-md">CANCELAR</button>
-      
-         }
            <button className="text-blue-500 text-2xl" 
            onClick={()=> navigate(`/transferencia/${item._id}`)}><FaSheetPlastic  /></button>
            {item.estado === EstadoTransferenciaE.RECHAZADO && 
            <button className="text-yellow-400 text-2xl" onClick={()=> navigate(`/transferencia/editar/rechazado/${item._id}`)}><FaRegEdit /></button>}
-           
             </th>
-
         </tr>
         ))
       }

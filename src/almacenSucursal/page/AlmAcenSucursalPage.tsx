@@ -1,13 +1,10 @@
 
-import { TablaAlmacenSucursal } from "../components/TablaAlmacenSucursal"
+import { ListarAlmacenSucursal } from "../components/ListarAlmacenSucursal"
 
 
 export const AlmAcenSucursalPage = () => {
   return (
-   <>
-
-   <TablaAlmacenSucursal/>
-   </>
+   <ListarAlmacenSucursal/>
   )
 }
 
