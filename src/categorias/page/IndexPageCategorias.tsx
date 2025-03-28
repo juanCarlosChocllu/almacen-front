@@ -1,8 +1,8 @@
 
-import { TablaCategorias } from "../components/TablaCategorias"
+import { ListarCategorias } from "../components/ListarCategorias"
 
 export const IndexPageCategorias = () => {
   return (
-        <div><TablaCategorias/></div>
+        <ListarCategorias/>
   )
 }

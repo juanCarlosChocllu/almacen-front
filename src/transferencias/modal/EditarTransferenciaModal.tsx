@@ -9,30 +9,20 @@ import { HttpStatus } from "../../core/enums/httStatusEnum";
 import { HttpStatusCode } from "axios";
 
 import { httAxiosError } from "../../core/utils/error.util";
+import { PropsEditarTransferencia } from "../interface/PropsEditarTransferencia";
 
 export const EditarTrasnferenciaModal = ({
   transferencia,
-  isModalOpen,
-  closeModal,
   idSusursal,
   idAlmacen,
   cantidad,
-  recargarDara,
-  setRecargarData,
   codigo,
-  producto
-}: {
-  transferencia: string;
-  idSusursal: string;
-  codigo:string
-  producto:string
-  idAlmacen: string;
-  isModalOpen: boolean;
-  cantidad: number;
-  closeModal: () => void;
-  setRecargarData: (data: boolean) => void;
-  recargarDara: boolean;
-}) => {
+  producto,
+  closeModal,
+  isOpen,
+  recargar,
+  setRecargar
+}: PropsEditarTransferencia) => {
   
   const { token } = useContext(AutenticacionContext);
   const [almacenes, setAlmaces] = useState<almacenSucursalI[]>([]);
@@ -68,7 +58,7 @@ export const EditarTrasnferenciaModal = ({
           token
         );
         if (response.status === HttpStatus.OK) {
-          setRecargarData(!recargarDara);
+          setRecargar(!recargar);
           closeModal();
         }
       }
@@ -82,7 +72,7 @@ export const EditarTrasnferenciaModal = ({
   };
   return (
     <div>
-      {isModalOpen && (
+      {isOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50">
           <div className="bg-white p-6 rounded-lg w-96">
             <button onClick={closeModal}>X</button>

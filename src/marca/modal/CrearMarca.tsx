@@ -13,7 +13,7 @@ import { errorClassValidator } from "../../core/utils/errorClassValidator";
 import { RecargarDataI } from "../../core/interfaces/recargarData";
 
 
-export const CrearMarca = ({recargarData,setRecargarData}:RecargarDataI) => {
+export const CrearMarca = ({recargar,setRecargar}:RecargarDataI) => {
 const {token}=useContext(AutenticacionContext)
   const { register, handleSubmit } = useForm<formMarcaI>();
   const  [isOpen , setIsOpen]= useState<boolean>(false)  
@@ -36,7 +36,7 @@ const {token}=useContext(AutenticacionContext)
             if(response.status === HttpStatus.CREATED){
                 setMensaje(response.message)
                 setMensajePropiedades([])
-                setRecargarData(!recargarData)
+                setRecargar(!recargar)
             }   
             }    
         } catch (error) {

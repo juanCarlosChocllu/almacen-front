@@ -28,7 +28,7 @@ import { InformacionAlmacen } from "./InformacionAlmacen";
 import { errorClassValidator } from "../../core/utils/errorClassValidator";
 import { httAxiosError } from "../../core/utils/error.util";
 import { ProductosModal } from "../../productos/modal/ProductosModal";
-import { AlertaConfirmacion } from "../../core/modal/AlertaConfirmacion";
+
 import { alertaDeconfirmacion } from "../../core/utils/alertaDeConfirmacion";
 import { HttpStatus } from "../../core/enums/httStatusEnum";
 import { useNavigate } from "react-router-dom";
@@ -281,14 +281,14 @@ export const CrearStock = () => {
             }
           })}
 
-        {isOpenProveedores && (
+        {isOpenProveedores && 
           <MostrarProveedores
             proveedorEmpresaSeleccionado={setProveedorEmpresaSeleccionado}
             proveedorPersonaSeleccionado={setProveedorPersonaSeleccionado}
             isOpen={isOpenProveedores}
             closeModal={closeModalProveedores}
           />
-        )}
+        }
       </div>
 
       <div className="mt-6">

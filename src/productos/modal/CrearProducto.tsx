@@ -10,7 +10,7 @@ import { errorImagenI } from "../../core/interfaces/errorImgenInterface";
 import { errorConflictoI } from "../../core/interfaces/errorConflictoInterface";
 import { httAxiosError } from "../../core/utils/error.util";
 import { httpRespuetaI } from "../../core/interfaces/httpRespuestaInterface";
-import { listarCategorias } from "../../categorias/service/categoriasApi";
+import { listarCategorias } from "../../categorias/service/categoriasService";
 import {  marcasPublicas } from "../../marca/service/marcaApi";
 import { crearProducto } from "../service/productosService";
 import { HttpStatus } from "../../core/enums/httStatusEnum";
@@ -19,7 +19,7 @@ import { listarSubCategorias } from "../../subCategorias/services/subCategoriasA
 import { RecargarDataI } from "../../core/interfaces/recargarData";
 
 
-export const CrearProducto = ({recargarData,setRecargarData}:RecargarDataI) => {
+export const CrearProducto = ({setRecargar,recargar}:RecargarDataI) => {
   const { token } = useContext(AutenticacionContext);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [categorias, setCategorias] = useState<categoriasI[]>([]);
@@ -75,7 +75,7 @@ useEffect(()=>{
           setMensajeError([]);
           setMensajeErrorConflicto(null);
           setMensaje("Producto registrado");
-          setRecargarData(!recargarData)
+          setRecargar(!recargar)
           reset({
             categoria:'',
              codigoBarra:'',

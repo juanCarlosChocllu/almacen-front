@@ -16,7 +16,7 @@ import { httAxiosError } from "../../core/utils/error.util";
 import { errorClassValidator } from "../../core/utils/errorClassValidator";
 import { RecargarDataI } from "../../core/interfaces/recargarData";
 
-export const CrearAlmacenSucursal = ({ recargarData,setRecargarData}:RecargarDataI) => {
+export const CrearAlmacenSucursal = ({ recargar,setRecargar}:RecargarDataI) => {
   
     const {token}=useContext(AutenticacionContext)
   const { register, handleSubmit , watch} = useForm<formAlmacenSucursalI>();
@@ -75,7 +75,7 @@ export const CrearAlmacenSucursal = ({ recargarData,setRecargarData}:RecargarDat
         if (response.status == HttpStatus.CREATED) {
           setMensajePropiedades([]);
           setMensaje(response.message);
-          setRecargarData(!recargarData)
+          setRecargar(!recargar)
         }
        }
     } catch (error) {     

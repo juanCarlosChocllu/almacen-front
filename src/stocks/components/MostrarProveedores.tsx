@@ -3,7 +3,7 @@ import { useState } from "react";
 import { proveedorEmpresaI } from "../../proveedorEmpresa/interface/proveedorEmpresaInterface";
 import { proveedorPersonaI } from "../../proveedorPersona/interfaces/proveedorPersonaInterface";
 import { TablaProveedorPersona } from "../../proveedorPersona/modal/TablaProveedorPersona";
-import { ListarProveedorEmpresa } from "../../proveedorEmpresa/modal/TablaProveedorEmpresa";
+import { ListarProveedorEmpresa } from "../../proveedorEmpresa/modal/ListarProveedorEmpresa";
 
 export const MostrarProveedores = ({
   isOpen,

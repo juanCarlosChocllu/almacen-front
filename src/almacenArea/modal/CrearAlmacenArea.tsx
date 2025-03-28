@@ -21,7 +21,7 @@ import { errorClassValidator } from "../../core/utils/errorClassValidator";
 import { RecargarDataI } from "../../core/interfaces/recargarData";
 
 
-export const CrearAlmacenArea = ({recargarData,setRecargarData}:RecargarDataI) => {
+export const CrearAlmacenArea = ({recargar,setRecargar}:RecargarDataI) => {
   
   const {token}= useContext(AutenticacionContext)
   const {tipo}= useContext(PermisosContext)
@@ -67,7 +67,7 @@ export const CrearAlmacenArea = ({recargarData,setRecargarData}:RecargarDataI) =
       if (response.status == HttpStatus.CREATED) {
         setMensaje(response.message);
         setMensajePropiedades([]);
-        setRecargarData(!recargarData)
+        setRecargar(!recargar)
       }
     }
     } catch (error) {     

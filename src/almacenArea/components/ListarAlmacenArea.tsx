@@ -7,16 +7,17 @@ import { CrearAlmacenArea } from "../modal/CrearAlmacenArea"
 import { HttpStatus } from "../../core/enums/httStatusEnum"
 import { alertaDeEliminacion } from "../../core/utils/alertaEliminacion"
 import { EditarAlmacenAreaModal } from "../modal/EditarAlmacenAreaModal"
+import { accionModal } from "../../core/hooks/accionModal"
 
 export const ListarAlmacenArea = () => {
   const [recargarData, setRecargarData] = useState<boolean>(false)
   const { token } = useContext(AutenticacionContext)
   const [almacenArea, setAlmacenArea] = useState<almacenAreaI[]>([])
-  const [isOpen, setIsOpen] = useState<boolean>(false)
+
   const [idAlmacen, setIdAlmacen] = useState<string>()
   const [area, setArea] = useState<string>()
   const [almacen, setAlmacen] = useState<string>()
-  const closeModal = () => setIsOpen(false)
+  const {closeModal,isOpen,setIsOpen} = accionModal()
   useEffect(() => {
     listaDeAlmacenArea()
   }, [recargarData])
@@ -50,7 +51,7 @@ console.log(idAlmacen , idAlmacen, area ,almacen);
   return (
     <div className="overflow-x-auto shadow-lg rounded-lg border border-gray-300">
 
-      <CrearAlmacenArea recargarData={recargarData} setRecargarData={setRecargarData} />
+      <CrearAlmacenArea recargar={recargarData} setRecargar={setRecargarData} />
 
 
       <table className="min-w-full table-auto">

@@ -5,9 +5,10 @@ import { transferenciasPorCodigo } from "../services/codigoTransferenciasService
 import { MdDelete } from "react-icons/md"
 import { FaEdit } from "react-icons/fa"
 import { EditarTrasnferenciaModal } from "../modal/EditarTransferenciaModal"
+import { accionModal } from "../../core/hooks/accionModal"
 
 export const EditarTransferenciaRechazada = ({id}:{id:string}) => {
-  const [isModalOpen, setIsModalOpen] = useState(false); 
+
   const [recardarDAta, setRecargarData] =useState<boolean>(false)
   const [transferencia, setTransferencia] = useState<string>(); 
   const [codigo, setCodigo] = useState<string>(); 
@@ -15,7 +16,8 @@ export const EditarTransferenciaRechazada = ({id}:{id:string}) => {
   const [idSucursal, setIdSucursal] = useState<string>(); 
   const [idAlmacenSucursal, setIdAlmacenSucursal] = useState<string>(); 
   const [cantidad, setCantidad] = useState<number>(0); 
-const [data, setData] = useState<transferenciasI[]>([])
+  const {closeModal,isOpen,setIsOpen}= accionModal()
+  const [data, setData] = useState<transferenciasI[]>([])
     const {token}=useContext(AutenticacionContext)
     useEffect(()=>{
       transferencias()
@@ -37,12 +39,9 @@ const [data, setData] = useState<transferenciasI[]>([])
         }
     } 
 
-    const closeModal =()=>{
-      setIsModalOpen(false)
-    }
+   
 
     const editar=(transferencia:string, sucursal:string, almacen:string, cantidad:number, codigo:string , producto:string)=>{
-        console.log(codigo  );
         
       setTransferencia(transferencia)
       setIdSucursal(sucursal)
@@ -50,7 +49,7 @@ const [data, setData] = useState<transferenciasI[]>([])
       setIdAlmacenSucursal(almacen)
       setProducto(producto)
       setCodigo(codigo)
-      setIsModalOpen(true)
+      setIsOpen(true)
     }
   return (
     <div>
@@ -97,7 +96,7 @@ const [data, setData] = useState<transferenciasI[]>([])
         </div>
 
 
-        {isModalOpen &&  transferencia && idAlmacenSucursal && idSucursal &&  cantidad >= 0  && codigo && producto &&<EditarTrasnferenciaModal closeModal={closeModal} isModalOpen={isModalOpen} transferencia={transferencia} idAlmacen={idAlmacenSucursal} idSusursal={idSucursal}  cantidad={cantidad} recargarDara={recardarDAta} setRecargarData={setRecargarData}  codigo={codigo} producto={producto}/> }
+        {isOpen &&  transferencia && idAlmacenSucursal && idSucursal &&  cantidad >= 0  && codigo && producto &&<EditarTrasnferenciaModal closeModal={closeModal}  transferencia={transferencia} idAlmacen={idAlmacenSucursal} idSusursal={idSucursal}  cantidad={cantidad} recargar={recardarDAta} setRecargar={setRecargarData}  codigo={codigo} producto={producto}  isOpen={isOpen}/> }
     </div>
    
   )

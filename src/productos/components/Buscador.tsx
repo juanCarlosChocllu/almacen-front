@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { categoriasI } from "../../categorias/interfaces/categoriasInterface";
-import { listarCategorias } from "../../categorias/service/categoriasApi";
+import { listarCategorias } from "../../categorias/service/categoriasService";
 import { listarSubCategorias } from "../../subCategorias/services/subCategoriasApi";
 import { subCategoriaI } from "../../subCategorias/interfaces/subCategoriaInterface";
 import { BuscadorI } from "../interface/buscardorInterface";

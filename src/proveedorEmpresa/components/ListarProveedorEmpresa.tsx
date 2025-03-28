@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { proveedorEmpresaI } from '../interface/proveedorEmpresaInterface';
 import { proveedorEmpresas } from '../services/proveedorEmpresaApi';
 import { AutenticacionContext } from '../../autenticacion/context/crear.autenticacion.context';
-import { FormProveedorEmpresa } from '../modal/FormProveedorEmpresa';
+import { CrearProveedorEmpresa } from '../modal/CrearProveedorEmpresa';
 import { Paginador } from '../../core/components/Paginador';
 import { ItemsPorPagina } from '../../core/components/ItemsPorPagina';
 import {BuscadorProveedor} from './BuscadorProveedor';
@@ -17,12 +17,9 @@ export const ListarProveedorEmpresa = () => {
 
   const [paginas , setPaginas] = useState<number>(1)
   const [pagina , setPagina] = useState<number>(1)
-  const [limite , setLimite] = useState<number>(6)
+  const [limite , setLimite] = useState<number>(20)
   const [proveedores, setProveedores] = useState<proveedorEmpresaI[]>([]);
 
-
-  
-   
   const listarProveedoresEmpresa = async () => {
     try {
       if(token){
@@ -43,7 +40,7 @@ export const ListarProveedorEmpresa = () => {
 
   return (
     <div className="p-4 bg-white shadow-md rounded-md">
-            <FormProveedorEmpresa recargarData={recargarData} setRecargarData={setRecargarData}/>
+            <CrearProveedorEmpresa recargar={recargarData} setRecargar={setRecargarData}/>
       <h2 className="text-xl font-semibold mb-3">Lista de Proveedores de Empresa</h2>
      <BuscadorProveedor celular={setcelular} nit={setnit} nombre={setNombre}/> 
      <ItemsPorPagina page={setLimite}/> 

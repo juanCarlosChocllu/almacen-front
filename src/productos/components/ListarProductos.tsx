@@ -16,6 +16,7 @@ import { CrearProducto } from "../modal/CrearProducto";
 import { EditarProducto } from "../modal/EditarProducto";
 import { HttpStatus } from "../../core/enums/httStatusEnum";
 import { alertaDeEliminacion } from "../../core/utils/alertaEliminacion";
+import { accionModal } from "../../core/hooks/accionModal";
 
 export const ListarProductos = () => {
   const [recargarData, setRecargarData]= useState<boolean>(false)
@@ -29,10 +30,7 @@ export const ListarProductos = () => {
   const [subCategoria, setSubCategoria] = useState<string | null>(null);
   const [idProducto, setIdProdcuto]= useState<string>()
   const {token}= useContext(AutenticacionContext)
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const closeModal =()=>{
-    setIsModalOpen(false)
-  }
+  const { closeModal,setIsOpen, isOpen}= accionModal()
   useEffect(() => {
     const listarPro = async () => {
       try {
@@ -71,7 +69,7 @@ export const ListarProductos = () => {
 
   const editarProducto = (id:string) => {    
     setIdProdcuto(id)
-    setIsModalOpen(true)
+    setIsOpen(true)
   };
 
   const eliminar = async(id:string)=> {
@@ -90,7 +88,7 @@ export const ListarProductos = () => {
 
   return (
     <div className="p-6">
-     <CrearProducto recargarData={recargarData} setRecargarData={setRecargarData} /> 
+     <CrearProducto recargar={recargarData} setRecargar={setRecargarData} /> 
       {<Buscador onsudmit={handleBuscador} />}
       <GenerarExcel<productoI> data={productos} nombre={'Productos'}/>
       <ItemsPorPagina page={setLimite} />
@@ -158,7 +156,7 @@ export const ListarProductos = () => {
         paginaSeleccionada={pagina}
         paginaActual={paginaSeleccionada}
       />
-      {isModalOpen && idProducto && <EditarProducto setRecargar={setRecargarData} recargar={recargarData} idProducto={idProducto} closeModal={closeModal} isOpenModal={isModalOpen}/>}
+      {isOpen && idProducto && <EditarProducto setRecargar={setRecargarData} recargar={recargarData} idProducto={idProducto} closeModal={closeModal} isOpen={isOpen}/>}
     </div>
   );
 };

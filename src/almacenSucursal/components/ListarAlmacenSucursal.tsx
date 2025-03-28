@@ -7,15 +7,14 @@ import { CrearAlmacenSucursal } from "../modal/CrearAlmacenSucursal";
 import { HttpStatus } from "../../core/enums/httStatusEnum";
 import { alertaDeEliminacion } from "../../core/utils/alertaEliminacion";
 import { EditarAlmacenSucursal } from "../modal/EditarAlmacenSucursal";
+import { accionModal } from "../../core/hooks/accionModal";
 
 export const ListarAlmacenSucursal = () => {
   const [almacenes, setAlmacenes] = useState<almacenSucursalI[]>([]);
   const [recargarData, setRecargarData]=useState<boolean>(false)
   const {token}=useContext(AutenticacionContext)
   const [idAlmacen, setIdAlmacen]= useState<string>()
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-
-  const closeModal =()=> setIsOpen(false)
+  const {closeModal,isOpen,setIsOpen}=accionModal()
 
   useEffect(() => {
     listraAlmacen();
@@ -52,7 +51,7 @@ export const ListarAlmacenSucursal = () => {
 
   return (
     <div className="overflow-x-auto shadow-lg rounded-lg border border-gray-300">
-      <CrearAlmacenSucursal recargarData={recargarData} setRecargarData={setRecargarData}/>
+      <CrearAlmacenSucursal recargar={recargarData} setRecargar={setRecargarData}/>
       <table className="min-w-full table-auto">
         <thead className="bg-gray-800 text-white">
           <tr>

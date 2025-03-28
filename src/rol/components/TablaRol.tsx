@@ -91,7 +91,7 @@ export const TablaRol = () => {
         </tbody>
       </table>
       {isModalOpenPermisos && <Permisos isModalOpen={isModalOpenPermisos} permisos={verPermisos} setIsModalOpen={setIsModalOpenPermisos}/>}
-      {isModalOpen &&  idRol &&  rol && <EditarRoles  rol={rol} closeModal={closeModal} isModalOpen={isModalOpen} id={idRol}/>}
+      {isModalOpen &&  idRol &&  rol && <EditarRoles  rol={rol} closeModal={closeModal} isOpen={isModalOpen} id={idRol}/>}
     </div>
   )
 }

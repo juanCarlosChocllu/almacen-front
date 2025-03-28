@@ -8,17 +8,16 @@ import { CrearAreas } from "../modal/CrearAreas";
 import { HttpStatus } from "../../core/enums/httStatusEnum";
 import { alertaDeEliminacion } from "../../core/utils/alertaEliminacion";
 import { EditarAreas } from "../modal/EditarAreaModal";
+import { accionModal } from "../../core/hooks/accionModal";
 
 export const ListarAreas = () => {
   const [recargarData, setRecargarData] = useState<boolean>(false)
   const {token}= useContext(AutenticacionContext)
   const [areas, setAreas] = useState<areasI[]>([]);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+
   const [idArea, setIdArea] = useState<string>();
   const [area, setArea] = useState<string>();
-  
-  const closeModal =()=> setIsOpen(false)
-
+  const { closeModal,isOpen,setIsOpen}=accionModal()
   useEffect(() => {
     listraAreas();
   }, [recargarData]);
@@ -56,7 +55,7 @@ export const ListarAreas = () => {
 
   return (
     <div className="overflow-x-auto shadow-lg rounded-lg border border-gray-300">
-          <CrearAreas recargarData={recargarData} setRecargarData={setRecargarData}/>
+          <CrearAreas recargar={recargarData} setRecargar={setRecargarData}/>
       <table className="min-w-full table-auto">
         <thead className="bg-gray-800 text-white">
           <tr>

@@ -12,7 +12,7 @@ import { httAxiosError } from "../../core/utils/error.util";
 import { errorClassValidator } from "../../core/utils/errorClassValidator";
 import { RecargarDataI } from "../../core/interfaces/recargarData";
 
-export const CrearAreas = ({recargarData,setRecargarData}:RecargarDataI) => {
+export const CrearAreas = ({recargar,setRecargar}:RecargarDataI) => {
   const { token } = useContext(AutenticacionContext);
   const { register, handleSubmit , setValue} = useForm<formAreasI>();
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -43,7 +43,7 @@ export const CrearAreas = ({recargarData,setRecargarData}:RecargarDataI) => {
         if (response.status == HttpStatus.CREATED) {
           setMensaje(response.message);
           setMensajePropiedades([]);
-          setRecargarData(!recargarData)
+          setRecargar(!recargar)
             setValue('nombre','')
         }
       }

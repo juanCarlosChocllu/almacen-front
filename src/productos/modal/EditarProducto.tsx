@@ -10,7 +10,7 @@ import { errorImagenI } from "../../core/interfaces/errorImgenInterface";
 import { errorConflictoI } from "../../core/interfaces/errorConflictoInterface";
 import { httAxiosError } from "../../core/utils/error.util";
 import { httpRespuetaI } from "../../core/interfaces/httpRespuestaInterface";
-import { listarCategorias } from "../../categorias/service/categoriasApi";
+import { listarCategorias } from "../../categorias/service/categoriasService";
 import { marcasPublicas } from "../../marca/service/marcaApi";
 import {
   editarProducto,
@@ -20,20 +20,15 @@ import { HttpStatus } from "../../core/enums/httStatusEnum";
 import { errorClassValidator } from "../../core/utils/errorClassValidator";
 import { listarSubCategorias } from "../../subCategorias/services/subCategoriasApi";
 import { MostrarImagene } from "../../core/components/MostrarImagenes";
+import { PropsEditarProducto } from "../interface/propsEditarProducto";
 
 export const EditarProducto = ({
   idProducto,
   closeModal,
-  isOpenModal,
+  isOpen,
   recargar,
   setRecargar
-}: {
-  idProducto: string;
-  closeModal: () => void;
-  isOpenModal: boolean;
-  recargar:boolean,
-  setRecargar:(recargar:boolean)=>void
-}) => {
+}:PropsEditarProducto ) => {
   const { token } = useContext(AutenticacionContext);
 
   const [categorias, setCategorias] = useState<categoriasI[]>([]);
@@ -65,7 +60,7 @@ export const EditarProducto = ({
   useEffect(() => {
     abrirModal();
     producto();
-  }, [isOpenModal]);
+  }, [isOpen]);
 
   const producto = async () => {
     try {
@@ -178,7 +173,7 @@ export const EditarProducto = ({
 
   return (
     <div>
-      {isOpenModal && (
+      {isOpen && (
         <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-50">
           <div className="bg-white p-4 rounded-md shadow-lg w-full md:max-w-lg max-w-full max-h-screen overflow-auto">
             <h2 className="text-xl font-semibold mb-4 text-center">

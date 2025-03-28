@@ -53,3 +53,35 @@ export const crearSubCategoria= async(data:formSubCategoriaI, token:string):Prom
 
 
 }
+
+
+
+export const eliminarSubCategoria= async(id:string, token:string):Promise<httpRespuetaI>=>{
+    try {
+        const response = await instance.delete(`sub/categoria/${id}`,{
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        })
+         return response.data
+    } catch (error) {
+        throw  error
+    }
+
+
+}
+
+export const editarSubCategoria= async(data:formSubCategoriaI, token:string, id:string):Promise<httpRespuetaI>=>{
+    try {
+        const response = await instance.patch(`sub/categoria/${id}`,data,{
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        })
+         return response.data
+    } catch (error) {
+        throw  error
+    }
+
+
+}

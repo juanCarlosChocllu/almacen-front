@@ -13,7 +13,7 @@ import { httAxiosError } from "../../core/utils/error.util";
 import { errorClassValidator } from "../../core/utils/errorClassValidator";
 import { RecargarDataI } from "../../core/interfaces/recargarData";
 
-export const CrearSucursal = ({recargarData, setRecargarData}:RecargarDataI) => {
+export const CrearSucursal = ({recargar, setRecargar}:RecargarDataI) => {
   const {token}= useContext(AutenticacionContext)
   const { register, handleSubmit, setValue } = useForm<formSucursalI>();
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -52,7 +52,7 @@ export const CrearSucursal = ({recargarData, setRecargarData}:RecargarDataI) => 
       if (response.status == HttpStatus.CREATED) {
         setMensajePropiedades([]);
         setMensaje(response.message);
-        setRecargarData(!recargarData)
+        setRecargar(!recargar)
         setValue('nombre', '')
         
       }

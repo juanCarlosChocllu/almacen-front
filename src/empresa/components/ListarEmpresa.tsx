@@ -7,6 +7,7 @@ import { CrearEmpresa} from '../modal/CrearEmpresa';
 import { EditarEmpresa } from '../modal/EditarEmpresa';
 import { HttpStatus } from '../../core/enums/httStatusEnum';
 import { alertaDeEliminacion } from '../../core/utils/alertaEliminacion';
+import { accionModal } from '../../core/hooks/accionModal';
 
 export const ListarEmpresa = () => {
   const { token}= useContext(AutenticacionContext)
@@ -14,8 +15,7 @@ export const ListarEmpresa = () => {
   const [empresas, setEmpresas] = useState<empresaI[]>([])
   const [idEmpresa, setIdEmpresa]=useState<string>()
   const [empresa, setEmpresa]=useState<string>()
-  const [isOpen, setIsOpen]=useState<boolean>(false)
-  const closeModal =()=>setIsOpen(false)
+  const  {closeModal, isOpen, setIsOpen}=accionModal()
     useEffect(()=>{
         const empresas =async()=>{
             try {

@@ -6,9 +6,10 @@ import { PermisosI } from "../../permisos/interfaces/permisoInterface";
 import { verificarPermisosPorRol } from "../../permisos/services/permisosApi";
 import { editarRol } from "../services/rolService";
 import { HttpStatus } from "../../core/enums/httStatusEnum";
+import { PropsEditarRol } from "../interface/PropsEditarRol";
 
 
-export const EditarRoles = ({id,closeModal,isModalOpen, rol}:{id:string,isModalOpen:boolean ,closeModal:()=>void, rol:string}) => {
+export const EditarRoles = ({id,closeModal,isOpen, rol}:PropsEditarRol) => {
   const { register, handleSubmit, setValue} = useForm<any>();
   const {token}= useContext(AutenticacionContext) 
   const [verPermisos, setVerPermisos] = useState<PermisosI[]>([])
@@ -80,7 +81,7 @@ export const EditarRoles = ({id,closeModal,isModalOpen, rol}:{id:string,isModalO
     <>
       
 
-      {isModalOpen && (
+      {isOpen && (
         <div className="modal-overlay fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="modal-content bg-white p-6 rounded-lg shadow-lg w-1/3 max-h-[90%] overflow-y-auto">
             <h2 className="text-2xl font-semibold text-center text-blue-600 mb-6">

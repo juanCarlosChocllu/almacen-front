@@ -1,4 +1,4 @@
 export interface RecargarDataI {
-    recargarData:boolean, 
-    setRecargarData:(data:boolean)=> void
+    recargar:boolean, 
+    setRecargar:(data:boolean)=> void
 }

@@ -51,7 +51,7 @@ export const ListarMarcas = () => {
       }
   return (
      <div className="overflow-x-auto shadow-lg rounded-lg ">
-    <CrearMarca recargarData={recargarData} setRecargarData={setRecargarData}/>  
+    <CrearMarca recargar={recargarData} setRecargar={setRecargarData}/>  
       <ItemsPorPagina page={setLimite}/> 
           <table className="min-w-full table-auto">
             <thead className="bg-gray-800 text-white">
