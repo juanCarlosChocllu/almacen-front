@@ -11,7 +11,7 @@ import { empresaI } from "../../empresa/interfaces/empresaInterface";
 import { PermisosContext } from "../../autenticacion/context/permisos.context";
 
 import { TipoUsuarioE } from "../../core/enums/tipoUsuario";
-import { listarSucursalEmpresaBuscador } from "../../sucursal/services/sucursalApi";
+import { listarSucursalEmpresaBuscador } from "../../sucursal/services/sucursalService";
 import { sucursalI } from "../../sucursal/interface/sucursalInterface";
 
 export const BuscadorStockSucursal = ({onSubmit}:{onSubmit (data:BuscadorStockSucursalI):void}) => {
@@ -20,7 +20,6 @@ export const BuscadorStockSucursal = ({onSubmit}:{onSubmit (data:BuscadorStockSu
   const sucursal = watch("sucursal") || undefined
   const {token }=useContext(AutenticacionContext)
   const { tipo} =useContext(PermisosContext)
-  console.log(sucursal);
   
   const [almacenes, setAlmacenes] = useState<almacenSucursalI[]>([]);
   const [empresas, setEmpresas] = useState<empresaI[]>([]);

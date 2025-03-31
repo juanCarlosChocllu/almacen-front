@@ -16,6 +16,20 @@ export const listarRol = async(token:string):Promise<rolI[]>=>{
 
 }
 
+export const listarRolPublicas = async(token:string):Promise<rolI[]>=>{
+    try {
+        const response = await instance.get('rol/publicas',{
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        })
+        return response.data
+    } catch (error) {
+        throw error
+    }
+
+}
+
 export const Permisos= async():Promise<any>=>{
     try {
         const response = await instance.post('permisos')
@@ -44,6 +58,21 @@ export const crearRol=  async(data:FormData, token:string )=>{
 export const editarRol=  async(data:FormData, token:string , id:string):Promise<httpRespuetaI>=>{
     try {
         const response = await instance.patch(`rol/${id}`, data,{
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        })
+        return response.data
+    } catch (error) {
+        throw error
+    }
+
+}
+
+
+export const eliminarRol=  async(token:string , id:string):Promise<httpRespuetaI>=>{
+    try {
+        const response = await instance.delete(`rol/${id}`,{
             headers:{
                 Authorization:`Bearer ${token}`
             }

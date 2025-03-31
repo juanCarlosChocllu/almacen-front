@@ -1,12 +1,16 @@
 import { FaTrash, FaEdit } from "react-icons/fa";
 import { sucursalI } from "../interface/sucursalInterface";
 import { useContext, useEffect, useState } from "react";
-import { eliminarSucursal, listarSucursal } from "../services/sucursalApi";
+import { eliminarSucursal, listarSucursal } from "../services/sucursalService";
 import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
 import { CrearSucursal } from "../modal/CrearSucursal";
 import { HttpStatus } from "../../core/enums/httStatusEnum";
 import { alertaDeEliminacion } from "../../core/utils/alertaEliminacion";
 import { EditarSucursal } from "../modal/EditarSucursal";
+import { permisosModulo } from "../../core/hooks/permisos";
+import { ModulosE } from "../../core/enums/modulos.enum";
+import { PermisoE } from "../../core/enums/PermisosEnum";
+import { PermisosContext } from "../../autenticacion/context/permisos.context";
 export const ListarSucursal = () => {
   const [sucursales, setSucursales] = useState<sucursalI[]>([]);
   const [recargarData, setRecargarData]= useState<boolean>(false)
@@ -16,6 +20,7 @@ export const ListarSucursal = () => {
   const [idSucursal, setIdSucursal]= useState<string>()
   const closeModal = ()=> setIsOpen(false)
   const { token } = useContext(AutenticacionContext);
+   const  {permisos} =useContext(PermisosContext)
   useEffect(() => {
     listarScursales();
   }, [recargarData]);
@@ -51,7 +56,7 @@ export const ListarSucursal = () => {
   
   return (
     <div className="p-4">'
-  <CrearSucursal recargarData={recargarData} setRecargarData={setRecargarData}/>
+   { permisosModulo(permisos,ModulosE.SUCURSALES, PermisoE.CREAR) && <CrearSucursal recargar={recargarData} setRecargar={setRecargarData}/> }
       <h2 className="text-xl font-bold mb-4">Sucursales</h2>
 
       <div className="overflow-x-auto shadow-lg rounded-lg border border-gray-300">
@@ -69,17 +74,18 @@ export const ListarSucursal = () => {
                 <td className="px-4 py-2 ">{sucursal.nombre}</td>
                 <td className="px-4 py-2 ">{sucursal.nombreEmpresa}</td>
                 <td className="px-4 py-2 flex gap-2">
-                  <button onClick={()=> alertaDeEliminacion(()=> eliminar(sucursal._id))}  className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 focus:outline-none flex items-center">
+                { permisosModulo(permisos,ModulosE.SUCURSALES, PermisoE.ELIMINAR) &&  <button onClick={()=> alertaDeEliminacion(()=> eliminar(sucursal._id))}  className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 focus:outline-none flex items-center">
                     <FaTrash className="mr-2" />
-                  </button>
-                  <button onClick={()=>{
+                  </button> }
+                  
+                  { permisosModulo(permisos,ModulosE.SUCURSALES, PermisoE.ELIMINAR) &&     <button onClick={()=>{
                       setEmpresa(sucursal.empresa)
                       setSucursal(sucursal.nombre)
                       setIdSucursal(sucursal._id)
                       setIsOpen(true)
                   }} className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none flex items-center">
                     <FaEdit className="mr-2" />
-                  </button>
+                  </button> }
                 </td>
               </tr>
             ))}

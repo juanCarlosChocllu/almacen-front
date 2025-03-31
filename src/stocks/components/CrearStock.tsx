@@ -47,7 +47,7 @@ export const CrearStock = () => {
   const [isOpenProveedores, setIsOpenProveedores] = useState<boolean>(false);
   const [dataSeleccionada, setDataSeleccionada] = useState<dataProductoI[]>([]);
   const [almacenArea, setAlmacenArea] = useState<almacenAreaI[]>([]);
-  const [mensaje, setMensaje] = useState<string | null>(null);
+  const [mensaje, setMensaje] = useState<string >();
   const [estadoFechaVencimiento, setEstadoFechaVencimiento]= useState(true)
   const [stockExisteProducto, setStockExisteProducto] = useState<
     StockVerificarI[]

@@ -3,9 +3,9 @@ import { useForm } from "react-hook-form";
 import { HttpStatus } from "../../core/enums/httStatusEnum";
 
 import { formSucursalI } from "../interface/formScursalIterface";
-import { listarEmpresa } from "../../empresa/services/empresaApi";
+import {  listarEmpresaPublic } from "../../empresa/services/empresaApi";
 import { empresaI } from "../../empresa/interfaces/empresaInterface";
-import { actulizarSucursal } from "../services/sucursalApi";
+import { actulizarSucursal } from "../services/sucursalService";
 import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
 
 export const EditarSucursal = ({
@@ -47,7 +47,7 @@ export const EditarSucursal = ({
   const listarEmpresas = async () => {
     try {
       if (token) {
-        const response = await listarEmpresa(token);
+        const response = await listarEmpresaPublic(token);
         setEmpresas(response);
       }
     } catch (error) {

@@ -1,9 +1,9 @@
-import { TablaRol } from "../components/TablaRol"
+import { ListarRol } from "../components/ListarRol"
 
 export const RolPage = () => {
 
 
   return (
-    <div>{<TablaRol/>}</div>
+    <ListarRol/>
   )
 }

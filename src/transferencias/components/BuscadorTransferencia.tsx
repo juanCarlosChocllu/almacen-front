@@ -2,7 +2,7 @@ import {useContext, useEffect, useState } from "react";
 import { marcasPublicas } from "../../marca/service/marcaApi";
 import { marcaI } from "../../marca/interfaces/marcaInterface";
 import { empresaI } from "../../empresa/interfaces/empresaInterface";
-import { listarSucursalEmpresaBuscador } from "../../sucursal/services/sucursalApi";
+import { listarSucursalEmpresaBuscador } from "../../sucursal/services/sucursalService";
 import { sucursalI } from "../../sucursal/interface/sucursalInterface";
 import { almacenSucursalI } from "../../almacenSucursal/interfaces/almacenSucursalInterface";
 import { listraAlmacenPorSucursalBuscador } from "../../almacenSucursal/services/almacenSucursalService";

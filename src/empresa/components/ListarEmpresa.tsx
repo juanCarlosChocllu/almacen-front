@@ -8,6 +8,10 @@ import { EditarEmpresa } from '../modal/EditarEmpresa';
 import { HttpStatus } from '../../core/enums/httStatusEnum';
 import { alertaDeEliminacion } from '../../core/utils/alertaEliminacion';
 import { accionModal } from '../../core/hooks/accionModal';
+import { permisosModulo } from '../../core/hooks/permisos';
+import { ModulosE } from '../../core/enums/modulos.enum';
+import { PermisoE } from '../../core/enums/PermisosEnum';
+import { PermisosContext } from '../../autenticacion/context/permisos.context';
 
 export const ListarEmpresa = () => {
   const { token}= useContext(AutenticacionContext)
@@ -16,6 +20,7 @@ export const ListarEmpresa = () => {
   const [idEmpresa, setIdEmpresa]=useState<string>()
   const [empresa, setEmpresa]=useState<string>()
   const  {closeModal, isOpen, setIsOpen}=accionModal()
+    const  {permisos} =useContext(PermisosContext)
     useEffect(()=>{
         const empresas =async()=>{
             try {
@@ -47,7 +52,7 @@ export const ListarEmpresa = () => {
 
   return (
     <div className="p-4">
-    <CrearEmpresa setCargarData={setCargarData} cargarData={cargarData}/>  
+   { permisosModulo(permisos,ModulosE.SUCURSALES, PermisoE.CREAR) &&  <CrearEmpresa setCargarData={setCargarData} cargarData={cargarData}/>  }
     <h2 className="text-xl font-bold mb-4">Empresa</h2>
 
     <div className="overflow-x-auto shadow-lg rounded-lg border border-gray-300">
@@ -63,18 +68,18 @@ export const ListarEmpresa = () => {
             <tr key={empresa._id} className="hover:bg-gray-100">
               <td className="px-4 py-2 ">{empresa.nombre}</td>
               <td className="px-4 py-2  flex gap-2">
-                <button onClick={()=> alertaDeEliminacion(()=>eliminar(empresa._id))} className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 focus:outline-none flex items-center">
+              { permisosModulo(permisos,ModulosE.SUCURSALES, PermisoE.ELIMINAR) &&   <button onClick={()=> alertaDeEliminacion(()=>eliminar(empresa._id))} className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 focus:outline-none flex items-center">
                   <FaTrash className="mr-2" />
      
-                </button>
-                <button onClick={()=> {
+                </button> }
+                { permisosModulo(permisos,ModulosE.SUCURSALES, PermisoE.EDITAR) &&  <button onClick={()=> {
                   setIdEmpresa(empresa._id)
                   setEmpresa(empresa.nombre)
                   setIsOpen(true)
                 }} className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none flex items-center">
                   <FaEdit className="mr-2" />
       
-                </button>
+                </button> }
               </td>
             </tr>
           ))}

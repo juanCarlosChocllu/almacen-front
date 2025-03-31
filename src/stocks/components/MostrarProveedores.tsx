@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { proveedorEmpresaI } from "../../proveedorEmpresa/interface/proveedorEmpresaInterface";
 import { proveedorPersonaI } from "../../proveedorPersona/interfaces/proveedorPersonaInterface";
-import { TablaProveedorPersona } from "../../proveedorPersona/modal/TablaProveedorPersona";
+import { ListarProveedorPersona } from "../../proveedorPersona/modal/ListarProveedorPersona";
 import { ListarProveedorEmpresa } from "../../proveedorEmpresa/modal/ListarProveedorEmpresa";
 
 export const MostrarProveedores = ({
@@ -46,17 +46,14 @@ export const MostrarProveedores = ({
     <>
       {isOpen && (
         
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-md shadow-lg max-w-7xl w-full space-y-4">
+        <div className="fixed inset-0  bg-black bg-opacity-20 flex items-center justify-center z-50">
+          <div className="bg-white p-1 rounded-md shadow-lg max-w-7xl w-700 ">
             <button
               onClick={closeModal}
               className="top-2 right-2 text-gray-500 hover:text-gray-700 text-xl"
             >
               ×
             </button>
-            <h2 className="text-xl font-semibold text-center mb-4">
-              Selecciona un Proveedor
-            </h2>
 
             <div className="flex flex-row justify-center gap-4">
               <button
@@ -80,7 +77,7 @@ export const MostrarProveedores = ({
               <ListarProveedorEmpresa proveedorEmpresa={proveedoresEmpresa} />
             )}
             {proveedorPersona && (
-              <TablaProveedorPersona proveedorPersona={proveedoresPersona} />
+              <ListarProveedorPersona proveedorPersona={proveedoresPersona} />
             )}
           </div>
         </div>

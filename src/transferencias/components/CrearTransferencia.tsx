@@ -5,7 +5,7 @@ import { empresaI } from "../../empresa/interfaces/empresaInterface";
 import { useForm } from "react-hook-form";
 import { formTransferenciaI } from "../interface/formTranferenciaInterface";
 import { sucursalI } from "../../sucursal/interface/sucursalInterface";
-import { listarSucursalEmpresaBuscador } from "../../sucursal/services/sucursalApi";
+import { listarSucursalEmpresaBuscador } from "../../sucursal/services/sucursalService";
 import { almacenSucursalI } from "../../almacenSucursal/interfaces/almacenSucursalInterface";
 import { listraAlmacenPorSucursalBuscador } from "../../almacenSucursal/services/almacenSucursalService";
 import { StockI } from "../../stocks/interfaces/stockInterface";

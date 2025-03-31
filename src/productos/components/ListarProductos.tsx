@@ -17,6 +17,10 @@ import { EditarProducto } from "../modal/EditarProducto";
 import { HttpStatus } from "../../core/enums/httStatusEnum";
 import { alertaDeEliminacion } from "../../core/utils/alertaEliminacion";
 import { accionModal } from "../../core/hooks/accionModal";
+import { permisosModulo } from "../../core/hooks/permisos";
+import { ModulosE } from "../../core/enums/modulos.enum";
+import { PermisoE } from "../../core/enums/PermisosEnum";
+import { PermisosContext } from "../../autenticacion/context/permisos.context";
 
 export const ListarProductos = () => {
   const [recargarData, setRecargarData]= useState<boolean>(false)
@@ -31,6 +35,7 @@ export const ListarProductos = () => {
   const [idProducto, setIdProdcuto]= useState<string>()
   const {token}= useContext(AutenticacionContext)
   const { closeModal,setIsOpen, isOpen}= accionModal()
+  const  {permisos} =useContext(PermisosContext)
   useEffect(() => {
     const listarPro = async () => {
       try {
@@ -88,7 +93,7 @@ export const ListarProductos = () => {
 
   return (
     <div className="p-6">
-     <CrearProducto recargar={recargarData} setRecargar={setRecargarData} /> 
+    { permisosModulo(permisos,ModulosE.PRODUCTOS, PermisoE.CREAR) &&   <CrearProducto recargar={recargarData} setRecargar={setRecargarData} /> }
       {<Buscador onsudmit={handleBuscador} />}
       <GenerarExcel<productoI> data={productos} nombre={'Productos'}/>
       <ItemsPorPagina page={setLimite} />
@@ -144,8 +149,8 @@ export const ListarProductos = () => {
             <MostarImagenes url={item.imagen}/>
               </td>
               <td className="px-4 py-2   text-sm">
-                <button className="text-red-500 text-2xl" onClick={()=> alertaDeEliminacion(()=>eliminar(item._id))} ><MdDelete  /></button>
-                <button  className="text-blue-500 text-2xl"  onClick={()=>editarProducto(item._id)}><FaEdit /></button>
+              { permisosModulo(permisos,ModulosE.PRODUCTOS, PermisoE.ELIMINAR) &&   <button className="text-red-500 text-2xl" onClick={()=> alertaDeEliminacion(()=>eliminar(item._id))} ><MdDelete  /></button>}
+              { permisosModulo(permisos,ModulosE.PRODUCTOS, PermisoE.EDITAR) &&   <button  className="text-blue-500 text-2xl"  onClick={()=>editarProducto(item._id)}><FaEdit /></button> }
               </td>
             </tr>
           ))}

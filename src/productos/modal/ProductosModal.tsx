@@ -67,9 +67,9 @@ export const ProductosModal = ({ productoSeleccionado }: {productoSeleccionado(d
 
       {isOpenProductos && (
      
-        <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center">
+        <div className="fixed inset-0 bg-gray-900 bg-opacity-20 flex justify-center items-center">
       
-          <div className="bg-white p-6 rounded-lg shadow-lg max-w-7xl w-full">
+          <div className="bg-white p-2  shadow-lg max-w-7xl w-full">
             <button onClick={closeModalProductos} className="top-2 right-2 text-gray-600">
               ✖
             </button>

@@ -8,12 +8,16 @@ import { HttpStatus } from "../../core/enums/httStatusEnum"
 import { alertaDeEliminacion } from "../../core/utils/alertaEliminacion"
 import { EditarAlmacenAreaModal } from "../modal/EditarAlmacenAreaModal"
 import { accionModal } from "../../core/hooks/accionModal"
+import { permisosModulo } from "../../core/hooks/permisos"
+import { ModulosE } from "../../core/enums/modulos.enum"
+import { PermisoE } from "../../core/enums/PermisosEnum"
+import { PermisosContext } from "../../autenticacion/context/permisos.context"
 
 export const ListarAlmacenArea = () => {
   const [recargarData, setRecargarData] = useState<boolean>(false)
   const { token } = useContext(AutenticacionContext)
   const [almacenArea, setAlmacenArea] = useState<almacenAreaI[]>([])
-
+  const  {permisos} =useContext(PermisosContext)
   const [idAlmacen, setIdAlmacen] = useState<string>()
   const [area, setArea] = useState<string>()
   const [almacen, setAlmacen] = useState<string>()
@@ -51,7 +55,7 @@ console.log(idAlmacen , idAlmacen, area ,almacen);
   return (
     <div className="overflow-x-auto shadow-lg rounded-lg border border-gray-300">
 
-      <CrearAlmacenArea recargar={recargarData} setRecargar={setRecargarData} />
+   { permisosModulo(permisos,ModulosE.ALMACEN_AREA, PermisoE.CREAR) &&       <CrearAlmacenArea recargar={recargarData} setRecargar={setRecargarData} /> }
 
 
       <table className="min-w-full table-auto">
@@ -68,17 +72,17 @@ console.log(idAlmacen , idAlmacen, area ,almacen);
               <td className="px-6 py-4"> {item.nombre}</td>
               <td className="px-6 py-4">{item.nombreArea}</td>
               <td className="px-4 py-2 flex gap-2">
-                <button onClick={() => alertaDeEliminacion(() => eliminar(item._id))} className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 focus:outline-none flex items-center">
+              { permisosModulo(permisos,ModulosE.ALMACEN_AREA, PermisoE.ELIMINAR) &&    <button onClick={() => alertaDeEliminacion(() => eliminar(item._id))} className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 focus:outline-none flex items-center">
                   <FaTrash className="mr-2" />
-                </button>
-                <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none flex items-center">
+                </button> }
+                { permisosModulo(permisos,ModulosE.ALMACEN_AREA, PermisoE.EDITAR) &&     <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none flex items-center">
                   <FaEdit onClick={() => {
                     setIdAlmacen(item._id)
                     setAlmacen(item.nombre)
                     setArea(item.area)
                     setIsOpen(true)
                   }} className="mr-2" />
-                </button>
+                </button> }
               </td>
             </tr>
           ))}

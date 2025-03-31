@@ -8,6 +8,10 @@ import { HttpStatus } from "../../core/enums/httStatusEnum";
 import { alertaDeEliminacion } from "../../core/utils/alertaEliminacion";
 import { EditarAlmacenSucursal } from "../modal/EditarAlmacenSucursal";
 import { accionModal } from "../../core/hooks/accionModal";
+import { permisosModulo } from "../../core/hooks/permisos";
+import { ModulosE } from "../../core/enums/modulos.enum";
+import { PermisoE } from "../../core/enums/PermisosEnum";
+import { PermisosContext } from "../../autenticacion/context/permisos.context";
 
 export const ListarAlmacenSucursal = () => {
   const [almacenes, setAlmacenes] = useState<almacenSucursalI[]>([]);
@@ -15,7 +19,7 @@ export const ListarAlmacenSucursal = () => {
   const {token}=useContext(AutenticacionContext)
   const [idAlmacen, setIdAlmacen]= useState<string>()
   const {closeModal,isOpen,setIsOpen}=accionModal()
-
+  const  {permisos} =useContext(PermisosContext)
   useEffect(() => {
     listraAlmacen();
   }, [recargarData]);
@@ -51,7 +55,7 @@ export const ListarAlmacenSucursal = () => {
 
   return (
     <div className="overflow-x-auto shadow-lg rounded-lg border border-gray-300">
-      <CrearAlmacenSucursal recargar={recargarData} setRecargar={setRecargarData}/>
+        { permisosModulo(permisos,ModulosE.ALMACEN_SUCURSAL, PermisoE.CREAR) &&   <CrearAlmacenSucursal recargar={recargarData} setRecargar={setRecargarData}/>}
       <table className="min-w-full table-auto">
         <thead className="bg-gray-800 text-white">
           <tr>
@@ -66,12 +70,12 @@ export const ListarAlmacenSucursal = () => {
               <td className="px-6 py-4"> {item.nombre}</td>
               <td className="px-6 py-4">{item.sucursal}</td>
               <td className="px-4 py-2 flex gap-2">
-                <button onClick={()=> alertaDeEliminacion(()=> eliminar(item._id))} className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 focus:outline-none flex items-center">
+              { permisosModulo(permisos,ModulosE.ALMACEN_SUCURSAL, PermisoE.ELIMINAR) &&   <button onClick={()=> alertaDeEliminacion(()=> eliminar(item._id))} className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 focus:outline-none flex items-center">
                   <FaTrash className="mr-2" />
-                </button>
-                <button  onClick={()=>editar(item._id)} className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none flex items-center">
+                </button> }
+                { permisosModulo(permisos,ModulosE.ALMACEN_SUCURSAL, PermisoE.ELIMINAR) &&    <button  onClick={()=>editar(item._id)} className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none flex items-center">
                   <FaEdit className="mr-2" />
-                </button>
+                </button> }
               </td>
             </tr>
           ))}

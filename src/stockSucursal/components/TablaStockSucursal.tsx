@@ -22,6 +22,8 @@ export const TablaStockSucursal = () => {
   const [pagina, setPagina]=useState<number> (1)
   const [limite, setLimite]=useState<number> (20)
   const {token}= useContext(AutenticacionContext)
+
+  
   useEffect(()=>{
     stock()
   },[buscador, pagina, limite])

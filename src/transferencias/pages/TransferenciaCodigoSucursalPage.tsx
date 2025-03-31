@@ -1,8 +1,8 @@
-import { ListarTransferenciaCodigoSucursal } from "../components/ListarTransferenciasCodigoSucursal"
+import { RecibirTransferenciaCodigoSucursal } from "../components/RecibirTransferenciasCodigoSucursal"
 
 export const TransferenciaCodigoSucursalPage = () => {
 
   return (
-    <div><ListarTransferenciaCodigoSucursal/></div>
+    <div><RecibirTransferenciaCodigoSucursal/></div>
   )
 }

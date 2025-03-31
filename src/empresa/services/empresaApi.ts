@@ -20,7 +20,7 @@ export const listarEmpresa= async(token:string):Promise<empresaI[]>=>{
 
 export const listarEmpresaPublic= async(token:string):Promise<empresaI[]>=>{
     try {
-        const response = await instance.get('empresas/buscador',{
+        const response = await instance.get('empresas/publico',{
             headers:{
                 Authorization:`Bearer ${token}`
             }

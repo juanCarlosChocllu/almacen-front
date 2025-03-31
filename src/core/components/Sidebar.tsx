@@ -116,7 +116,7 @@ export const Sidebar = ({ children }: { children: ReactNode }) => {
 
 
             <div>
-              {permisos.map((item , index) => {
+              {permisos.map((item ) => {
                 if (item.modulo === ModulosE.EMPRESAS) {
                   return item.acciones.some((p) => p.includes('LISTAR')) &&  <Link to={"/empresas"}>
                   <div className="mb-4 cursor-pointer hover:bg-gray-700 p-3 rounded-lg flex items-center">

@@ -8,7 +8,7 @@ import { formAlmacenSucursalI } from "../interfaces/formAlmacenSucursal";
 import { empresaI } from "../../empresa/interfaces/empresaInterface";
 import { listarEmpresaPublic } from "../../empresa/services/empresaApi";
 import { sucursalI } from "../../sucursal/interface/sucursalInterface";
-import { listarSucursalEmpresaBuscador } from "../../sucursal/services/sucursalApi";
+import { listarSucursalEmpresaBuscador } from "../../sucursal/services/sucursalService";
 import { actulizarAlmacenSucursal, obtenerSucursalAlmacen } from "../services/almacenSucursalService";
 import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
 

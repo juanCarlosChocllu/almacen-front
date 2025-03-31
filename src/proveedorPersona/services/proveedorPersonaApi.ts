@@ -55,3 +55,48 @@ export const crearProveedorPersonas= async(data:formProveedorPersonaI, token:str
     }
 
 }
+
+
+export const elimianarProveedorPersonas= async(id:string, token:string):Promise<httpRespuetaI>=>{
+    try {
+        const response = await instance.delete(`proveedor/persona/${id}`,{
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        })
+         return response.data
+    } catch (error) {
+        throw  error
+    }
+
+}
+
+export const obtenerProveedorPersona= async(id:string, token:string):Promise<proveedorPersonaI>=>{
+    try {
+        const response = await instance.get(`proveedor/persona/${id}`,{
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        })
+         return response.data
+    } catch (error) {
+        throw  error
+    }
+
+}
+
+
+
+export const editarProveedorPersonas= async(data:formProveedorPersonaI, token:string, id:string):Promise<httpRespuetaI>=>{
+    try {
+        const response = await instance.patch(`proveedor/persona/${id}`,data,{
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        })
+         return response.data
+    } catch (error) {
+        throw  error
+    }
+
+}

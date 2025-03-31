@@ -1,8 +1,8 @@
 
-import { TablaUsuarios } from "../components/TablaUsuarios"
+import { ListarUsuarios } from "../components/ListarUsuarios"
 
 export const UsuariosPage = () => {
   return (
-    <div><TablaUsuarios/></div>
+    <div><ListarUsuarios/></div>
   )
 }

@@ -61,29 +61,6 @@ export const  listarTransferencias =async(pagina:number, limite:number, buscador
 
 
 
-export const transferenciasSucursal= async(token:string):Promise<TransFerenciaSucursal[]> =>{
-    try {
-      
-        
-        
-        const response= await instance.get(`transferencias/sucursal`,
-            {
-               
-                headers:{
-                    Authorization:`Bearer ${token}`
-                }
-            }
-        )
-        console.log(response);
-        
-        return response.data
-        
-    } catch (error) {
-         throw error
-    }
-
-
-}
 
 
 

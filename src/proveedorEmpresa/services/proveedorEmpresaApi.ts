@@ -43,3 +43,47 @@ export const crearProveedorEmpresas= async(data:formProveedorEmpresaI, token:str
     }
 
 }
+
+export const eliminarProveedorEmpresa= async(id:string, token:string):Promise<httpRespuetaI>=>{
+    try {
+        const response = await instance.delete(`proveedor/empresa/${id}`,{
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        })
+         return response.data
+    } catch (error) {
+        throw  error
+    }
+
+}
+
+
+export const obtenerProveedorEmpresa= async(id:string, token:string):Promise<formProveedorEmpresaI>=>{
+    try {
+        const response = await instance.get(`proveedor/empresa/${id}`,{
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        })
+         return response.data
+    } catch (error) {
+        throw  error
+    }
+
+}
+
+
+export const editarProveedorEmpresas= async(data:formProveedorEmpresaI, token:string, id:string):Promise<httpRespuetaI>=>{
+    try {
+        const response = await instance.patch(`proveedor/empresa/${id}`,data,{
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        })
+         return response.data
+    } catch (error) {
+        throw  error
+    }
+
+}

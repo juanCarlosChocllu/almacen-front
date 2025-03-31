@@ -8,6 +8,10 @@ import { alertaDeEliminacion } from "../../core/utils/alertaEliminacion";
 import { HttpStatus } from "../../core/enums/httStatusEnum";
 import { EditarCategorias } from "../modal/EditarCategoria";
 import { accionModal } from "../../core/hooks/accionModal";
+import { permisosModulo } from "../../core/hooks/permisos";
+import { ModulosE } from "../../core/enums/modulos.enum";
+import { PermisoE } from "../../core/enums/PermisosEnum";
+import { PermisosContext } from "../../autenticacion/context/permisos.context";
 
 export const ListarCategorias = () => {
    const [recargarData, setRecargarData] = useState<boolean>(false)
@@ -16,7 +20,7 @@ export const ListarCategorias = () => {
   const [idCategoria, setIdCategoria] = useState<string>();
   const [categoria, setCategoria] = useState<string>();
   const {closeModal,isOpen,setIsOpen}=accionModal()
-
+  const  {permisos} =useContext(PermisosContext)
   useEffect(() => {
     const obtenerCategorias = async () => {
       try {
@@ -46,7 +50,7 @@ export const ListarCategorias = () => {
     }
   return (
 <div>
-  <CrearCategorias recargar={recargarData} setRecargar={setRecargarData}/>
+  { permisosModulo(permisos,ModulosE.CATEGORIAS, PermisoE.CREAR) &&     <CrearCategorias recargar={recargarData} setRecargar={setRecargarData}/> }
   <table className="w-full table-auto border-collapse border border-gray-300 shadow-md rounded-md overflow-hidden mx-auto">
     <thead>
       <tr className="bg-gray-800 text-white">
@@ -59,16 +63,16 @@ export const ListarCategorias = () => {
         <tr className="hover:bg-gray-50" key={item._id}>
           <td className="px-3 py-2 text-center">{item.nombre}</td>
           <td className="px-3 py-2 flex gap-2 justify-center">
-            <button onClick={()=> alertaDeEliminacion(()=> eliminar(item._id))} className="bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-600 focus:outline-none flex items-center ">
+          { permisosModulo(permisos,ModulosE.CATEGORIAS, PermisoE.ELIMINAR) &&  <button onClick={()=> alertaDeEliminacion(()=> eliminar(item._id))} className="bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-600 focus:outline-none flex items-center ">
               <FaTrash className="mr-1" />
-            </button>
-            <button  onClick={()=>{
+            </button> }
+            { permisosModulo(permisos,ModulosE.CATEGORIAS, PermisoE.EDITAR) &&  <button  onClick={()=>{
               setIdCategoria(item._id)
               setCategoria(item.nombre)
               setIsOpen(true)
             }}  className="bg-blue-500 text-white px-2 py-1 rounded-md hover:bg-blue-600 focus:outline-none flex items-center">
               <FaEdit className="mr-1" />
-            </button>
+            </button> }
           </td>
         </tr>
       ))}

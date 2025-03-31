@@ -1,6 +1,6 @@
 import { ReactNode, useContext, useEffect, useState } from 'react'
 import { UsuarioContex } from './usuarioContext'
-import { informacionUsuario } from '../services/usuariosApi'
+import { informacionUsuario } from '../services/usuarioService'
 import { AutenticacionContext } from '../../autenticacion/context/crear.autenticacion.context'
 import { UsuariosI } from '../interfaces/usuariosInterface'
 import { UserInfo } from '../interfaces/userInfo'

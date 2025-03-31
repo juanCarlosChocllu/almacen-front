@@ -9,6 +9,10 @@ import { CrearMarca } from '../modal/CrearMarca';
 import { EditarMarca } from '../modal/EditarMarca';
 import { HttpStatus } from '../../core/enums/httStatusEnum';
 import { alertaDeEliminacion } from '../../core/utils/alertaEliminacion';
+import { permisosModulo } from '../../core/hooks/permisos';
+import { ModulosE } from '../../core/enums/modulos.enum';
+import { PermisoE } from '../../core/enums/PermisosEnum';
+import { PermisosContext } from '../../autenticacion/context/permisos.context';
 
 export const ListarMarcas = () => {
       const {token}=useContext(AutenticacionContext)
@@ -20,7 +24,7 @@ export const ListarMarcas = () => {
       const [marca, setMarca]= useState<string>()
       const [isOpenModal, setIsOpenModal]= useState<boolean>()
       const [recargarData, setRecargarData] = useState<boolean>(false)
-
+      const  {permisos} =useContext(PermisosContext)
       const closeModal=()=>setIsOpenModal(false)
       useEffect(() => {
         listarM();
@@ -51,7 +55,7 @@ export const ListarMarcas = () => {
       }
   return (
      <div className="overflow-x-auto shadow-lg rounded-lg ">
-    <CrearMarca recargar={recargarData} setRecargar={setRecargarData}/>  
+   { permisosModulo(permisos,ModulosE.MARCAS, PermisoE.CREAR) &&     <CrearMarca recargar={recargarData} setRecargar={setRecargarData}/> }  
       <ItemsPorPagina page={setLimite}/> 
           <table className="min-w-full table-auto">
             <thead className="bg-gray-800 text-white">
@@ -66,16 +70,16 @@ export const ListarMarcas = () => {
                   <td className="px-6 py-4"> {item.nombre}</td>
     
                   <td className="px-4 py-2 flex gap-2">
-                    <button onClick={()=>alertaDeEliminacion(()=> eliminar(item._id))} className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 focus:outline-none flex items-center">
+                  { permisosModulo(permisos,ModulosE.MARCAS, PermisoE.ELIMINAR) &&    <button onClick={()=>alertaDeEliminacion(()=> eliminar(item._id))} className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 focus:outline-none flex items-center">
                       <FaTrash className="mr-2" />
-                    </button>
-                    <button onClick={()=> {
+                    </button> }
+                    { permisosModulo(permisos,ModulosE.MARCAS, PermisoE.EDITAR) &&     <button onClick={()=> {
                       setIdMarca(item._id)
                       setIsOpenModal(true)
                       setMarca(item.nombre)
                     }} className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none flex items-center">
                       <FaEdit  className="mr-2" />
-                    </button>
+                    </button> }
                   </td>
                 </tr>
               ))}

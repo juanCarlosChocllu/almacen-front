@@ -2,10 +2,7 @@ import { useContext, useEffect, useState } from "react"
 import { transferenciasI } from "../interface/transferenciasInterface"
 import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context"
 import {  aprobarCodigoTransferencia, transferenciasPorCodigo } from "../services/codigoTransferenciasService"
-import { ImCancelCircle } from "react-icons/im"
-import { TiTick } from "react-icons/ti"
-import { aprobarTransferencia } from "../services/transferenciaService"
-import { EstadoTransferenciaE } from "../../core/enums/estadoTranferencia"
+
 import { HttpStatus } from "../../core/enums/httStatusEnum"
 import { alertaDeconfirmacion } from "../../core/utils/alertaDeConfirmacion"
 
@@ -34,30 +31,7 @@ export const ListarTransferenciaPorCodigoSucursal = ({id}:{id:string|undefined})
     } 
 
 
-    const aprobar= async (transferencia:string)=>{
-      try {
-
-        if(token && transferencia){
-        //  const response = await aprobarTransferencia(transferencia, token)
-        }
-      } catch (error) {
-        console.log(error);
-        
-      }
-    }
-
-    const rechazar= async (transferencia:string)=>{
-      try {
-
-        
-        if(token && transferencia){
-        //  const response = await rechazarTransferencia(transferencia, token)
-        }
-      } catch (error) {
-        console.log(error);
-        
-      }
-    }
+   
 
       
         const aprobarTransferencia = async( codigo:string)=>{

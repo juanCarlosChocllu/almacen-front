@@ -8,6 +8,10 @@ import { HttpStatus } from "../../core/enums/httStatusEnum"
 import { alertaDeEliminacion } from "../../core/utils/alertaEliminacion"
 import { accionModal } from "../../core/hooks/accionModal"
 import { EditarSubCategorias } from "../modal/EditarSubCategorias"
+import { permisosModulo } from "../../core/hooks/permisos"
+import { ModulosE } from "../../core/enums/modulos.enum"
+import { PermisoE } from "../../core/enums/PermisosEnum"
+import { PermisosContext } from "../../autenticacion/context/permisos.context"
 
 
 export const ListarSubCategorias = () => {
@@ -18,6 +22,7 @@ export const ListarSubCategorias = () => {
     const [idCategoria, setIdCategoria] = useState<string>()
     const [subCategoria,setSubCategoria ]=useState<string>()
     const {closeModal,setIsOpen,isOpen} = accionModal()
+       const  {permisos} =useContext(PermisosContext)
     const sudCategorias=async()=>{
         try {
            if(token){
@@ -51,7 +56,7 @@ export const ListarSubCategorias = () => {
 
   return (
 <div className="overflow-x-auto shadow-lg rounded-lg border border-gray-300">
-<CrearSubCategorias  recargar={recargar} setRecargar={setRecargar}/>
+      { permisosModulo(permisos,ModulosE.CATEGORIAS, PermisoE.CREAR) && <CrearSubCategorias  recargar={recargar} setRecargar={setRecargar}/> }
       <table className="min-w-full table-auto">
         <thead className="bg-gray-800 text-white">
           <tr>
@@ -66,17 +71,17 @@ export const ListarSubCategorias = () => {
               <td className="px-6 py-4"> {item.nombre}</td>
               <td className="px-6 py-4">{item.categoria}</td>
               <td className="px-4 py-2 flex gap-2">
-                <button onClick={()=> alertaDeEliminacion(()=> eliminar(item._id))} className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 focus:outline-none flex items-center">
+              { permisosModulo(permisos,ModulosE.CATEGORIAS, PermisoE.ELIMINAR) && <button onClick={()=> alertaDeEliminacion(()=> eliminar(item._id))} className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 focus:outline-none flex items-center">
                   <FaTrash className="mr-2" />
-                </button>
-                <button  onClick={()=>{
+                </button> }
+                { permisosModulo(permisos,ModulosE.CATEGORIAS, PermisoE.EDITAR) &&    <button  onClick={()=>{
                   setIdSubCategoria(item._id)
                   setIdCategoria(item.idCategoria)
                   setSubCategoria(item.nombre)
                   setIsOpen(true)
                 }} className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none flex items-center">
                   <FaEdit className="mr-2" />
-                </button>
+                </button> }
               </td>
             </tr>
           ))}

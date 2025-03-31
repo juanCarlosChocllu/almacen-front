@@ -7,7 +7,7 @@ import { errorPropiedadesI } from "../../core/interfaces/errorPropiedades";
 import { formSucursalI } from "../interface/formScursalIterface";
 import { listarEmpresa } from "../../empresa/services/empresaApi";
 import { empresaI } from "../../empresa/interfaces/empresaInterface";
-import { crearSucursal } from "../services/sucursalApi";
+import { crearSucursal } from "../services/sucursalService";
 import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
 import { httAxiosError } from "../../core/utils/error.util";
 import { errorClassValidator } from "../../core/utils/errorClassValidator";

@@ -4,7 +4,7 @@ import { AutenticacionContext } from '../../autenticacion/context/crear.autentic
 import { DetalleAreaI } from '../../core/interfaces/detalleArea';
 import { SeleccionAreaI } from '../../detalleArea/interfaces/selececcionArea';
 import { useForm } from 'react-hook-form';
-import { actualizarDetalleArea, listarDetalleAreaPorUsuario } from '../../detalleArea/services/detalleAreaApi';
+import { actualizarDetalleArea, listarDetalleAreaPorUsuario } from '../../detalleArea/services/detalleAreaService';
 import { HttpStatus } from '../../core/enums/httStatusEnum';
 import { ActualizarDetalleI } from '../../detalleArea/interfaces/actulizarArea';
 

@@ -26,7 +26,7 @@ export const modulosConAcciones: Record<string, string[]> = {
       "EDITAR", 
       "CANCELAR_TRANSFERENCIAS",
        "ELIMINAR", 
-      "REALIZAR TRANSFERENCIAS","RECIBIR TRANSFERENCIAS","ACEPTAR", "RECHAZAR"],
+      "REALIZAR TRANSFERENCIAS","RECIBIR TRANSFERENCIAS","APROBAR", "RECHAZAR"],
       
 
     MOVIMIENTO_AREA: ["LISTAR"],
@@ -35,7 +35,7 @@ export const modulosConAcciones: Record<string, string[]> = {
 
     ROL: ["LISTAR ROL", "EDITAR", "ELIMINAR", "CREAR"],
 
-    USUARIOS: ["LISTAR USUARIOS", "EDITAR", "ELIMINAR", "CREAR", "TIPO SUCURSAL",  "TIPO AREA",  "TIPO NIGUNO"],
+    USUARIOS: ["LISTAR USUARIOS", "EDITAR", "ELIMINAR", "CREAR"],
     
     STOCK_SUCURSAL: ["LISTAR"],
   };

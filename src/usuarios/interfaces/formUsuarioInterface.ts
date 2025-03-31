@@ -7,6 +7,7 @@ export interface FormUsuariosI{
     celular:string
     rol:string
     password:string
+    empresa?:string | null
     sucursal?:string | null
     area?:string[] | null
     sinRelacion?:boolean | null

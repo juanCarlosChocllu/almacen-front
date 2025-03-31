@@ -5,7 +5,7 @@ import {SetBuscadorProveedorDataI,  } from "../interfaces/BuscadorProveedorData"
 export const BuscadorProveedor = ({celular,nit,nombre ,apellidos ,ci}:SetBuscadorProveedorDataI) => {
 
   return (
-    <div>
+    <div className="text-xs">
       <form className="space-y-4">
         <div className="flex space-x-4">
           

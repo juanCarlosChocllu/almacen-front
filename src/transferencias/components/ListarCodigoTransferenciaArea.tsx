@@ -22,7 +22,6 @@ export const ListarCodigoTransferenciaArea = () => {
   const navigate = useNavigate();
   const {token} = useContext(AutenticacionContext)
   const [transferencias, setTransferencia]=useState<CodigoTransferenciaI[]>([])
-  const [recardarDAta, setRecargarData] =useState<boolean>(false)
   const [paginas, setPaginas] = useState<number>(1)
   const [pagina, setPagina] = useState<number>(1)
   const [limite, setLimite] = useState<number>(20)
@@ -37,7 +36,7 @@ export const ListarCodigoTransferenciaArea = () => {
  
       listraTransferencias()
   
-  },[onSubmit, pagina, limite, recardarDAta])
+  },[onSubmit, pagina, limite])
 
   const listraTransferencias= async()=>{
       try {
