@@ -41,7 +41,7 @@ export const Permisos= async():Promise<any>=>{
 
 }
 
-export const crearRol=  async(data:FormData, token:string )=>{
+export const crearRol=  async(data:FormData, token:string ):Promise<httpRespuetaI>=>{
     try {
         const response = await instance.post('rol', data,{
             headers:{

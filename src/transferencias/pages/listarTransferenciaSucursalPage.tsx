@@ -1,12 +1,12 @@
 
 import { useParams } from 'react-router-dom'
-import { ListarTransferenciaPorCodigoSucursal } from '../components/ListarTransferenciaPorCodigoSucursal'
+import { RecibirTransferenciaSucursal } from '../components/RecibirTransferenciaSucursal'
 
 export const listarTransferenciaSucursalPage = () => {
     const {id}= useParams()
 
   return (
-<>   <ListarTransferenciaPorCodigoSucursal id={id}  /></>
+<>  {id  &&  <RecibirTransferenciaSucursal  id={id} /> }</>
   )
 }
 

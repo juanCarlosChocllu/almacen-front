@@ -7,10 +7,11 @@ import { verificarPermisosPorRol } from "../../permisos/services/permisosApi";
 import { editarRol } from "../services/rolService";
 import { HttpStatus } from "../../core/enums/httStatusEnum";
 import { PropsEditarRol } from "../interface/PropsEditarRol";
+import { AxiosError } from "axios";
 
 
 export const EditarRoles = ({id,closeModal,isOpen, rol}:PropsEditarRol) => {
-  const { register, handleSubmit, setValue} = useForm<any>();
+  const { register, handleSubmit, setValue, setError, formState:{errors}} = useForm<any>();
   const {token}= useContext(AutenticacionContext) 
   const [verPermisos, setVerPermisos] = useState<PermisosI[]>([])
     useEffect(()=>{
@@ -56,7 +57,11 @@ export const EditarRoles = ({id,closeModal,isOpen, rol}:PropsEditarRol) => {
             }
         }
     } catch (error) {
-        console.log(error);
+        const e = error as AxiosError
+        if(e.status == HttpStatus.CONFLICT) { 
+          setError("root.serverError" ,{message:'El rol ya existe'})
+        }
+   
         
     }
   };
@@ -75,6 +80,8 @@ export const EditarRoles = ({id,closeModal,isOpen, rol}:PropsEditarRol) => {
     }
   }  
 
+
+console.log(errors.root?.serverError);
 
 
   return (
@@ -99,6 +106,10 @@ export const EditarRoles = ({id,closeModal,isOpen, rol}:PropsEditarRol) => {
                   id="rol"
                   className="mt-1 p-2 w-full border border-gray-300 rounded-md"
                 />
+                
+
+                {errors.root?.serverError && <p className="text-red-600">{errors.root?.serverError.message}</p>}
+
               </div>
 
               <div className="mb-4">

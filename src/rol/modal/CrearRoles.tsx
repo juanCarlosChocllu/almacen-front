@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { crearRol } from "../services/rolService";
 import {modulosConAcciones} from '../utils/modulos.utils'
 import { AutenticacionContext } from "../../autenticacion/context/crear.autenticacion.context";
+import { HttpStatus } from "../../core/enums/httStatusEnum";
 
 
 export const CrearRoles = () => {
@@ -33,8 +34,11 @@ export const CrearRoles = () => {
     try {
         if(token){
           const response = await crearRol(dataR, token)
-        
-          console.log(response);
+          if(response.status == HttpStatus.CREATED){
+            handleCloseModal()
+            
+          }
+          
           
         }
     } catch (error) {

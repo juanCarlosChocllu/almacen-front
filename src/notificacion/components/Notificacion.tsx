@@ -31,7 +31,7 @@ export const Notificacion = () => {
             className="bg-green-600 text-white p-4 rounded-lg shadow-xl w-80 flex flex-col space-y-3 transform transition-all duration-500 ease-in-out animate__animated animate__fadeInUp"
           >
             <div className="flex justify-between items-center">
-              <p className="text-lg font-semibold">{notif.producto}</p>
+              <p className="text-lg font-semibold">Area: {notif.area}</p>
               <button
                 className="bg-transparent text-white hover:text-gray-300 text-2xl focus:outline-none transition-colors duration-200"
                 onClick={() => {
@@ -43,6 +43,7 @@ export const Notificacion = () => {
               </button>
             </div>
             <div>
+            
               <p className="text-sm">
                 <span className="font-medium">Código:</span> {notif.codigoProducto}
               </p>

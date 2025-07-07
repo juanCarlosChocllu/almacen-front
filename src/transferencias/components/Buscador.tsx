@@ -11,6 +11,7 @@ export const Buscador = ({
 }) => {
   const { register, handleSubmit } = useForm<BuscadorI>();
   const {tipo}=useContext(PermisosContext)
+  
   return (
     <div>
       <form onSubmit={handleSubmit(onsubmit)}>
@@ -44,10 +45,10 @@ export const Buscador = ({
                 name="estado"
                 className="block w-full py-1 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-gray-900"
               >
-                <option value="">seleccione un estado</option>
+                <option value="PENDIENTE">PENDIENTE</option>
                 <option value="APROBADO">APROBADO</option>
                 <option value="RECHAZADO">RECHAZADO</option>
-                <option value="PENDIENTE">PENDIENTE</option>
+          
              
                 {
                   tipo != TipoUsuarioE.SUCURSAL &&         <option value="CANCELADO">CANCELADO</option> 

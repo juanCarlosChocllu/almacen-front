@@ -38,4 +38,6 @@ export const modulosConAcciones: Record<string, string[]> = {
     USUARIOS: ["LISTAR USUARIOS", "EDITAR", "ELIMINAR", "CREAR"],
     
     STOCK_SUCURSAL: ["LISTAR"],
+
+    TIPO_PRODUCTO: ["LISTAR", "EDITAR", "ELIMINAR", "CREAR"],
   };

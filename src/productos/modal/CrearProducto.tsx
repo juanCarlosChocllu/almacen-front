@@ -30,7 +30,6 @@ export const CrearProducto = ({setRecargar,recargar}:RecargarDataI) => {
     register,
     handleSubmit,
     watch,
-    setValue,
     reset,
     formState: { errors },
   } = useForm<formProductoI>();

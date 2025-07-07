@@ -22,6 +22,8 @@ export const crearProducto = async (data: FormData, token:string): Promise<httpR
     });
     return response;
   } catch (error) {
+    console.log(error);
+    
     throw error;
   }
 };
