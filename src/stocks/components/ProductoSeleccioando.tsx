@@ -3,6 +3,7 @@ import { dataProductoI } from "../interfaces/dataProducto";
 import { productoSeleccionadoPropsI } from "../interfaces/productoSeleccionadoInterface";
 
 export const ProductoSeleccioando = ({ data, nuevaData = () => {} }: productoSeleccionadoPropsI) => {
+  
   return (
     <div className="p-6 max-w-4xl mx-auto text-center">
       <h2 className="text-2xl font-semibold mb-4">Productos Seleccionados</h2>

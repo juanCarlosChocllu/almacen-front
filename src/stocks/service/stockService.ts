@@ -7,6 +7,7 @@ import { BuscadorStockI } from "../interfaces/buscadorStock";
 import { CodigoStock } from "../../movimientoArea/interface/codigoStock";
 import { ParametrosStockI } from "../interfaces/parametrosStock";
 import { guardarStockI, StockI, StockVerificarI } from "../interfaces/stockInterface";
+import { TipoProductoI } from "../interfaces/tipoProductoInterface";
 
 
 export const guardarStock= async(data:guardarStockI, token:string):Promise<httpRespuetaI>=>{
@@ -89,4 +90,17 @@ export   const vericarStockProducto =async(producto:string, token:string):Promis
 
   }
 
+  export const listarTipoProducto =async(token:string):Promise<TipoProductoI[]>=>{
+    try {
+      const response = await instance.get(`tipoProducto/publica`,{
+        headers:{
+            Authorization:`Bearer ${token}`
+        }
+      });
+      return response.data
+    } catch (error) {
+      throw error;
+    }
+
+  }
 
