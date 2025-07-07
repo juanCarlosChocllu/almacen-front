@@ -264,6 +264,14 @@ export const Sidebar = ({ children }: { children: ReactNode }) => {
                                 <FaList className="mr-2" /> Listar Stock
                               </Link>
                             </li> }
+                            {item.acciones.some((p) => p.includes('LISTAR')) &&   <li className="mt-2">
+                              <Link
+                                to="/stock/tipo_producto"
+                                className="w-full block text-gray-300 hover:text-white py-2 px-4 rounded-lg bg-gray-700 hover:bg-gray-600 transition duration-300"
+                              >
+                                <FaList className="mr-2" /> Tipo Producto
+                              </Link>
+                            </li>}
 
                             
                           </ol>

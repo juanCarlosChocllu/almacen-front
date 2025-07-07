@@ -6,7 +6,7 @@ import { formStockI } from "../interfaces/formStockInterface";
 import { dataProductoI, dataProductoStock } from "../interfaces/dataProducto";
 import { ProductoSeleccioando } from "./ProductoSeleccioando";
 import { guardarStockI, StockVerificarI } from "../interfaces/stockInterface";
-import { guardarStock, vericarStockProducto } from "../service/stockService";
+import { guardarStock, listarTipoProducto, vericarStockProducto } from "../service/stockService";
 import { almacenAreaI } from "../../almacenArea/interfaces/almacenAreaInterface";
 import { listarAlmacenPorArea } from "../../almacenArea/services/almacenAreaService";
 import { SelectProducto } from "./SelectProducto";
@@ -18,7 +18,6 @@ import { SelectProveedorEmpresa } from "./selectProveedorEmpresa";
 import { MostrarProveedores } from "./MostrarProveedores";
 import { tipoE } from "../enums/tipos.enum";
 import { v4 as uuidv4 } from "uuid";
-
 
 import { errorPropiedadesI } from "../../core/interfaces/errorPropiedades";
 import { errorPersonalizadoI } from "../../core/interfaces/errorPersonalizado";
@@ -33,9 +32,14 @@ import { alertaDeconfirmacion } from "../../core/utils/alertaDeConfirmacion";
 import { HttpStatus } from "../../core/enums/httStatusEnum";
 import { useNavigate } from "react-router-dom";
 
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import { TipoProductoI } from "../interfaces/tipoProductoInterface";
+
 export const CrearStock = () => {
   const { token } = useContext(AutenticacionContext);
-  const navigate= useNavigate()
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -47,14 +51,15 @@ export const CrearStock = () => {
   const [isOpenProveedores, setIsOpenProveedores] = useState<boolean>(false);
   const [dataSeleccionada, setDataSeleccionada] = useState<dataProductoI[]>([]);
   const [almacenArea, setAlmacenArea] = useState<almacenAreaI[]>([]);
-  const [mensaje, setMensaje] = useState<string >();
-  const [estadoFechaVencimiento, setEstadoFechaVencimiento]= useState(true)
+  const [mensaje, setMensaje] = useState<string>();
+  const [estadoFechaVencimiento, setEstadoFechaVencimiento] = useState(true);
   const [stockExisteProducto, setStockExisteProducto] = useState<
     StockVerificarI[]
   >([]);
 
-  
   const [mensajeError, setMensajeError] = useState<errorPersonalizadoI[]>([]);
+
+  const [tipoProductos, setTipoProductos] = useState<TipoProductoI[]>([]);
 
   const [mensajeErrorClassValidator, setMensajeErrorClassValidator] = useState<
     errorPropiedadesI[]
@@ -83,6 +88,8 @@ export const CrearStock = () => {
         if (token) {
           const response = await listarAlmacenPorArea(token);
           setAlmacenArea(response);
+          const tipo:TipoProductoI[] = await listarTipoProducto(token);
+          setTipoProductos(tipo);
         }
       } catch (error) {}
     };
@@ -110,7 +117,8 @@ export const CrearStock = () => {
     if (!productosSeleccioando) {
       return setMensaje("Seleccione un producto");
     }
-  
+    
+
     const dataRegistrada: dataProductoI = {
       uuid: uuidv4(),
       id: productosSeleccioando?._id,
@@ -126,7 +134,6 @@ export const CrearStock = () => {
       tipo: data.tipo,
     };
 
-    
     const registrados: boolean = dataSeleccionada.some(
       (item) =>
         item.id === dataRegistrada.id && item.tipo == dataRegistrada.tipo
@@ -136,7 +143,6 @@ export const CrearStock = () => {
       setDataSeleccionada([...dataSeleccionada, dataRegistrada]);
     }
   };
- 
 
   const eliminarProveedorPersona = () => {
     setProveedorPersonaSeleccionado(null);
@@ -146,9 +152,6 @@ export const CrearStock = () => {
     setProveedorEmpresaSeleccionado(null);
   };
 
-
-
-  
   const eliminarProductoSeleccionado = () => {
     setProductoSeleccionado(null);
     setStockExisteProducto([]);
@@ -180,9 +183,9 @@ export const CrearStock = () => {
     try {
       if (token) {
         const response = await guardarStock(data, token);
-      
+
         if (response.status === HttpStatus.CREATED) {
-            navigate(`/informacion/codigo/stock/${response.data}`)
+          navigate(`/informacion/codigo/stock/${response.data}`);
         }
       }
     } catch (error) {
@@ -195,18 +198,19 @@ export const CrearStock = () => {
     }
   };
 
- const  habilitarFechaDeVencimiento=(e:React.MouseEvent<HTMLInputElement>)=>{
-    const input = e.target as HTMLInputElement
+  const habilitarFechaDeVencimiento = (
+    e: React.MouseEvent<HTMLInputElement>
+  ) => {
+    const input = e.target as HTMLInputElement;
     console.log(input);
-    
-    if( input.checked){
-      setEstadoFechaVencimiento(false)
 
-    }else {
-      setEstadoFechaVencimiento(true)
-      setValue('fechaVencimiento','')
+    if (input.checked) {
+      setEstadoFechaVencimiento(false);
+    } else {
+      setEstadoFechaVencimiento(true);
+      setValue("fechaVencimiento", "");
     }
-  }
+  };
 
   return (
     <div className="p-6">
@@ -281,14 +285,14 @@ export const CrearStock = () => {
             }
           })}
 
-        {isOpenProveedores && 
+        {isOpenProveedores && (
           <MostrarProveedores
             proveedorEmpresaSeleccionado={setProveedorEmpresaSeleccionado}
             proveedorPersonaSeleccionado={setProveedorPersonaSeleccionado}
             isOpen={isOpenProveedores}
             closeModal={closeModalProveedores}
           />
-        }
+        )}
       </div>
 
       <div className="mt-6">
@@ -399,7 +403,11 @@ export const CrearStock = () => {
                   return null;
                 }
               })}
-            {errors.precio && <span className="text-red-500 text-xs">{errors.precio.message}</span>}
+            {errors.precio && (
+              <span className="text-red-500 text-xs">
+                {errors.precio.message}
+              </span>
+            )}
           </div>
 
           <div>
@@ -435,11 +443,36 @@ export const CrearStock = () => {
                   return null;
                 }
               })}
-            {errors.total && <span className="text-red-500 text-xs">{errors.total.message}</span>}
+            {errors.total && (
+              <span className="text-red-500 text-xs">
+                {errors.total.message}
+              </span>
+            )}
           </div>
 
           <div className="flex items-center space-x-4">
             <div className="flex items-center">
+             <div >
+             <InputLabel id="demo-simple-select-autowidth-label">
+                Tipo Producto
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-autowidth-label"
+                id="demo-simple-select-autowidth"
+                autoWidth
+                label="Tipo Producto"
+                {...register("tipo")}
+              >
+                <MenuItem value="">
+                  <em>Seleccione</em>
+                </MenuItem>
+                {tipoProductos.map((item) => (
+                  <MenuItem key={item._id} value={item._id}>
+                    {item.nombre}
+                  </MenuItem>
+                ))}
+              </Select>
+             </div>
               <input
                 type="radio"
                 id="regalo"
@@ -484,26 +517,21 @@ export const CrearStock = () => {
           </div>
 
           <div>
-
-            
             <label className="block text-sm text-gray-700">
               Fecha de Compra
             </label>
             <input
               {...register("fechaCompra", {
-                
-                  validate: (value) => {
-                    if (!value) {
-                      return "Ingrese la fecha de compra";
-                    } else {
-                      return true;
-                    }
-                  },
-                
+                validate: (value) => {
+                  if (!value) {
+                    return "Ingrese la fecha de compra";
+                  } else {
+                    return true;
+                  }
+                },
               })}
               type="date"
               className="w-full sm:w-2/4 p-2 border border-gray-300 rounded text-sm"
-             
             />
 
             {mensajeError.length > 0 &&
@@ -514,23 +542,28 @@ export const CrearStock = () => {
                   return null;
                 }
               })}
-              <br />
+            <br />
 
-              {errors.fechaCompra && <span className="text-red-500 text-xs">{errors.fechaCompra.message}</span>}
+            {errors.fechaCompra && (
+              <span className="text-red-500 text-xs">
+                {errors.fechaCompra.message}
+              </span>
+            )}
           </div>
 
           <div>
-          <input type="checkbox"  onClick={(e)=>habilitarFechaDeVencimiento(e)}/>
+            <input
+              type="checkbox"
+              onClick={(e) => habilitarFechaDeVencimiento(e)}
+            />
             <label className="block text-sm text-gray-700">
               Fecha de Vencimiento
             </label>
             <input
-            disabled={estadoFechaVencimiento}
+              disabled={estadoFechaVencimiento}
               {...register("fechaVencimiento")}
               type="date"
-           
               className="w-full sm:w-2/4 p-2 border border-gray-300 rounded text-sm"
-            
             />
             {mensajeError.length > 0 &&
               mensajeError.map((item) => {
@@ -553,12 +586,15 @@ export const CrearStock = () => {
         </form>
       </div>
 
-      <ProductoSeleccioando data={dataSeleccionada} nuevaData={setDataSeleccionada} />
+      <ProductoSeleccioando
+        data={dataSeleccionada}
+        nuevaData={setDataSeleccionada}
+      />
       <div className="mt-6 flex space-x-4  justify-center">
         {dataSeleccionada.length > 0 && (
           <button
             onClick={() => {
-             alertaDeconfirmacion(guardarStocks)
+              alertaDeconfirmacion(guardarStocks);
             }}
             className="bg-yellow-500 text-white py-2 px-4 rounded w-full sm:w-auto text-sm"
           >

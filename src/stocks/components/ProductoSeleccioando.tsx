@@ -1,8 +1,10 @@
 import { FaTrash } from "react-icons/fa";
 import { dataProductoI } from "../interfaces/dataProducto";
 import { productoSeleccionadoPropsI } from "../interfaces/productoSeleccionadoInterface";
+import { useState } from "react";
 
 export const ProductoSeleccioando = ({ data, nuevaData = () => {} }: productoSeleccionadoPropsI) => {
+  const [tipoNombre, setTipoNombre] = useState<string>('');
   return (
     <div className="p-6 max-w-4xl mx-auto text-center">
       <h2 className="text-2xl font-semibold mb-4">Productos Seleccionados</h2>

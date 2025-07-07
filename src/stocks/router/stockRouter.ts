@@ -13,6 +13,10 @@ export const stockRouter:routerI[]=[
         path: '/stock/listar',
         component: StockPageListar, 
       },
+      {
+        path: '/stock/tipo_producto',
+        component: StockPage, 
+      }
 
 ]
 
