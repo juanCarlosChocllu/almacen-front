@@ -19,6 +19,7 @@ export interface StockI {
     almacenArea:string
     imagen:string
     codigoProducto:string
+    idTipoProducto:string
   }
 
 export interface guardarStockI{

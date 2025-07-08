@@ -47,8 +47,9 @@ export const ListraStock = ({ stock }: { stock: (stock: StockI) => void }) => {
   
        if(token){
         const response = await listarStock(pagina, limite ,buscadorStock,token);
-   
+        console.log(response);
         
+
         setStock(response.data);
         setPaginas(response.paginas)
        }
@@ -171,7 +172,9 @@ export const ListraStock = ({ stock }: { stock: (stock: StockI) => void }) => {
                          total: item.total,
                          almacenArea: item.almacenArea,
                          imagen:item.imagen,
-                        codigoProducto:item.codigoProducto
+                         codigoProducto:item.codigoProducto,
+                         idTipoProducto:item.idTipoProducto
+
                       
                        };
                        stock(stockSeleccioando);

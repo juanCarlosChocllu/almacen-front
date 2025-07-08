@@ -22,6 +22,7 @@ import { MdDelete } from "react-icons/md";
 import { httAxiosError } from "../../core/utils/error.util";
 import { errorClassValidator } from "../../core/utils/errorClassValidator";
 import { RecargarDataI } from "../../core/interfaces/recargarData";
+import { tipoE } from "../../stocks/enums/tipos.enum";
 
 export const CrearUsuarios = ({ recargar, setRecargar }: RecargarDataI) => {
   const { token } = useContext(AutenticacionContext);
@@ -35,7 +36,7 @@ export const CrearUsuarios = ({ recargar, setRecargar }: RecargarDataI) => {
   const [empresas, setEmpresas] = useState<empresaI[]>([]);
   const [sucursal, setSucursales] = useState<sucursalI[]>([]);
   const [areasSeleccionada, setAreaSeleccionada] = useState<areasI[]>([]);
-
+  const [todos, setTodos] = useState<boolean>(false);
   const [mensajeErrorConflito, setMensajeErrorConflicto] =
     useState<errorConflictoI>();
   const { register, handleSubmit, reset, watch } = useForm<FormUsuariosI>();
@@ -66,19 +67,21 @@ export const CrearUsuarios = ({ recargar, setRecargar }: RecargarDataI) => {
     setMensajeErrorConflicto({ message: "", statusCode: 0 });
     data.area = areasSeleccionada.map((item) => item._id);
     if (tipo === TipoE.SUCURSAL) {
-      data.tipo = tipo;
+      data.tipoUbicacion = tipo;
       delete data.area;
-    } else if (tipo === TipoE.AREA) {
-      data.tipo = tipo;
+    } else if (tipo === TipoE.AREA && !todos) {
+      console.log('area')
+      data.tipoUbicacion = tipo;
       delete data.sucursal;
-    } else if (tipo === TipoE.NINGUNO) {
-      data.tipo = tipo;
-      delete data.sucursal;
-      delete data.area;
+    } else if (tipo === TipoE.AREA && todos ) {
+      data.tipoUbicacion = TipoE.TODOS;
+     
     }
 
     try {
       if (token) {
+        console.log(todos, tipo, TipoE.TODOS);
+        
         const response = await crearUsuarios(data, token);
         if (response.status === HttpStatus.CREATED) {
           reset();
@@ -123,9 +126,8 @@ export const CrearUsuarios = ({ recargar, setRecargar }: RecargarDataI) => {
       }
     } catch (error) {}
   };
-  const tipoNinguno = () => {
-    setAreaSeleccionada([]);
-    setTipo(TipoE.NINGUNO);
+  const tipoTodos = () => {
+    setTodos(true)
   };
 
   useEffect(() => {
@@ -404,22 +406,18 @@ export const CrearUsuarios = ({ recargar, setRecargar }: RecargarDataI) => {
 
                     <div className="flex items-center">
                       <input
-                        type="radio"
+                        type="checkbox"
                         name="tipo"
                         id="ninguno"
-                        onClick={() => tipoNinguno()}
+                        onClick={() => tipoTodos()}
                         className="form-radio text-blue-500 mr-2"
                       />
                       <label htmlFor="ninguno" className="text-sm">
-                        Ninguno
+                       TODOS
                       </label>
                     </div>
                   </div>
-                  {tipo === TipoE.NINGUNO && (
-                    <p className="text-xs mt-2">
-                      Este usuario no pertenecera a ninguna área o sucursal.
-                    </p>
-                  )}
+                 
 
                   {tipo === TipoE.AREA && (
                     <select

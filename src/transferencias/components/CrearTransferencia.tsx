@@ -133,7 +133,8 @@ export const CrearTransferencia = () => {
       (item) => item._id === data.almacenSucursal
     )[0];
     if (stockSeleccionado) {
-
+        console.log(stockSeleccionado);
+        
        const registrarData: registrarTranferenciaI = {
         uuid: uuidv4(),
         almacen: data.almacenSucursal,
@@ -145,7 +146,7 @@ export const CrearTransferencia = () => {
         nombreSucursal: sucursal.nombre,
         producto: stockSeleccionado?.nombre,
         sucursal: data.sucursal,
-        tipo: stockSeleccionado?.tipo,
+        tipo: stockSeleccionado?.idTipoProducto,
         idStock: stockSeleccionado?.idStock,
         nombreAlmacenArea: stockSeleccionado?.almacen,
         almacenArea: stockSeleccionado?.almacenArea,
