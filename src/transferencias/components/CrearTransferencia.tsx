@@ -234,7 +234,7 @@ export const CrearTransferencia = () => {
         const response = await verificarCantidadStockSucursal(
           stockSeleccionado.idStock,
           almacenSucursalSeleccionado,
-          stockSeleccionado.tipo,
+          stockSeleccionado.idTipoProducto,
           token
         );
         
@@ -400,12 +400,7 @@ export const CrearTransferencia = () => {
                         {cantidadStockTransferencia.cantidad}
                       </span>
                     </span>
-                    <span className="text-gray-800 text-xs font-semibold ml-2">
-                      - Tipo:
-                      <span className="text-teal-500">
-                        {cantidadStockTransferencia.tipo}
-                      </span>
-                    </span>
+                    
                   </div>
                   )
                 )}
