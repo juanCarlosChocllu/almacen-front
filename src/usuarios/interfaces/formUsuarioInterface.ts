@@ -10,8 +10,7 @@ export interface FormUsuariosI{
     empresa?:string | null
     sucursal?:string | null
     area?:string[] | null
-    sinRelacion?:boolean | null
-    tipo:string
+    tipoUbicacion:string
 
     
 

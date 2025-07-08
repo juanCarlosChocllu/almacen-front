@@ -19,6 +19,7 @@ export const guardarStock= async(data:guardarStockI, token:string):Promise<httpR
         })
         return response.data
     } catch (error) {
+       console.log(error)
         throw error
         
     }
@@ -51,14 +52,20 @@ export const listarStock = async (pagina: number, limite: number, buscadorStockI
 
 
 export   const vericarStockProducto =async(producto:string, token:string):Promise<StockVerificarI[]>=>{
-    try {
+    console.log('verficiae');
+     
+  try {
       const response = await instance.get(`stocks/verificar/stock/${producto}`,{
         headers:{
             Authorization:`Bearer ${token}`
         }
       });
+      console.log('re', response);
+      
       return response.data
     } catch (error) {
+      console.log(error);
+      
       throw error;
     }
 

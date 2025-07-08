@@ -98,6 +98,8 @@ export const CrearStock = () => {
 
   const productoSeleccionados = async (producto: productoI) => {
     try {
+      console.log('ol');
+      
       if (producto && token) {
         setProductoSeleccionado(producto);
         const stock = await vericarStockProducto(producto._id, token);

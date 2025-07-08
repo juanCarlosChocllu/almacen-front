@@ -9,7 +9,7 @@ export const listarDetalleAreaPorUsuario = async(token:string):Promise<DetalleAr
     try {
 
         
-        const response = await instance.get('detalle/area/usuario',{
+        const response = await instance.get('ubicacion/usuario',{
             headers:{
                 Authorization:`Bearer ${token}`
             }
@@ -24,7 +24,7 @@ export const listarDetalleAreaPorUsuario = async(token:string):Promise<DetalleAr
 
 export const actualizarDetalleArea = async(data:ActualizarDetalleI, token:string):Promise<httpRespuetaI>=>{
     try {
-        const response = await instance.post('detalle/area',data,{
+        const response = await instance.post('ubicacion',data,{
             headers:{
                 Authorization:`Bearer ${token}`
             }
@@ -40,7 +40,7 @@ export const obtenerDetallleAreaUsuarioPublico = async(token:string, id:string):
     try {
 
         
-        const response = await instance.get(`detalle/area/${id}`,{
+        const response = await instance.get(`ubicacion/${id}`,{
             headers:{
                 Authorization:`Bearer ${token}`
             }
@@ -48,6 +48,8 @@ export const obtenerDetallleAreaUsuarioPublico = async(token:string, id:string):
         return response.data
         
     } catch (error) {
+  
+        
         throw error
     }
 }

@@ -1,11 +1,10 @@
 import { instance } from "../../config/instanceConfig"
 import { httpResponsePagiandor } from "../../core/interfaces/httpRespuestaInterface"
-import { tipoE } from "../../stocks/enums/tipos.enum"
 import { BuscadorStockSucursalI, ParamsStockSucursalI } from "../interfaces/buscadorStockSucursal"
 import { StockSucursalI } from "../interfaces/stockSucursal"
 import { StockSucursalVerificarI } from "../interfaces/stockSucursalInterface"
 
-export const verificarCantidadStockSucursal =async(stock:string, almacen:string, tipo:tipoE, token:string):Promise<StockSucursalVerificarI>=>{
+export const verificarCantidadStockSucursal =async(stock:string, almacen:string, tipo:string, token:string):Promise<StockSucursalVerificarI>=>{
   try {
     const response = await instance.get(`stock/sucursal/verificar/cantidad/${stock}/${almacen}/${tipo}`,
       {
